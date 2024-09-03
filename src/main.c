@@ -2,9 +2,13 @@
 
 int main(int ac, char **av)
 {
-    while(1)
+    av = NULL;
+    if (ac == 1)
     {
-        printf("alo\n");
-        sleep(2);
+        while(1)
+        {
+            printf("alo\n");
+            sleep(2);
+        }
     }
 }
