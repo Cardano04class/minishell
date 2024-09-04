@@ -10,18 +10,18 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_lstdisplay.c \
 		./utils/linked_list/ft_lstclear.c \
 
-CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror 
+CC = cc $(INC) 
+CFLAGS = -Wall -Wextra -Werror
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline
 	
 %.o:%.c
-	$(CC) $(CFLAGS)  -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean : 
 	rm -rf $(OBJ)
