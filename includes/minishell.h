@@ -27,7 +27,7 @@ typedef struct s_list
 }					t_list;
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
-t_list				*ft_lstnew(int content);
+t_list				*ft_lstnew(char *content, t_token type);
 t_list				*ft_lstmax(t_list *stack_a);
 t_list				*ft_lstmin(t_list *stack_a);
 void				ft_lstaddfront(t_list **lst, t_list *new);

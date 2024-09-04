@@ -1,18 +1,19 @@
 NAME = minishell
 
 SRC = ./src/main.c \
-		./utils/linked_list_functions/ft_lstnew.c \
-		./utils/linked_list_functions/ft_lstaddback.c \
-		./utils/linked_list_functions/ft_lstaddfront.c \
-		./utils/linked_list_functions/ft_lstsize.c \
-		./utils/linked_list_functions/ft_lstmax.c \
-		./utils/linked_list_functions/ft_lstmin.c \
-		./utils/linked_list_functions/ft_lstdisplay.c \
-		./utils/linked_list_functions/ft_lstclear.c \
+		./utils/linked_list/ft_lstnew.c \
+		./utils/linked_list/ft_lstaddback.c \
+		./utils/linked_list/ft_lstaddfront.c \
+		./utils/linked_list/ft_lstsize.c \
+		./utils/linked_list/ft_lstmax.c \
+		./utils/linked_list/ft_lstmin.c \
+		./utils/linked_list/ft_lstdisplay.c \
+		./utils/linked_list/ft_lstclear.c \
 
-CC = cc
+CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror 
 OBJ = $(SRC:.c=.o)
+INC = -I./includes/
 
 all : $(NAME)
 
