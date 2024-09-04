@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdisplay.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:18:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 14:53:46 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:17:38 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_lstdisplay(t_list *stack)
 	while (stack != NULL)
 	{
 		printf("node->content : %s\n",stack->content);
-		printf("node->tyep : %u\n",stack->type);
+		printf("node->type : %u\n",stack->type);
 		stack = stack->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:08:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 15:56:06 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:18:24 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	lexer(char **av)
 	t_list *lst;
 	char *str;
 
-	j = 1;
+	j = 0;
 	lst = NULL;
 	while (av[j] != NULL)
 	{
