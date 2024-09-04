@@ -2,13 +2,37 @@
 
 int main(int ac, char **av)
 {
-    av = NULL;
-    if (ac == 1)
-    {
-        while(1)
-        {
-            printf("alo\n");
-            sleep(2);
-        }
-    }
+    int		i;
+	int		j;
+
+	j = 0;
+    while (av[j] != NULL)
+	{
+		i = 0;
+		while (av[j][i] != '\0')
+		{
+			if (av[j][i] == 34 || av[j][i] == 39 || av[j][i] == ' ' || av[j][i] == '	') // 34 for (") and 39 for (').
+				i++;
+			else if (av[j][i] == '|')
+			{
+				
+			}
+			else if (av[j][i] == '>')
+			{
+			}
+			else if (av[j][i] == '<')
+			{
+			}
+			else if (av[j][i] == '>>')
+			{
+			}
+			else if (av[j][i] == '<<')
+			{
+			}
+			else
+			{
+			}
+		}
+		j++;
+	}
 }
