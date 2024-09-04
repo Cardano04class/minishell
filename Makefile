@@ -14,10 +14,7 @@ CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror 
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
-<<<<<<< HEAD
-=======
 
->>>>>>> main
 all : $(NAME)
 
 $(NAME) : $(OBJ)

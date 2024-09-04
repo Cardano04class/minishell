@@ -2,5 +2,10 @@
 
 int main(int ac, char **av)
 {
-    
+    char prompt[] = "minishell$>";
+    av = NULL;
+    if (ac == 1)
+    {
+        printf("%s\n", prompt);
+    }
 }
