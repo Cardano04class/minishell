@@ -13,13 +13,8 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strdup.c \
 		./utils/libft/ft_strlen.c 
 
-<<<<<<< HEAD
-CC = cc $(INC) 
-CFLAGS = -Wall -Wextra -Werror
-=======
 CC = cc $(INC)
-CFLAGS = #-Wall -Wextra -Werror #-g3 -fsanitize=address
->>>>>>> main
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

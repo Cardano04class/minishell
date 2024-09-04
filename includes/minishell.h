@@ -6,15 +6,10 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-<<<<<<< HEAD
+# include "../utils/libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-
-=======
-# include "../utils/libft/libft.h"
->>>>>>> main
-
 typedef enum	e_token
 {
 	CMD,
