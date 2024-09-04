@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 19:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:24 by mobouifr         ###   ########.fr       */
+/*   Created: 2023/11/02 11:48:20 by mobouifr          #+#    #+#             */
+/*   Updated: 2023/11/02 13:27:25 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+int	ft_isascii(int a)
 {
-	if (lst == NULL)
-		return (1);
-	while (lst->next != NULL)
+	if (a >= 0 && a <= 127)
 	{
-		lst = lst->next;
+		return (1);
 	}
-	return (lst);
+	else
+	{
+		return (0);
+	}
 }
+/*
+int main()
+{
+	printf("%d", ft_isascii(350));
+	return (0);	
+}
+*/

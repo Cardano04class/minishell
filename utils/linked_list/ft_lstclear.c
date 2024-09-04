@@ -6,11 +6,11 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 20:01:44 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 08:46:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:41:07 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	ft_lstclear(t_list **lst)
 {

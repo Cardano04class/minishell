@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 19:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:24 by mobouifr         ###   ########.fr       */
+/*   Created: 2023/11/02 13:59:02 by mobouifr          #+#    #+#             */
+/*   Updated: 2023/12/11 10:22:05 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+size_t	ft_strlen(const char *s)
 {
-	if (lst == NULL)
-		return (1);
-	while (lst->next != NULL)
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
 	{
-		lst = lst->next;
+		i++;
 	}
-	return (lst);
+	return (i);
 }

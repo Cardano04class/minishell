@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 19:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:24 by mobouifr         ###   ########.fr       */
+/*   Created: 2023/11/01 20:04:30 by mobouifr          #+#    #+#             */
+/*   Updated: 2023/12/16 14:50:57 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+int	ft_isalnum(int a)
 {
-	if (lst == NULL)
-		return (1);
-	while (lst->next != NULL)
+	if ((a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z') || (a >= '0'
+			&& a <= '9'))
 	{
-		lst = lst->next;
+		return (1);
 	}
-	return (lst);
+	else
+	{
+		return (0);
+	}
 }

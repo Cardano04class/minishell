@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 19:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:24 by mobouifr         ###   ########.fr       */
+/*   Created: 2023/11/22 15:04:37 by mobouifr          #+#    #+#             */
+/*   Updated: 2023/11/22 15:52:57 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+void	ft_putchar_fd(char c, int fd)
 {
-	if (lst == NULL)
-		return (1);
-	while (lst->next != NULL)
+	if (fd != -1)
 	{
-		lst = lst->next;
+		write(fd, &c, 1);
 	}
-	return (lst);
 }
+// int	main(void)
+// {
+//  	int	fd;
+
+// 	fd = open("Z.txt", O_WRONLY | O_CREAT);
+//  	ft_putchar_fd('5', fd);
+// 	close(fd);
+//  	return (0);
+//  }
