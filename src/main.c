@@ -2,6 +2,7 @@
 
 int main(int ac, char **av)
 {
+<<<<<<< HEAD
     char prompt[] = "minishell$>";
     av = NULL;
     if (ac == 1)
@@ -12,4 +13,6 @@ int main(int ac, char **av)
             sleep(2);
         }
     }
+=======
+>>>>>>> main
 }
