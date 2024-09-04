@@ -1,6 +1,7 @@
 NAME = minishell
 
 SRC = ./src/main.c \
+		./src/lexer.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_lstaddfront.c \
@@ -9,9 +10,16 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_lstmin.c \
 		./utils/linked_list/ft_lstdisplay.c \
 		./utils/linked_list/ft_lstclear.c \
+		./utils/libft/ft_strdup.c \
+		./utils/libft/ft_strlen.c 
 
+<<<<<<< HEAD
 CC = cc $(INC) 
 CFLAGS = -Wall -Wextra -Werror
+=======
+CC = cc $(INC)
+CFLAGS = #-Wall -Wextra -Werror #-g3 -fsanitize=address
+>>>>>>> main
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 19:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:24 by mobouifr         ###   ########.fr       */
+/*   Created: 2023/11/05 15:58:06 by mobouifr          #+#    #+#             */
+/*   Updated: 2023/11/27 21:07:34 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+int	ft_tolower(int c)
 {
-	if (lst == NULL)
-		return (1);
-	while (lst->next != NULL)
+	if (c >= 'A' && c <= 'Z')
 	{
-		lst = lst->next;
+		c = c + 32;
 	}
-	return (lst);
+	return (c);
 }
+/*
+#include <ctype.h>
+#include <stdio.h>
+
+int	main(void)
+{
+	printf("%c ", ft_tolower(75));
+	printf("%c", tolower(75));
+	return (0);
+}
+*/

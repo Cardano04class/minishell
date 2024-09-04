@@ -6,10 +6,14 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+<<<<<<< HEAD
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
+=======
+# include "../utils/libft/libft.h"
+>>>>>>> main
 
 typedef enum	e_token
 {
@@ -28,6 +32,9 @@ typedef struct s_list
 	struct s_list	*next;
 	struct s_list	*prev;
 }					t_list;
+
+
+void lexer(char **av);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);

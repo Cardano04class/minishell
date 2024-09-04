@@ -12,7 +12,7 @@ void ft_prompt(char **av)
     }
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
     if (ac == 1)
     {
