@@ -6,11 +6,11 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:05:05 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 08:46:26 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:41:29 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 t_list	*ft_lstmin(t_list *stack_a)
 {
