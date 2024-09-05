@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:08:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 09:07:02 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/05 09:09:15 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,9 @@ void	lexer(char *str)
 		while (str[j] != '\0')
 		{
 			if (ft_isspace(str[j]))
-			{
 				j++;
-			}
 			else if (str[j] == '|')
-			{
 				ft_lstaddback(&lst, ft_lstnew("|", PIPE));
-			}
 			else if (str[j] == '>' && str[j+1] == '>')
 			{
 				ft_lstaddback(&lst, ft_lstnew(">>", APPEND));
@@ -51,13 +47,9 @@ void	lexer(char *str)
 				j++;
 			}
 			else if (str[j] == '>')
-			{
 				ft_lstaddback(&lst, ft_lstnew(">", INRED));
-			}
 			else if (str[j] == '<')
-			{
 				ft_lstaddback(&lst, ft_lstnew("<", OUTRED));
-			}
 			else
 			{
 				k = 0;

@@ -8,6 +8,7 @@ void ft_prompt(void)
     {
         rl = readline("minishell$>");
         lexer(rl);
+        add_history(rl);
     }
 }
 
