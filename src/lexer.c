@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:28:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/05 12:28:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/05 15:34:02 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,22 +53,26 @@ void	lexer(char *str)
 		else
 		{
 			token_length = 0;
-			if (str[i] == 34)  
+			if (str[i] == 34)
 			{
-				i++;  
-				while (str[i + token_length] != 34 && str[i + token_length] != '\0') 
+				i++;
+				while (str[i + token_length] != 34 && str[i
+						+ token_length] != '\0')
 					token_length++;
-			}	
-			else if (str[i] == 39) 
+			}
+			else if (str[i] == 39)
 			{
-				i++;  
-				while (str[i + token_length] != 39 && str[i + token_length] != '\0')
-					token_length++;				
+				i++;
+				while (str[i + token_length] != 39 && str[i
+						+ token_length] != '\0')
+					token_length++;
 			}
 			else
 			{
-				while (str[i + token_length] && !ft_isspace(str[i + token_length]) && 
-					str[i + token_length] != '|' && str[i + token_length] != '>' && 
+				while (str[i + token_length] && !ft_isspace(str[i
+							+ token_length]) &&
+					str[i + token_length] != '|' && str[i + token_length] != '>'
+						&&
 					str[i + token_length] != '<')
 				{
 					token_length++;
@@ -76,7 +80,7 @@ void	lexer(char *str)
 			}
 			string = malloc(sizeof(char) * (token_length + 1));
 			if (!string)
-				return;
+				return ;
 			j = 0;
 			while (j < token_length)
 			{
@@ -86,7 +90,7 @@ void	lexer(char *str)
 			}
 			string[j] = '\0';
 			if (string[0] != '\0')
-				ft_lstaddback(&lst, ft_lstnew(ft_strdup(string), WORD));  
+				ft_lstaddback(&lst, ft_lstnew(ft_strdup(string), WORD));
 			free(string);
 		}
 		if (str[i] == '\0')
