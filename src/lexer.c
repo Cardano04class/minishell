@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:08:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 09:34:42 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 09:40:07 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ static int	ft_isspace(int c)
 }
 
 void	lexer(char *str)
+void	lexer(char *str)
 {
 	int		i;
 	int		j;
 	t_list	*lst;
 	char	*string;
 
+	j = 0;
 	j = 0;
 	lst = NULL;
 	i = 0;

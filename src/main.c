@@ -1,23 +1,23 @@
 #include "minishell.h"
-#include <linux/limits.h>
 
-void ft_prompt(char **av)
+void ft_prompt(void)
 {
-    av = NULL;
+    
     char *rl;
     while(1)
     {
-        rl = readline("minishell$> ");
-        printf("\n");
-		lexer(rl);
-        printf("\n");
+        rl = readline("minishell$>");
+        lexer(rl);
+        add_history(rl);
     }
+    rl_clear_history();
 }
 
 int	main(int ac, char **av)
 {
+    av = NULL;
     if (ac == 1)
     {
-        ft_prompt(av);
+        ft_prompt();
     }
 }
