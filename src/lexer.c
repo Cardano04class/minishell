@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:08:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 09:41:25 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/05 10:25:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,46 @@ static int	ft_isspace(int c)
 	return (0);
 }
 
+static int	copy_token(char *str, char **string)
+{
+	int i = 0;
+	int j = 0;
+	
+	*string = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!(*string))
+		return (0);
+	if (str[i] == 34) // Double quote
+	{
+		i++;
+		while (str[i] != 34 && str[i] != '\0')
+			(*string)[j++] = str[i++];
+		i++;
+	}
+	else if (str[i] == 39) // Single quote
+	{
+		i++;
+		while (str[i] != 39 && str[i] != '\0')
+			(*string)[j++] = str[i++];
+		i++;
+	}
+	else
+	{
+		while (str[i] && !ft_isspace(str[i]) && str[i] != '|'
+			&& str[i] != '>' && str[i] != '<')
+			(*string)[j++] = str[i++];
+	}
+	(*string)[j] = '\0';
+	return i; // Return how many characters were copied
+}
+
 void	lexer(char *str)
 {
 	int		i;
-	int		j;
 	t_list	*lst;
 	char	*string;
 
-	j = 0;
-	j = 0;
-	lst = NULL;
 	i = 0;
+	lst = NULL;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	while (str[i] != '\0')
@@ -55,31 +84,7 @@ void	lexer(char *str)
 			ft_lstaddback(&lst, ft_lstnew("<", OUTRED));
 		else
 		{
-			string = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-			if (!string)
-				return ;
-			j = 0;
-			if (str[i] == 34)
-			{
-				i++;
-				while (str[i] != 34 && str[i] != '\0')
-					string[j++] = str[i++];
-				i++;
-			}
-			else if (str[i] == 39)
-			{
-				i++;
-				while (str[i] != 39 && str[i] != '\0')
-					string[j++] = str[i++];
-				i++;
-			}
-			else
-			{
-				while (str[i] && !ft_isspace(str[i]) && str[i] != '|'
-					&& str[i] != '>' && str[i] != '<')
-					string[j++] = str[i++];
-			}
-			string[j] = '\0';
+			i += copy_token(&str[i], &string); // Call the new function
 			ft_lstaddback(&lst, ft_lstnew(ft_strdup(string), WORD));
 			free(string);
 		}
@@ -87,3 +92,4 @@ void	lexer(char *str)
 	}
 	ft_lstdisplay(lst);
 }
+
