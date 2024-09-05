@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:18:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 09:40:45 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/05 09:41:59 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	ft_lstdisplay(t_list *stack)
 	while (stack != NULL)
 	{
 		printf("node->content : %s\n",stack->content);
-		printf("node->type : %u\n",stack->type);
-		printf("node->type : %u\n",stack->type);
+		printf("node->type : %u\n",stack->type);	
 		stack = stack->next;
 	}
 }

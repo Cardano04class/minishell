@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:08:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 09:40:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/05 09:41:25 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static int	ft_isspace(int c)
 	return (0);
 }
 
-void	lexer(char *str)
 void	lexer(char *str)
 {
 	int		i;
