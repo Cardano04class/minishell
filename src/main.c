@@ -7,8 +7,10 @@ void ft_prompt(char **av)
     char *rl;
     while(1)
     {
-        rl = readline("minishell$>");
-        printf("%s\n", rl);
+        rl = readline("minishell$> ");
+        printf("\n");
+		lexer(rl);
+        printf("\n");
     }
 }
 

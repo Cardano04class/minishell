@@ -12,7 +12,7 @@
 # include <readline/history.h>
 typedef enum	e_token
 {
-	CMD,
+	WORD,
 	INRED,
 	OUTRED,
 	APPEND,
@@ -29,7 +29,7 @@ typedef struct s_list
 }					t_list;
 
 
-void lexer(char **av);
+void lexer(char *str);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);

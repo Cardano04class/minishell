@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:55:22 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:36 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 09:21:05 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_lstsize(t_list *lst)
 
 	count = 0;
 	if (lst == NULL)
-		return (1);
+		return (0);
 	while (lst != NULL)
 	{
 		lst = lst->next;
