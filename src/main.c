@@ -10,6 +10,7 @@ void ft_prompt(void)
         lexer(rl);
         add_history(rl);
     }
+    rl_clear_history();
 }
 
 int	main(int ac, char **av)
