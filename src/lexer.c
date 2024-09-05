@@ -7,7 +7,6 @@ static int	ft_isspace(int c)
 		return (1);
 	return (0);
 }
-
 void	lexer(char *str)
 {
 	int		i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:34:32 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/11 09:25:55 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:38:05 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,3 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	}
 	return (0);
 }
-/*
-int	main(void)
-{
-	char	*s;
-
-	s = NULL;
-	//printf("ft_memchr : %s\n", ft_memchr(s, 7, 10));
-	printf("memchr : %s", memchr(s, 7, 10));
-}
-*/

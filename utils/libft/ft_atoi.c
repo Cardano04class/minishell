@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 01:50:31 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/08/29 17:57:00 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:38:55 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
 #include "libft.h"
-#include <limits.h>
 
 void	minmaxcheck(long v, char **string, int *all_nums)
 {

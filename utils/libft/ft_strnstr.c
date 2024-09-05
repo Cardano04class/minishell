@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:30:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 15:46:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:55 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,3 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-// int	main(void)
-// {
-// 	const char	haystack[] = "a wise man once said     ";
-// 	const char	needle[] = "once";
-
-// 	//printf("%s\n", ft_strnstr(haystack, needle, 0));
-// 	printf("%s\n", strnstr(NULL, needle, 1));
-// 	return (0);
-// }

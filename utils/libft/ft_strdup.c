@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 21:28:01 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/09 16:37:44 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:37:27 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,4 @@ char	*ft_strdup(const char *s1)
 	s2[i] = '\0';
 	return (s2);
 }
-/*
-#include <stdio.h>
-#include <string.h>
 
-int	main(void)
-{
-	const char	s1[] = "cola aloc";
-
-	// printf("ft_strdup : %s", ft_strdup(s1));
-	printf("strdup : %s", strdup(s1));
-	return (0);
-}
-*/

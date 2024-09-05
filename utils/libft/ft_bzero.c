@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 10:04:37 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/09 16:36:56 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:13 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,3 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char	ptr[] = "give me some eggs";
-
-	ft_bzero(ptr + 5, 1);
-	printf("%s", ptr);
-	return (0);
-}
-*/

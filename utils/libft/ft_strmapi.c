@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 14:35:28 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/11/22 10:50:47 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:49 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,3 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	return (result);
 }
 
-// int	main(void)
-// {
-// 	char const	c[] = "abcded";
-
-// 	printf("%s", ft_strmapi(c, ft_toupper));
-// 	return (0);
-// }
-// char	ft_toupper(unsigned int i, char c)
-// {
-// 	(void)i;
-// 	if (c >= 'a' && c <= 'z')
-// 	{
-// 		c = c - 32;
-// 	}
-// 	return (c);
-// }

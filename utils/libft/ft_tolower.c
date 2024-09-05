@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 15:58:06 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/11/27 21:07:34 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:41:06 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,3 @@ int	ft_tolower(int c)
 	}
 	return (c);
 }
-/*
-#include <ctype.h>
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%c ", ft_tolower(75));
-	printf("%c", tolower(75));
-	return (0);
-}
-*/

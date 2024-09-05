@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 04:07:14 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 15:22:17 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:43 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	}
 	return (ft_strlen(src));
 }
-/*int	main(void)
-{
-	char		*dst;
-	const char	*src;
-	
-	src = "qwerty";
-	printf("%lu\n", ft_strlcpy(dst, src, 3));
-	//printf("%lu\n", strlcpy(dst, src, 3));
-
-	return (0);
-}*/

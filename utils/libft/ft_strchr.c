@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 16:40:00 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/11/28 22:07:46 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:37:32 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,3 @@ char	*ft_strchr(const char *s, int c)
 	}
 	return (NULL);
 }
-/*
-#include <stdio.h>
-#include <string.h>
-
-int	main(void)
-{
-	printf("ft_strchr : %p\n", ft_strchr("teste", 'e'));
-	//printf("strchr : %s", strchr(s, 'i'));
-	return (0);
-}
-*/
