@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:09:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/11 10:51:17 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:38:00 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,3 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (f);
 }
-/*
-#include "libft.h"
-#include <stdio.h>
-
-int main(void)
-{
-    int src[] = {1, 1, 1, 1, 1};
-    int dst[] = {0, 0, 0, 0, 0};
-	size_t i = 0;
-
-    ft_memcpy(dst + 2, src, 8);
-	while (i < 5)
-	{
-        printf("%d ", dst[i]);
-		i++;
-	}
-    return 0;
-}
-*/

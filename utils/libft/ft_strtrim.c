@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 22:52:31 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/09 17:58:59 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:41:00 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	s2[j] = '\0';
 	return (s2);
 }
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char const	s1[] = "gvigeeeeeeeeeeegigive";
-
-	printf("%s", ft_strtrim(s1, "give"));
-	return (0);
-}*/

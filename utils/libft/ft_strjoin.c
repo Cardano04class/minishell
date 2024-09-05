@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:00:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 11:47:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:38 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s3[j] = '\0';
 	return (s3);
 }
-/*
-int	main(void)
-{
-	const char	s1[] = "be free ";
-	const char	s2[] = "as a bee";
-
-	printf("%s", ft_strjoin(s1, s2));
-	return (0);
-}
-*/

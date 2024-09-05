@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 06:39:10 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 15:22:31 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:41 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,3 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst[j + i] = '\0';
 	return (dst_len + src_len);
 }
-/*
-#include <stdio.h>
-#include <string.h>
-
-int	main(void)
-{
-	char		dst[] = "He36";
-	const char	src[] = "world!";
-
-	printf("%zu\n", ft_strlcat(dst, dst, sizeof(dst)));
-	//printf("%zu\n", strlcat(dst, dst, 5));
-	printf("%s", dst);
-	return (0);
-}*/

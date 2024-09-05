@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 19:13:06 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/11/27 20:58:30 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,3 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 		i++;
 	}
 }
-/*
-void	ft_touppe(unsigned int i, char *c)
-{
-	if (*c >= 'a' && *c <= 'z')
-	{
-		*c = *c - 32;
-	}
-}
-int	main(void)
-{
-	char	*s = "dgtrg";
-	ft_striteri(s , ft_touppe);
-	printf("%s", s);
-	return (0);
-}*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 14:03:56 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 15:31:28 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:40:52 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (0);
 }
-/*
-#include <stdio.h>
-#include <string.h>
-
-int	main(void)
-{
-	//const char		s1[] = "02";
-	//const char		s2[] = "00";
-	unsigned char	ft_strncm;
-	//unsigned char	strncm;
-
-	ft_strncm = ft_strncmp("02", "00", 2);
-	//strncm = strncmp(s1, s2, 2);
-	//printf("ft_strncmp : %d", ft_strncmp("02", "00", 2));
-	printf("strncmp : %d\n", ft_strncm);
-	return (0);
-}*/
