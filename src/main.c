@@ -7,7 +7,7 @@ void ft_prompt(void)
     while(1)
     {
         rl = readline("minishell$>");
-        lexer(&rl);
+        lexer(rl);
     }
 }
 
