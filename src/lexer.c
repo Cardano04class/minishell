@@ -14,12 +14,11 @@ void	lexer(char *str)
 	int		j;
 	t_list	*lst;
 	char	*string;
+	int token_length;
 
 	j = 0;
-	lst = NULL;
 	i = 0;
-	while (str[i] && ft_isspace(str[i]))
-		i++;
+	lst = NULL;
 	while (str[i] != '\0')
 	{
 		while (ft_isspace(str[i]))
@@ -42,34 +41,45 @@ void	lexer(char *str)
 			ft_lstaddback(&lst, ft_lstnew("<", OUTRED));
 		else
 		{
-			string = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-			if (!string)
-				return ;
-			j = 0;
-			if (str[i] == 34)
+			token_length = 0;
+			if (str[i] == 34)  
 			{
-				i++;
-				while (str[i] != 34 && str[i] != '\0')
-					string[j++] = str[i++];
-				i++;
-			}
-			else if (str[i] == 39)
+				i++;  
+				while (str[i + token_length] != 34 && str[i + token_length] != '\0') 
+					token_length++;
+			}	
+			else if (str[i] == 39) 
 			{
-				i++;
-				while (str[i] != 39 && str[i] != '\0')
-					string[j++] = str[i++];
-				i++;
+				i++;  
+				while (str[i + token_length] != 39 && str[i + token_length] != '\0')
+					token_length++;				
 			}
 			else
 			{
-				while (str[i] && !ft_isspace(str[i]) && str[i] != '|'
-					&& str[i] != '>' && str[i] != '<')
-					string[j++] = str[i++];
+				while (str[i + token_length] && !ft_isspace(str[i + token_length]) && 
+					str[i + token_length] != '|' && str[i + token_length] != '>' && 
+					str[i + token_length] != '<')
+				{
+					token_length++;
+				}
+			}
+			string = malloc(sizeof(char) * (token_length + 1));
+			if (!string)
+				return;
+			j = 0;
+			while (j < token_length)
+			{
+				string[j] = str[i];
+				i++;
+				j++;
 			}
 			string[j] = '\0';
-			ft_lstaddback(&lst, ft_lstnew(ft_strdup(string), WORD));
+			if (string[0] != '\0')
+				ft_lstaddback(&lst, ft_lstnew(ft_strdup(string), WORD));  
 			free(string);
 		}
+		if (str[i] == '\0')
+			break ;
 		i++;
 	}
 	ft_lstdisplay(lst);
