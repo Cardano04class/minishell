@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:58:34 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:38:50 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/06 16:24:12 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 # define LIBFT_H
 
 # include <fcntl.h>
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <limits.h>
 
 /* Part 1 functions */
+int		ft_isspace(int c);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
