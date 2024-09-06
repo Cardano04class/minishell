@@ -6,7 +6,7 @@
 #    By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/26 16:18:47 by mobouifr          #+#    #+#              #
-#    Updated: 2024/08/10 12:10:43 by mobouifr         ###   ########.fr        #
+#    Updated: 2024/09/06 16:27:55 by mobouifr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = libft.a
 SRC = ft_atoi.c \
 	ft_bzero.c \
 	ft_calloc.c \
+	ft_isspace.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_isascii.c \
@@ -54,7 +55,7 @@ SRC = ft_atoi.c \
 OBJ = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-
+INC = -I../../includes/
 all: $(NAME)
 
 .c.o:

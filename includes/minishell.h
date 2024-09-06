@@ -6,10 +6,11 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "../utils/libft/libft.h"
+# include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
 typedef enum	e_token
 {
 	WORD,
@@ -19,6 +20,14 @@ typedef enum	e_token
 	HEREDOC,
 	PIPE
 }	t_token;
+
+typedef enum e_state
+{
+    INITIAL,
+    IN_WORD,
+    IN_SPECIAL,
+    IN_WHITESPACE
+}   t_state;
 
 typedef struct s_list
 {
