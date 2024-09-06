@@ -25,6 +25,7 @@ typedef enum e_state
 {
     INITIAL,
     IN_WORD,
+	IN_QUOTE,
     IN_SPECIAL,
     IN_WHITESPACE
 }   t_state;

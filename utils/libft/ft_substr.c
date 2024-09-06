@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:09:54 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:41:03 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/06 17:44:51 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,4 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	str[l] = '\0';
 	return (str);
-	return (0);
 }

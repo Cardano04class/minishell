@@ -6,7 +6,9 @@ void ft_prompt(void)
     char *rl;
     while(1)
     {
-        rl = readline("minishell$>");
+        rl = readline("minishell$> ");
+        if(rl == NULL)
+            exit(1);
         lexer(rl);
         add_history(rl);
     }
