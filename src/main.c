@@ -2,6 +2,17 @@
 
 void	ft_prompt(void)
 {
+    
+    char *rl;
+    while(1)
+    {
+        rl = readline("minishell$> ");
+        if(rl == NULL)
+            exit(1);
+        lexer(rl);
+        add_history(rl);
+    }
+    rl_clear_history();
 	char	*rl;
 
 	while (1)

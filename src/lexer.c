@@ -28,6 +28,7 @@ void lexer(char *str)
     int i;
     int start;
     t_state state;
+    char quote_char;
 
     i = 0;
     start = 0;
@@ -41,6 +42,12 @@ void lexer(char *str)
                 state = IN_WHITESPACE;
             else if (is_special_char(str[i]))
                 state = IN_SPECIAL;
+            else if (str[i] == 34 || str[i] == 39)
+            {
+                quote_char = str[i];
+                state = IN_QUOTE;
+                start = i;
+            }
             else
             {
                 state = IN_WORD;
@@ -80,9 +87,20 @@ void lexer(char *str)
             }
             state = INITIAL;
         }
+        else if (state == IN_QUOTE)
+        {
+            i++;
+            while (str[i] != '\0' && str[i] != quote_char)
+                i++;
+            if (str[i] == quote_char)
+                i++;
+            ft_lstaddback(&lst, ft_lstnew(create_token(str, start, i), WORD));
+            state = INITIAL;
+            --i;
+        }
         else if (state == IN_WORD)
         {
-            while (str[i] != '\0' && !is_special_char(str[i]))
+            while (str[i] != '\0' && !ft_isspace(str[i]) && !is_special_char(str[i]) && str[i] != 34 && str[i] != 39)
                 i++;
             ft_lstaddback(&lst, ft_lstnew(create_token(str, start, i), WORD));
             if (is_special_char(str[i]))
