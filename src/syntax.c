@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/07 23:01:45 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/07 23:38:27 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,18 @@ void syntax_error(t_list *list)
                     return(ft_putstr_fd("syntax error: command not found\n", 1));  
             }    
         }
-        else if (is_special(list))
+        if (is_special(list))
         {
+            
             if (list->next == NULL || (list->prev == NULL && list->type == PIPE))
             {
                 printf("syntax error: '%s'\n", list->content);
-                break;
+                break ;
+            }
+            if (list->next && is_special(list->next))
+            {
+                printf("syntax error: consecutive special symbols\n");
+                return;    
             }
         }
         list = list->next;

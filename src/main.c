@@ -12,7 +12,7 @@ void	ft_prompt(void)
 		if (rl == NULL)
 		{
 			printf("exit\n");
-			exit(1);
+			exit(0);
 		}
 		lexer(rl, &list);
 		// ft_lstdisplay(list);
