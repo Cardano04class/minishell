@@ -22,9 +22,8 @@ static char *create_token(char *str, int start, int end)
     return ft_substr(str, start, end - start);
 }
 
-void lexer(char *str)
+void lexer(char *str, t_list **lst)
 {
-    t_list *lst;
     int i;
     int start;
     t_state state;
@@ -33,7 +32,6 @@ void lexer(char *str)
     i = 0;
     start = 0;
     state = INITIAL;
-    lst = NULL;
     while (str[i] != '\0')
     {
         if (state == INITIAL)
@@ -65,25 +63,25 @@ void lexer(char *str)
         {
             if (str[i] == '|')
             {
-			    ft_lstaddback(&lst, ft_lstnew("|", PIPE));
+			    ft_lstaddback(lst, ft_lstnew("|", PIPE));
             }
             else if (str[i] == '>' && str[i + 1] == '>')
             {
-                ft_lstaddback(&lst, ft_lstnew(">>", APPEND));
+                ft_lstaddback(lst, ft_lstnew(">>", APPEND));
                 i++;
             }
             else if (str[i] == '<' && str[i + 1] == '<')
             {
-                ft_lstaddback(&lst, ft_lstnew("<<", HEREDOC));
+                ft_lstaddback(lst, ft_lstnew("<<", HEREDOC));
                 i++;
             }
             else if (str[i] == '>')
             {
-			    ft_lstaddback(&lst, ft_lstnew(">", INRED));
+			    ft_lstaddback(lst, ft_lstnew(">", INRED));
             }
             else if (str[i] == '<')
             {
-			    ft_lstaddback(&lst, ft_lstnew("<", OUTRED));
+			    ft_lstaddback(lst, ft_lstnew("<", OUTRED));
             }
             state = INITIAL;
         }
@@ -94,7 +92,7 @@ void lexer(char *str)
                 i++;
             if (str[i] == quote_char)
                 i++;
-            ft_lstaddback(&lst, ft_lstnew(create_token(str, start, i), WORD));
+            ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
             state = INITIAL;
             --i;
         }
@@ -102,7 +100,7 @@ void lexer(char *str)
         {
             while (str[i] != '\0' && !ft_isspace(str[i]) && !is_special_char(str[i]) && str[i] != 34 && str[i] != 39)
                 i++;
-            ft_lstaddback(&lst, ft_lstnew(create_token(str, start, i), WORD));
+            ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
             if (is_special_char(str[i]))
             {
                 state = IN_SPECIAL;
@@ -113,5 +111,4 @@ void lexer(char *str)
         }
         i++;
     }
-    ft_lstdisplay(lst);
 }

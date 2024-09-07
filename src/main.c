@@ -3,7 +3,9 @@
 void	ft_prompt(void)
 {
 	char	*rl;
+	t_list *list;
 
+	list = NULL;
 	while (1)
 	{
 		rl = readline("minishell$>");
@@ -13,7 +15,10 @@ void	ft_prompt(void)
 			printf("exit\n");
 			exit(1);
 		}
-		lexer(rl);
+		lexer(rl, &list);
+		// ft_lstdisplay(list);
+		syntax_error(list);
+		ft_lstclear(&list);
 		add_history(rl);
 	}
 	rl_clear_history();
@@ -21,10 +26,10 @@ void	ft_prompt(void)
 
 int	main(int ac, char **av)
 {
-	av = NULL;
+	(void)av;
 	if (ac == 1)
 		ft_prompt();
-	else
+	else	
 		return 1;
 	return 0;
 }
