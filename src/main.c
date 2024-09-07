@@ -8,10 +8,9 @@ void	ft_prompt(void)
 	list = NULL;
 	while (1)
 	{
-		rl = readline("minishell$>");
+		rl = readline("minishell$ ");
 		if (rl == NULL)
 		{
-			free(rl);
 			printf("exit\n");
 			exit(1);
 		}
@@ -20,6 +19,7 @@ void	ft_prompt(void)
 		syntax_error(list);
 		ft_lstclear(&list);
 		add_history(rl);
+		free(rl);
 	}
 	rl_clear_history();
 }

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/07 22:44:09 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/07 23:01:45 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void syntax_error(t_list *list)
         }
         else if (is_special(list))
         {
-            if (list->next == NULL || list->prev == NULL)
+            if (list->next == NULL || (list->prev == NULL && list->type == PIPE))
             {
                 printf("syntax error: '%s'\n", list->content);
                 break;
