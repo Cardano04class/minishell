@@ -6,29 +6,29 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/07 18:44:52 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/07 22:44:09 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void invalid_position(t_list *list)
-{
-    if (list->next == NULL)
-    {
-        printf("syntax error near unexpected token '%s'\n", list->content);   
-    }
-    else if (list->prev == NULL)
-    {
-        printf("syntax error near unexpected token '%s'\n", list->content);
-    }
-}
 
 int is_special(t_list *token)
 {
     if (token->type == PIPE || token->type == INRED || token->type == OUTRED || token->type == APPEND || token->type == HEREDOC)
         return 1;
     return 0;
+}
+
+void invalid_position(t_list *list)
+{
+    if (is_special(list))
+    {
+        printf("syntax error: '%s'\n", list->content);
+    }
+    else if (list->next == NULL || list->prev == NULL)
+    {
+        printf("syntax error: '%s'\n", list->content);
+    }
 }
 
 int quotes_closed(char *str)
@@ -60,7 +60,13 @@ void syntax_error(t_list *list)
             }    
         }
         else if (is_special(list))
-            invalid_position(list);
+        {
+            if (list->next == NULL || list->prev == NULL)
+            {
+                printf("syntax error: '%s'\n", list->content);
+                break;
+            }
+        }
         list = list->next;
     }
 }
