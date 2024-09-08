@@ -19,7 +19,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_putchar_fd.c\
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
@@ -28,7 +28,7 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline
 	
-%.o:%.c
+.o:.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean : 
