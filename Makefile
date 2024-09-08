@@ -14,6 +14,7 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_env_new.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/libft/ft_strdup.c \
+		./utils/libft/ft_strncmp.c \
 		./utils/libft/ft_substr.c \
 		./utils/libft/ft_isspace.c \
 		./utils/libft/ft_strlen.c \

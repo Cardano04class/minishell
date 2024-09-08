@@ -49,7 +49,8 @@ void	prompt(char **env)
 		}
 		lexer(rl, &list);
 		syntax_error(list);
-		ft_env(env);
+		if (ft_strncmp(rl, "env",  4) == 0)
+			ft_env(env);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
