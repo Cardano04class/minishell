@@ -63,25 +63,25 @@ void lexer(char *str, t_list **lst)
         {
             if (str[i] == '|')
             {
-			    ft_lstaddback(lst, ft_lstnew("|", PIPE));
+			    ft_lstaddback(lst, ft_lstnew(ft_strdup("|"), PIPE));
             }
             else if (str[i] == '>' && str[i + 1] == '>')
             {
-                ft_lstaddback(lst, ft_lstnew(">>", APPEND));
+                ft_lstaddback(lst, ft_lstnew(ft_strdup(">>"), APPEND));
                 i++;
             }
             else if (str[i] == '<' && str[i + 1] == '<')
             {
-                ft_lstaddback(lst, ft_lstnew("<<", HEREDOC));
+                ft_lstaddback(lst, ft_lstnew(ft_strdup("<<"), HEREDOC));
                 i++;
             }
             else if (str[i] == '>')
             {
-			    ft_lstaddback(lst, ft_lstnew(">", INRED));
+			    ft_lstaddback(lst, ft_lstnew(ft_strdup(">"), INRED));
             }
             else if (str[i] == '<')
             {
-			    ft_lstaddback(lst, ft_lstnew("<", OUTRED));
+			    ft_lstaddback(lst, ft_lstnew(ft_strdup("<"), OUTRED));
             }
             state = INITIAL;
         }

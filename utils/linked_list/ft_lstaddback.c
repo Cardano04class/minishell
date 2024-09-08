@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstaddback.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:58:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/04 11:40:57 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/07 22:47:19 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ void	ft_lstaddback(t_list **lst, t_list *new)
 		tmp = tmp->next;
 	}
 	tmp->next = new;
+	new->prev = tmp;
 }
