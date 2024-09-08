@@ -11,15 +11,18 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_lstmin.c \
 		./utils/linked_list/ft_lstdisplay.c \
 		./utils/linked_list/ft_lstclear.c \
+		./utils/linked_list/ft_env_new.c \
+		./utils/linked_list/ft_env_addback.c \
 		./utils/libft/ft_strdup.c \
 		./utils/libft/ft_substr.c \
 		./utils/libft/ft_isspace.c \
 		./utils/libft/ft_strlen.c \
+		./utils/libft/ft_strchr.c \
 		./utils/libft/ft_putstr_fd.c\
 		./utils/libft/ft_putchar_fd.c\
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
