@@ -3,32 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/08 18:56:40 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/10 15:10:42 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_special(t_list *token)
+int	is_special(t_list *token)
 {
-    if (token->type == PIPE || token->type == INRED || token->type == OUTRED || token->type == APPEND || token->type == HEREDOC)
-        return 1;
-    return 0;
+	if (token->type == PIPE || token->type == INRED || token->type == OUTRED
+		|| token->type == APPEND || token->type == HEREDOC)
+		return (1);
+	return (0);
 }
 
-void invalid_position(t_list *list)
+void	invalid_position(t_list *list)
 {
-    if (is_special(list))
-    {
-        printf("syntax error: '%s'\n", list->content);
-    }
-    else if (list->next == NULL || list->prev == NULL)
-    {
-        printf("syntax error: '%s'\n", list->content);
-    }
+	if (is_special(list))
+	{
+		printf("syntax error: '%s'\n", list->content);
+	}
+	else if (list->next == NULL || list->prev == NULL)
+	{
+		printf("syntax error: '%s'\n", list->content);
+	}
 }
 
 int quotes_closed(char *str)

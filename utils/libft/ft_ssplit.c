@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_ssplit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/24 09:50:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/10 14:18:25 by mobouifr         ###   ########.fr       */
+/*   Created: 2024/09/10 14:16:37 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/09/10 14:18:32 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	wrdcount(char const *str, char c)
+
+static int	wrdcount(char const *str)
 {
 	int	i;
 	int	count;
@@ -21,24 +22,24 @@ static int	wrdcount(char const *str, char c)
 	count = 0;
 	while (str && str[i] != '\0')
 	{
-		if (str[i] != c)
+		if (!ft_isspace(str[i]))
 		{
 			count++;
-			while (str[i] != '\0' && str[i] != c)
+			while (str[i] != '\0' && !ft_isspace(str[i]))
 				i++;
 		}
-		else if (str[i] == c)
+		else if (ft_isspace(str[i]))
 			i++;
 	}
 	return (count);
 }
 
-static size_t	wrdlen(char const *s, char c)
+static size_t	wrdlen(char const *s)
 {
 	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0' && s[i] != c)
+	while (s[i] != '\0' && !ft_isspace(s[i]))
 	{
 		i++;
 	}
@@ -56,16 +57,16 @@ static char	**ft_free(char **ptr, size_t j)
 	return (NULL);
 }
 
-static char	*help(char const *s, char c)
+static char	*help(char const *s)
 {
 	size_t	i;
 	char	*ptr;
 
 	i = 0;
-	ptr = (char *)malloc(wrdlen(s, c) + 1);
+	ptr = (char *)malloc(wrdlen(s) + 1);
 	if (!ptr)
 		return (NULL);
-	while (s[i] != '\0' && s[i] != c)
+	while (s[i] != '\0' && !ft_isspace(s[i]))
 	{
 		ptr[i] = s[i];
 		i++;
@@ -74,29 +75,29 @@ static char	*help(char const *s, char c)
 	return (ptr);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_ssplit(char const *s)
 {
 	char	**ptr;
 	size_t	i;
 
 	if (!s)
 		return (NULL);
-	ptr = (char **)malloc((wrdcount(s, c) + 1) * sizeof(char *));
+	ptr = (char **)malloc((wrdcount(s) + 1) * sizeof(char *));
 	if (!ptr)
 		return (NULL);
 	i = 0;
 	while (*s != '\0')
 	{
-		while (*s == c)
+		while (ft_isspace(*s))
 			s++;
 		if (*s != '\0')
 		{
-			ptr[i] = help(s, c);
+			ptr[i] = help(s);
 			if (ptr[i] == NULL)
 				return (ft_free(ptr, i));
 			i++;
 		}
-		while (*s != '\0' && *s != c)
+		while (*s != '\0' && ft_isspace(*s))
 			s++;
 	}
 	ptr[i] = NULL;

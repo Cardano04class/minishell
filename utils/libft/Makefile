@@ -6,7 +6,7 @@
 #    By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/26 16:18:47 by mobouifr          #+#    #+#              #
-#    Updated: 2024/09/06 16:27:55 by mobouifr         ###   ########.fr        #
+#    Updated: 2024/09/10 14:19:25 by mobouifr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,8 @@ SRC = ft_atoi.c \
 	ft_strmapi.c \
 	ft_substr.c \
 	ft_split.c \
-	ft_strtrim.c \
-	ft_lstadd_back.c \
-	ft_lstadd_front.c \
-	ft_lstnew.c \
-	ft_lstsize.c
+	ft_ssplit.c \
+	ft_strtrim.c 
 	
 	
 OBJ = $(SRC:.c=.o)

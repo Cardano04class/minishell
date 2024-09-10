@@ -45,6 +45,14 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct s_cmd
+{
+	char			**content;
+	int				input_fd;
+	int				output_fd;
+	struct s_cmd	*next;
+}					t_cmd;
+
 /*--------shell---------*/
 void				lexer(char *str, t_list **lst);
 void				syntax_error(t_list *list);
@@ -52,6 +60,7 @@ void				syntax_error(t_list *list);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
 t_env				*ft_env_new(char *key, char *value);
+t_cmd				*ft_cmd_new(char **content);
 void				ft_env_addback(t_env **lst, t_env *new);
 t_list				*ft_lstmax(t_list *stack_a);
 t_list				*ft_lstmin(t_list *stack_a);

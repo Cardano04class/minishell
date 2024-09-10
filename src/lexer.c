@@ -62,9 +62,7 @@ void lexer(char *str, t_list **lst)
         else if (state == IN_SPECIAL)
         {
             if (str[i] == '|')
-            {
 			    ft_lstaddback(lst, ft_lstnew(ft_strdup("|"), PIPE));
-            }
             else if (str[i] == '>' && str[i + 1] == '>')
             {
                 ft_lstaddback(lst, ft_lstnew(ft_strdup(">>"), APPEND));
@@ -76,38 +74,53 @@ void lexer(char *str, t_list **lst)
                 i++;
             }
             else if (str[i] == '>')
-            {
 			    ft_lstaddback(lst, ft_lstnew(ft_strdup(">"), INRED));
-            }
             else if (str[i] == '<')
-            {
 			    ft_lstaddback(lst, ft_lstnew(ft_strdup("<"), OUTRED));
-            }
             state = INITIAL;
         }
-        else if (state == IN_QUOTE)
+        else if (state == IN_WORD || state == IN_QUOTE)
         {
-            i++;
-            while (str[i] != '\0' && str[i] != quote_char)
-                i++;
-            if (str[i] == quote_char)
-                i++;
-            ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
-            state = INITIAL;
-            --i;
-        }
-        else if (state == IN_WORD)
-        {
-            while (str[i] != '\0' && !ft_isspace(str[i]) && !is_special_char(str[i]) && str[i] != 34 && str[i] != 39)
-                i++;
-            ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
-            if (is_special_char(str[i]))
+            if (state == IN_WORD)
             {
-                state = IN_SPECIAL;
-                continue ;
+                while (str[i] != '\0' && !is_special_char(str[i]) && str[i] != 34 && str[i] != 39)
+                    i++;
+                if (str[i] == 34 || str[i] == 39)
+                {
+                    quote_char = str[i];
+                    state = IN_QUOTE;
+                    continue ;
+                }
+                ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
+                if (is_special_char(str[i]))
+                {
+                    state = IN_SPECIAL;
+                    continue ;
+                }
+                state = INITIAL;
+                --i;
             }
-            state = INITIAL;
-            --i;
+            else if (state == IN_QUOTE)
+            {
+                i++;
+                while (str[i] != '\0' && str[i] != quote_char)
+                    i++;
+                if (str[i] == quote_char)
+                    i++;
+                if (str[i] != '\0' && !is_special_char(str[i]))
+                {
+                    state = IN_WORD;
+                    continue ;
+                }
+                ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
+                if (is_special_char(str[i]))
+                {
+                    state = IN_SPECIAL;
+                    continue ;
+                }
+                state = INITIAL;
+                --i;
+            }
         }
         i++;
     }
