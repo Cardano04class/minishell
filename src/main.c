@@ -22,7 +22,7 @@ void	prompt(char **env)
 		syntax_error(list);
 		if (ft_strncmp(rl, "env",  4) == 0)
 			ft_env(env);
-		ft_lstdisplay(list);
+		// ft_lstdisplay(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
