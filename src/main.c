@@ -6,10 +6,10 @@ void	prompt(char **env)
 {
 	char	*rl;
 	t_list *list;
-	t_cmd *cmd;
+	// t_cmd *cmd;
 
 	list = NULL;
-	cmd = NULL;
+	// cmd = NULL;
 	while (1)
 	{
 		rl = readline("minishell$ ");

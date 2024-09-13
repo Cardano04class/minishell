@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/13 20:29:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/13 20:31:02 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,22 @@ void	invalid_position(t_list *list)
 int quotes_closed(char *str)
 {
     int i = 0;
-    int single_quote_open = 0;
-    int double_quote_open = 0;
-
+    int single_counter = 0;
+    int double_counter = 0;
     while (str[i])
     {
-        if (str[i] == '\'')  
-        {
-            if (double_quote_open == 0)  
-                single_quote_open = !single_quote_open;
-        }
-        else if (str[i] == '"')  
-        {
-            if (single_quote_open == 0)  
-                double_quote_open = !double_quote_open;
-        }
+        if (str[i] == '"')
+            double_counter++;
+        if (str[i] == '\'')
+            single_counter++;
         i++;
     }
-    if (single_quote_open == 0 && double_quote_open == 0)
+    if (double_counter % 2 == 0 && single_counter % 2 == 0)
         return 1;
     else
         return 0;
 }
+
 
 void syntax_error(t_list *list)
 {
@@ -64,11 +58,8 @@ void syntax_error(t_list *list)
     {   
         if (list->type == WORD)
         {
-            if (list->content[0] == 34 || list->content[0] == 39)
-            {
-                if(!quotes_closed(list->content))
-                    return(ft_putstr_fd("syntax error: command not found\n", 1));  
-            }    
+            if(!quotes_closed(list->content))
+                return(ft_putstr_fd("syntax error: command not found\n", 1));  
         }
         if (is_special(list))
         {
