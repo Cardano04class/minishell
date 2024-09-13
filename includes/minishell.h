@@ -38,6 +38,13 @@ typedef struct s_list
 	struct s_list	*prev;
 }					t_list;
 
+/*typedef struct s_node  // add this later
+{
+	int				data;
+	struct s_node	*next;
+	struct s_node	*prev;
+}					t_node;*/
+
 typedef struct s_env
 {
 	char			*key;
@@ -47,22 +54,22 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char			**content;
+	char			**cmd;
 	int				input_fd;
 	int				output_fd;
 	struct s_cmd	*next;
 }					t_cmd;
 
 /*--------shell---------*/
-void 		lexer(char *str, t_list **lst);
-void 		syntax_error(t_list *list);
-void		ft_env(char **env);
+void				lexer(char *str, t_list **lst);
+void				syntax_error(t_list *list);
+void				ft_env(char **env);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
 t_env				*ft_env_new(char *key, char *value);
 t_cmd				*ft_cmd_new(char **content);
 void				ft_env_addback(t_env **lst, t_env *new);
-void 				ft_env_clear(t_env **lst);
+void				ft_env_clear(t_env **lst);
 t_list				*ft_lstmax(t_list *stack_a);
 t_list				*ft_lstmin(t_list *stack_a);
 void				ft_lstaddfront(t_list **lst, t_list *new);
@@ -72,3 +79,18 @@ void				ft_lstdisplay(t_list *stack);
 void				ft_lstclear(t_list **lst);
 
 #endif
+
+// add this :
+// typedef struct s_cmd
+// {
+// 	char			**cmd;
+// 	t_node			*input_fd;
+// 	t_node			*output_fd;
+// }					t_cmd;
+
+// typedef struct s_node
+// {
+// 	int				data;
+// 	struct s_node	*next;
+// 	struct s_node	*prev;
+// }					t_node;
