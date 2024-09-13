@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/10 15:10:42 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:58:55 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,22 @@ void	invalid_position(t_list *list)
 int quotes_closed(char *str)
 {
     int i = 0;
-    char quote;
-    if (str[i] == 34 || str[i] == 39)
-        quote = str[i];
-    i++;
+    int single_counter = 0;
+    int double_counter = 0;
     while (str[i])
     {
-        if (str[i] == quote)
-            return 1;
+        if (str[i] == '"')
+            double_counter++;
+        if (str[i] == '\'')
+            single_counter++;
         i++;
     }
-    return 0;
+    if (double_counter % 2 == 0 && single_counter % 2 == 0)
+        return 1;
+    else
+        return 0;
 }
+
 
 void syntax_error(t_list *list)
 {
@@ -54,11 +58,8 @@ void syntax_error(t_list *list)
     {   
         if (list->type == WORD)
         {
-            if (list->content[0] == 34 || list->content[0] == 39)
-            {
-                if(!quotes_closed(list->content))
-                    return(ft_putstr_fd("syntax error: command not found\n", 1));  
-            }    
+            if(!quotes_closed(list->content))
+                return(ft_putstr_fd("syntax error: command not found\n", 1));  
         }
         if (is_special(list))
         {
