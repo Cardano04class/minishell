@@ -6,10 +6,10 @@ void	prompt(char **env)
 {
 	char	*rl;
 	t_list *list;
-	t_cmd *cmd;
+	// t_cmd *cmd;
 
 	list = NULL;
-	cmd = NULL;
+	// cmd = NULL;
 	while (1)
 	{
 		rl = readline("minishell$ ");
@@ -22,7 +22,7 @@ void	prompt(char **env)
 		syntax_error(list);
 		if (ft_strncmp(rl, "env",  4) == 0)
 			ft_env(env);
-		ft_lstdisplay(list);
+		// ft_lstdisplay(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
