@@ -4,6 +4,7 @@ SRC = ./src/main.c \
 		./src/lexer.c \
 		./src/syntax.c \
 		./src/env.c \
+		./src/echo.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_lstaddfront.c \

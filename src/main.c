@@ -20,8 +20,9 @@ void	prompt(char **env)
 		}
 		lexer(rl, &list);
 		syntax_error(list);
-		if (ft_strncmp(rl, "env",  4) == 0)
+		if (ft_strncmp(list->content, "env",  4) == 0)
 			ft_env(env);
+		echo(&list, rl);
 		// ft_lstdisplay(list);
 		ft_lstclear(&list);
 		add_history(rl);
