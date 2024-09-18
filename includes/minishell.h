@@ -61,7 +61,7 @@ typedef struct s_cmd
 void 		lexer(char *str, t_list **lst);
 void 		syntax_error(t_list *list);
 void		ft_env(char **env);
-void 		echo(t_list **list, char *str);
+int 		echo(char **args);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
