@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/13 20:45:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/18 17:53:46 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ int quotes_closed(char *str)
 
     while (str[i])
     {
-        if (str[i] == '\'')  
+        if (str[i] == '\'') 
         {
             if (double_quote_open == 0)  
                 single_quote_open = !single_quote_open;
         }
-        else if (str[i] == '"')  
+        else if (str[i] == '"')
         {
-            if (single_quote_open == 0) 
+            if (single_quote_open == 0)  
                 double_quote_open = !double_quote_open;
         }
         i++;
