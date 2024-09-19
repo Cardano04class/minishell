@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/18 18:12:42 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/20 00:45:50 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int echo(char **str)
 {
     int flag = false;  
     int lock = false;  
-    int i = 0;
+    int i = 1;
     bool is_first_argument = true; 
     while (str[i])
     {
@@ -47,7 +47,6 @@ int echo(char **str)
             write(1, &str[i][j], 1); 
             j++;
         }
-
         if (str[i + 1])
             write(1, " ", 1);
 
@@ -56,7 +55,6 @@ int echo(char **str)
     }
     if (!lock && flag)
         write(1, "\n", 1);
-    
     return 0;
 }
 
