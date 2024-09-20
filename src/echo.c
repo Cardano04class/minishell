@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/20 00:45:50 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/20 01:07:54 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int echo(char **str)
     bool is_first_argument = true; 
     while (str[i])
     {
-        if (is_first_argument && str[i][0] == '-')
+        if (is_first_argument && str[i][0] == '-' && str[i][1] != '\0')
         {
             int j = 1;
             bool all_n = true;
