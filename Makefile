@@ -24,6 +24,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strchr.c \
 		./utils/libft/ft_putstr_fd.c \
 		./utils/libft/ft_putchar_fd.c \
+		./utils/libft/ft_strlcpy.c \
 		./utils/libft/ft_ssplit.c 
 
 CC = cc $(INC)

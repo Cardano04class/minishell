@@ -6,12 +6,11 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:16:37 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/10 14:18:32 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/24 11:25:40 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
 
 static int	wrdcount(char const *str)
 {
@@ -83,6 +82,8 @@ char	**ft_ssplit(char const *s)
 	if (!s)
 		return (NULL);
 	ptr = (char **)malloc((wrdcount(s) + 1) * sizeof(char *));
+
+	printf("count =  %d\n", wrdcount(s));
 	if (!ptr)
 		return (NULL);
 	i = 0;
@@ -97,7 +98,7 @@ char	**ft_ssplit(char const *s)
 				return (ft_free(ptr, i));
 			i++;
 		}
-		while (*s != '\0' && ft_isspace(*s))
+		while (*s != '\0' && !ft_isspace(*s))
 			s++;
 	}
 	ptr[i] = NULL;
