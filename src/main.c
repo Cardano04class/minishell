@@ -24,9 +24,15 @@ void	prompt(char **env)
 		if (strncmp("env", args[0], 4) == 0)
 			ft_env(env);
 		else if (strcmp("pwd", args[0]) == 0)
-			print_working_directory();
+			pwd();
 		else if (strcmp(args[0], "cd") == 0)
 			cd(args);
+		else if (strcmp(args[0], "exit") == 0)
+		{
+			free(rl);
+			free(args);
+			exit(0);
+		}
 		else 
 			printf("Command not found\n");
 		ft_lstclear(&list);

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/24 18:13:44 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/24 18:32:56 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void cd(char **args)
         if (chdir(args[1]) != 0)
             perror("cd");
     }
-    char cwd[PATH_MAX];
+    char cwd[1024];
     if (getcwd(cwd, sizeof(cwd)) != NULL) 
     {
         setenv("OLDPWD", getenv("PWD"), 1);
@@ -54,7 +54,7 @@ void cd(char **args)
     }
 }
 
-void print_working_directory() 
+void pwd(void) 
 {
     char cwd[1024];
     

@@ -64,7 +64,7 @@ void 		syntax_error(t_list *list);
 void		ft_env(char **env);
 int 		echo(char **args);
 void 		cd(char **args);
-void 		print_working_directory();
+void 		pwd(void);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
 t_env				*ft_env_new(char *key, char *value);
