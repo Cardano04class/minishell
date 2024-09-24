@@ -6,10 +6,10 @@ void	prompt(char **env)
 {
 	char	*rl;
 	t_list *list;
-	// t_cmd *cmd;
+	char **args;
 
 	list = NULL;
-	// cmd = NULL;
+	
 	while (1)
 	{
 		rl = readline("minishell$ ");
@@ -18,14 +18,17 @@ void	prompt(char **env)
 			printf("exit\n");
 			exit(0);
 		}
+		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
-		if (strncmp("env", rl, 4) == 0)
+		if (strncmp("env", args[0], 4) == 0)
 			ft_env(env);
-		else if (strcmp(rl, "cd") == 0)
-			cd(ft_split(rl, ' '));
-		else if (strcmp("pwd", rl) == 0)
+		else if (strcmp("pwd", args[0]) == 0)
 			print_working_directory();
+		else if (strcmp(args[0], "cd") == 0)
+			cd(args);
+		else 
+			printf("Command not found\n");
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
