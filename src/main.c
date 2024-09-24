@@ -22,7 +22,10 @@ void	prompt(char **env)
 		syntax_error(list);
 		if (strncmp("env", rl, 4) == 0)
 			ft_env(env);
-		cd(ft_split(rl, ' '), list);
+		else if (strcmp(rl, "cd") == 0)
+			cd(ft_split(rl, ' '));
+		else if (strcmp("pwd", rl) == 0)
+			print_working_directory();
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
