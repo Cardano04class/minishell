@@ -3,13 +3,18 @@
 
 # include "libft.h"
 # include <fcntl.h>
-# include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdarg.h>
 # include <stdio.h>
+# include <errno.h>
+# include <limits.h>
+# include <string.h>
+# include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <signal.h>
+# include <stdbool.h>
+# include <sysexits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef enum e_token
 {
@@ -61,9 +66,12 @@ typedef struct s_cmd
 }					t_cmd;
 
 /*--------shell---------*/
-void				lexer(char *str, t_list **lst);
-void				syntax_error(t_list *list);
-void				ft_env(char **env);
+void 		lexer(char *str, t_list **lst);
+void 		syntax_error(t_list *list);
+void		ft_env(char **env);
+int 		echo(char **args);
+void 		cd(char **args);
+void 		print_working_directory();
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
 t_env				*ft_env_new(char *key, char *value);
