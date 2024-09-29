@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 void	prompt(char **env)
 {
 	char	*rl;
@@ -27,6 +25,10 @@ void	prompt(char **env)
 			pwd();
 		else if (strcmp(args[0], "cd") == 0)
 			cd(args);
+		else if (strcmp(args[0], "export") == 0)
+		{
+			export(args, env);
+		}
 		else if (strcmp(args[0], "exit") == 0)
 		{
 			free(rl);

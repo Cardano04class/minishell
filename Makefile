@@ -6,6 +6,7 @@ SRC = ./src/main.c \
 		./src/env.c \
 		./src/echo.c \
 		./src/cd.c \
+		./src/export.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_lstaddfront.c \

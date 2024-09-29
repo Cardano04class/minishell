@@ -65,6 +65,7 @@ void		ft_env(char **env);
 int 		echo(char **args);
 void 		cd(char **args);
 void 		pwd(void);
+int 		export(char **args, char **env);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
 t_env				*ft_env_new(char *key, char *value);
