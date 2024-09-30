@@ -6,16 +6,11 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/30 01:48:49 by mamir            ###   ########.fr       */
+/*   Updated: 2024/09/30 02:46:13 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int set_env(char *name, char *value, int overwrite)
-{
-
-}
 
 int is_valid_name(char *str)
 {
@@ -44,14 +39,45 @@ char find_equals(char *str)
     }
     return -1;
 }
-
-int export(char **args, char **env)
+int set_env(t_env **lst, char *str)
 {
-    int i;
-    int equal_sign = 0;
-    char *value;
+    t_env *node;
     char *var_name;
     char *var_value;
+    int equal_sign;
+    char *value;
+    
+    equal_sign = find_equals(str);
+    if (equal_sign != -1)
+    {
+        var_name = ft_substr(str, 0, equal_sign);
+        var_value = ft_substr(str, equal_sign + 1, ft_strlen(str) - equal_sign - 1);
+        if (!is_valid_name(var_name))
+        {
+            printf("invalid var_name: %s\n", var_name);
+        }
+        node = ft_env_new(var_name, var_value);
+        if (node)
+            ft_env_addback(lst, node);
+        else
+            perror("Error setting variable:");
+    }
+    else
+    {
+        value = getenv(str);
+        if (value != NULL)
+            printf("%s=%s\n", str, value);
+        else
+            printf("%s: not found\n", str);
+    }
+    return 0;
+}
+
+int export(char **args, char **env, t_env **lst)
+{
+    
+    int i;
+    
     
     if (args[1] == NULL)
     {
@@ -61,26 +87,7 @@ int export(char **args, char **env)
     i = 1;
     while (args[i])
     {
-        equal_sign = find_equals(args[i]);
-        if (equal_sign != -1)
-        {
-            var_name = ft_substr(args[i], 0, equal_sign);
-            var_value = ft_substr(args[i], equal_sign + 1, ft_strlen(args[i]) - equal_sign - 1);
-            if (!is_valid_name(var_name))
-            {
-                printf("invalid var_name: %s\n", var_name);
-                continue;
-            }
-            set_env()
-        }
-        else
-        {
-            value = getenv(args[i]);
-            if (value != NULL)
-                printf("%s=%s\n", args[i], value);
-            else
-                printf("%s: not found\n", args[i]);
-        }
+        set_env(lst, args[i]);
         i++;
     }
     return 0;

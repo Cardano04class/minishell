@@ -3,8 +3,9 @@
 void	prompt(char **env)
 {
 	char	*rl;
-	t_list *list;
 	char **args;
+	t_list *list;
+	t_env *env_list;
 
 	list = NULL;
 	
@@ -20,14 +21,14 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		syntax_error(list);
 		if (strncmp("env", args[0], 4) == 0)
-			ft_env(env);
+			ft_env(env, &env_list);
 		else if (strcmp("pwd", args[0]) == 0)
 			pwd();
 		else if (strcmp(args[0], "cd") == 0)
 			cd(args);
 		else if (strcmp(args[0], "export") == 0)
 		{
-			export(args, env);
+			export(args, env, &env_list);
 		}
 		else if (strcmp(args[0], "exit") == 0)
 		{
@@ -35,8 +36,8 @@ void	prompt(char **env)
 			free(args);
 			exit(0);
 		}
-		else 
-			printf("Command not found\n");
+		if (!args)
+			continue;
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
