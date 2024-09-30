@@ -28,7 +28,9 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strchr.c \
 		./utils/libft/ft_putstr_fd.c \
 		./utils/libft/ft_putchar_fd.c \
-		./utils/libft/ft_ssplit.c 
+		./utils/libft/ft_ssplit.c \
+		./utils/libft/ft_isalnum.c \
+		./utils/libft/ft_isalpha.c \
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
