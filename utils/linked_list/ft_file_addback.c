@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstaddback.c                                    :+:      :+:    :+:   */
+/*   ft_file_addback.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 11:58:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/26 21:51:10 by mobouifr         ###   ########.fr       */
+/*   Created: 2024/09/29 13:46:31 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/09/29 18:22:15 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstaddback(t_list **lst, t_list *new)
+void	ft_file_addback(t_file *new)
 {
-	t_list	*tmp;
+	t_file	*tmp;
 
-	if (!lst)
-		return ;
-	if (!*lst)
+	// if (!g_mini.command)
+	// 	return ;
+	if (!g_mini.command->files)
 	{
-		(*lst) = new;
+		g_mini.command->files = new;
 		return ;
 	}
-	tmp = *lst;
+	tmp = g_mini.command->files;
+	printf("testttt %p\n", tmp);
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;
 	}
 	tmp->next = new;
-	new->prev = tmp;
 }

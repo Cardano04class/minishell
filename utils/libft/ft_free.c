@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstaddback.c                                    :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 11:58:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/26 21:51:10 by mobouifr         ###   ########.fr       */
+/*   Created: 2024/10/01 08:42:35 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/10/01 08:45:09 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_lstaddback(t_list **lst, t_list *new)
+void	ft_free(char **str)
 {
-	t_list	*tmp;
+	int	i;
 
-	if (!lst)
-		return ;
-	if (!*lst)
+	i = 0;
+	while (str[i] != NULL)
 	{
-		(*lst) = new;
-		return ;
+		free(str[i]);
+		i++;
 	}
-	tmp = *lst;
-	while (tmp->next != NULL)
-	{
-		tmp = tmp->next;
-	}
-	tmp->next = new;
-	new->prev = tmp;
+	free(str);
 }

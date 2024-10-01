@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:46:08 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/19 14:16:17 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:34:43 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ t_cmd	*ft_cmd_new(char **content)
 
 	new = malloc(sizeof(t_cmd));
 	new->cmd = content;
-	new->input_fd = 0;
-	new->output_fd = 1;
+	new->files = NULL;
 	new->next = NULL;
 	return (new);
 }

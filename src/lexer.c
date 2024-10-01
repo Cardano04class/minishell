@@ -1,14 +1,14 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   lexer.c                                            :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2024/09/05 12:28:54 by mamir             #+#    #+#             */
-// /*   Updated: 2024/09/05 16:22:09 by mobouifr         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/05 12:28:54 by mamir             #+#    #+#             */
+/*   Updated: 2024/09/30 17:40:58 by mobouifr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -83,16 +83,16 @@ void lexer(char *str, t_list **lst)
         {
             if (state == IN_WORD)
             {
-                while (str[i] != '\0' && !is_special_char(str[i]) && str[i] != 34 && str[i] != 39)
+                while (str[i] != '\0' && !is_special_char(str[i]) && !ft_isspace(str[i]) && str[i] != 34 && str[i] != 39)
                     i++;
+                ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
                 if (str[i] == 34 || str[i] == 39)
                 {
                     quote_char = str[i];
                     state = IN_QUOTE;
                     continue ;
                 }
-                ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
-                if (is_special_char(str[i]))
+                else if (is_special_char(str[i]))
                 {
                     state = IN_SPECIAL;
                     continue ;
@@ -107,11 +107,6 @@ void lexer(char *str, t_list **lst)
                     i++;
                 if (str[i] == quote_char)
                     i++;
-                if (str[i] != '\0' && !is_special_char(str[i]))
-                {
-                    state = IN_WORD;
-                    continue ;
-                }
                 ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
                 if (is_special_char(str[i]))
                 {
