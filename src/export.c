@@ -6,11 +6,29 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/01 01:10:16 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/01 16:43:37 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int env_exists(t_env **env_list, char *name, char *value)
+{
+    t_env *current;
+
+    current = *env_list;
+    while (current)
+    {
+        if (strcmp(current->key, name) == 0)
+        {
+            free(current->value);
+            current->value = ft_strdup(value);
+            return 1;
+        }
+        current = current->next;
+    }
+    return 0;
+}
 
 t_env *ft_export_node(t_env **env_lst, char *name, char *value)
 {
@@ -101,10 +119,13 @@ int set_env(t_env **lst, char *str)
             printf("invalid var_name: %s\n", var_name);
             return 1;
         }
-        if (!ft_export_node(lst, var_name, var_value)) 
+        if (!env_exists(lst, var_name, var_value))
         {
-            perror("Error setting variable:");
-            return 1;
+            if (!ft_export_node(lst, var_name, var_value)) 
+            {
+                perror("Error setting variable:");
+                return 1;
+            }
         }
         free(var_name);
         free(var_value);
