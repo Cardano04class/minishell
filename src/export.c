@@ -6,11 +6,56 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/30 02:46:13 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/01 01:10:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_env *ft_export_node(t_env **env_lst, char *name, char *value)
+{
+    t_env *new_node;
+
+    new_node = (t_env *)malloc(sizeof(t_env));
+    if (!new_node) {
+        perror("Failed to allocate memory for new environment node");
+        return NULL;
+    }
+
+    new_node->key = ft_strdup(name);
+    new_node->value = strdup(value);
+    new_node->next = NULL;
+
+    if (!new_node->key || !new_node->value) {
+        perror("Failed to allocate memory for variable name or value");
+        free(new_node->key);
+        free(new_node->value);
+        free(new_node);
+        return NULL;
+    }
+    if (*env_lst == NULL) {
+        *env_lst = new_node;  // Set as head if list is empty
+    } else {
+        t_env *current = *env_lst;
+        while (current->next != NULL) {
+            current = current->next;  // Traverse to the end
+        }
+        current->next = new_node;  // Append new node
+    }
+
+    return new_node;  
+}
+
+void print_value(char *str)
+{
+    char *value;
+
+    value = getenv(str);
+    if (value != NULL)
+        printf("%s=%s\n", str, value);
+    else
+        printf("%s: not found\n", str);
+}
 
 int is_valid_name(char *str)
 {
@@ -39,13 +84,12 @@ char find_equals(char *str)
     }
     return -1;
 }
+
 int set_env(t_env **lst, char *str)
 {
-    t_env *node;
     char *var_name;
     char *var_value;
     int equal_sign;
-    char *value;
     
     equal_sign = find_equals(str);
     if (equal_sign != -1)
@@ -55,39 +99,34 @@ int set_env(t_env **lst, char *str)
         if (!is_valid_name(var_name))
         {
             printf("invalid var_name: %s\n", var_name);
+            return 1;
         }
-        node = ft_env_new(var_name, var_value);
-        if (node)
-            ft_env_addback(lst, node);
-        else
+        if (!ft_export_node(lst, var_name, var_value)) 
+        {
             perror("Error setting variable:");
+            return 1;
+        }
+        free(var_name);
+        free(var_value);
     }
     else
-    {
-        value = getenv(str);
-        if (value != NULL)
-            printf("%s=%s\n", str, value);
-        else
-            printf("%s: not found\n", str);
-    }
+        print_value(str);
     return 0;
 }
 
-int export(char **args, char **env, t_env **lst)
+int export(char **args, t_env **lst)
 {
-    
     int i;
-    
     
     if (args[1] == NULL)
     {
-        ft_env(env);
+        print_env(*lst);
         return 1;
     }
     i = 1;
     while (args[i])
     {
-        set_env(lst, args[i]);
+        set_env(lst,args[i]);
         i++;
     }
     return 0;

@@ -61,11 +61,11 @@ typedef struct s_cmd
 /*--------shell---------*/
 void 		lexer(char *str, t_list **lst);
 void 		syntax_error(t_list *list);
-void 		ft_env(char **env);
+void 		ft_env(char **env, t_env **env_lst);
 int 		echo(char **args);
 void 		cd(char **args);
 void 		pwd(void);
-int 		export(char **args, char **env, t_env **lst);
+int 		export(char **args, t_env **lst);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list				*ft_lstnew(char *content, t_token type);
 t_env				*ft_env_new(char *key, char *value);
@@ -79,5 +79,6 @@ void				ft_lstaddback(t_list **lst, t_list *new);
 int					ft_lstsize(t_list *lst);
 void				ft_lstdisplay(t_list *stack);
 void				ft_lstclear(t_list **lst);
-
+/////////////////////..Functions..////////////////
+void 				print_env(t_env *env);
 #endif
