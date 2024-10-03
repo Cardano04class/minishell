@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/01 16:43:37 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/03 18:03:55 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,28 @@ t_env *ft_export_node(t_env **env_lst, char *name, char *value)
     } else {
         t_env *current = *env_lst;
         while (current->next != NULL) {
-            current = current->next;  // Traverse to the end
+            current = current->next;
         }
-        current->next = new_node;  // Append new node
+        current->next = new_node;
     }
 
     return new_node;  
 }
 
-void print_value(char *str)
+void print_value(char *str, t_env *env_list)
 {
-    char *value;
+    t_env *current;
 
-    value = getenv(str);
-    if (value != NULL)
-        printf("%s=%s\n", str, value);
-    else
-        printf("%s: not found\n", str);
+    current = env_list;
+    while(current)
+    {
+        if (strcmp(current->key, str) == 0)
+        {
+            printf("%s=%s\n", current->key, current->value);
+            return;
+        }
+        current = current->next;
+    }
 }
 
 int is_valid_name(char *str)
@@ -131,7 +136,7 @@ int set_env(t_env **lst, char *str)
         free(var_value);
     }
     else
-        print_value(str);
+        print_value(str, *lst);
     return 0;
 }
 
