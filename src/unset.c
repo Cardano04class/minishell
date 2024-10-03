@@ -6,13 +6,68 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/29 23:48:57 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/03 18:35:55 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int unset(char **args)
+int remove_variable(char *var_name, t_env **list)
 {
+    t_env *current;
+    t_env *previous;
+
+    previous = NULL;
+    current = *list;
+    while (current)
+    {
+        if(strcmp(var_name, current->key)== 0)
+        {
+            if (previous == NULL)
+                *list = current->next;
+            else
+                previous->next = current->next;
+            free(current->key);
+            free(current->value);
+            free(current);
+            return 1;
+        }
+        previous = current;
+        current = current->next;
+    }
+    return 0;
+}
+
+int valid_name(char *name, t_env **list)
+{
+    t_env *current;
+
+    current = *list;
+    while (current)
+    {
+        if(strcmp(name, current->key)== 0)
+            return 1;
+        current = current->next;
+    }
+    return 0;
+}
+
+int unset(char **args, t_env **env_list)
+{
+    int i;
+    char *var_name;
     
+    if(args[1] == NULL)
+        return 1;
+    i = 1;
+    while (args[i])
+    {
+        var_name = args[i];
+        if (!valid_name(var_name, env_list))
+            continue;
+        if (!remove_variable(var_name, env_list))
+            printf("unset: %s variable not found\n", var_name);
+        i++;
+    }
+    return 0;
 }

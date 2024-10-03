@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/03 18:03:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/03 18:11:54 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int export(char **args, t_env **lst)
     if (args[1] == NULL)
     {
         print_env(*lst);
-        return 1;
+        return 0;
     }
     i = 1;
     while (args[i])

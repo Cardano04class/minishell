@@ -44,6 +44,8 @@ void	prompt(char **env)
 			cd(args);
 		else if (strcmp(args[0], "export") == 0)
 			export(args, &env_list);
+		else if (strcmp(args[0], "unset") == 0)
+			unset(args, &env_list);
 		else if (strcmp(args[0], "exit") == 0)
 		{
 			free(rl);
