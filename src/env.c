@@ -9,12 +9,10 @@ void print_env(t_env *env)
 	}
 }
 
-void ft_env(char **env)
+void ft_env(char **env, t_env **env_lst)
 {
-	t_env *lst;
 	t_env *node;
 
-	lst = NULL;
 	int i = 0;
 	while (env[i])
 	{
@@ -27,10 +25,8 @@ void ft_env(char **env)
 			node = ft_env_new(env[i], equal_sign + 1);
 			*equal_sign = '=';
 			if (node)
-				ft_env_addback(&lst, node);
+				ft_env_addback(env_lst, node);
 		}
 		i++;
 	}
-	print_env(lst);
-	ft_env_clear(&lst);
 }

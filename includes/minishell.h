@@ -86,10 +86,11 @@ extern t_global			g_mini;
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
-void					ft_env(char **env);
+void 					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
 void					cd(char **args);
-void					print_working_directory(void);
+void					pwd(void);
+int 		export(char **args, t_env **lstvoid);
 void					parser(t_list *lst);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
