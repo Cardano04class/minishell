@@ -18,15 +18,13 @@ void	prompt(char **env)
 	char	*rl;
 	t_list	*list;
 	char	**args;
+	t_env *env_list = NULL;
+	
 	list = NULL;
 	g_mini.command = malloc(sizeof(t_cmd));
 	g_mini.command->files = NULL;
 	g_mini.command->heredoc = NULL;
 	g_mini.command->next = NULL;
-	char **args;
-	t_list *list = NULL;
-	t_env *env_list = NULL;
-
 	ft_env(env, &env_list);
 	while (1)
 	{
@@ -45,17 +43,13 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		syntax_error(list);
 		if (strncmp("env", args[0], 4) == 0)
-			print_env(env_list);
+			ft_env(env,&env_list);
 		else if (strcmp("pwd", args[0]) == 0)
-			print_working_directory();
+			pwd();
 		else if (strcmp("echo", args[0]) == 0)
 			echo(args);
-			pwd();
 		else if (strcmp(args[0], "cd") == 0)
 			cd(args);
-		//ft_lstdisplay(list);
-		parser(list);
-			pwd();
 		else if (strcmp(args[0], "cd") == 0)
 			cd(args);
 		else if (strcmp(args[0], "export") == 0)
@@ -68,6 +62,8 @@ void	prompt(char **env)
 		}
 		else
 			printf("%s: Command not found\n", rl);
+		//ft_lstdisplay(list);
+		parser(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);

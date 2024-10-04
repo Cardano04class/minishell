@@ -90,7 +90,7 @@ void 					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
 void					cd(char **args);
 void					pwd(void);
-int 		export(char **args, t_env **lstvoid);
+int 					export(char **args, t_env **lstvoid);
 void					parser(t_list *lst);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
@@ -110,6 +110,8 @@ void					ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
+
+void print_env(t_env *env);
 
 #endif
 

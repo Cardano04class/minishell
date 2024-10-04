@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/02 15:16:56 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/10/04 20:29:23 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	parser(t_list *lst)
 			if (state == STATE_REDIRECTION)
 			{
 				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
-				puts("");
+				/*puts("");
 				printf("filename : %s\n",g_mini.command->files->filename);			
 				if (g_mini.command->files->type == 0)
 					printf("type : WORD\n");
@@ -107,14 +107,14 @@ void	parser(t_list *lst)
 					printf("type : HERDOC\n");
 				if (g_mini.command->files->type == 5)
 					printf("type : PIPE\n");		
-				 puts("");
-				g_mini.command->files = g_mini.command->files->next;
+				 puts("");*/
+				//g_mini.command->files = g_mini.command->files->next;
 				state = STATE_DEFAULT;
 			}
 			else
 			{
 				g_mini.command->cmd[index_count] = ft_strdup(lst->content);
-				printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);
+				//printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);
 				index_count++;
 			}
 		}
@@ -126,7 +126,7 @@ void	parser(t_list *lst)
 		}
 		else if (lst->type == PIPE)
 		{
-			puts("_____________");
+			//puts("_____________");
 			ft_cmd_addback(&g_mini.command, ft_cmd_new(NULL));
 			g_mini.command= g_mini.command->next;
 			lst = lst->next;
