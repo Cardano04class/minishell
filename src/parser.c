@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/01 18:52:34 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/10/02 15:16:56 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ void	parser(t_list *lst)
 		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
 			state = STATE_REDIRECTION;
 		else if (lst->type == HEREDOC)
-		{	
+		{
+			
 		}
 		else if (lst->type == PIPE)
 		{

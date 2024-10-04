@@ -9,8 +9,8 @@ void	prompt(char **env)
 	char	**args;
 	list = NULL;
 	g_mini.command = malloc(sizeof(t_cmd));
-	g_mini.command->files = malloc(sizeof(t_file));
 	g_mini.command->files = NULL;
+	g_mini.command->heredoc = NULL;
 	g_mini.command->next = NULL;
 	while (1)
 	{
