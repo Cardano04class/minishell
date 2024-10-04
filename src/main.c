@@ -62,7 +62,7 @@ void	prompt(char **env)
 		}
 		else
 			printf("%s: Command not found\n", rl);
-		//ft_lstdisplay(list);
+		ft_lstdisplay(list);
 		parser(list);
 		ft_lstclear(&list);
 		add_history(rl);
