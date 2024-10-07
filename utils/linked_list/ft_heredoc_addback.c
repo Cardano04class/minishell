@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstaddback.c                                    :+:      :+:    :+:   */
+/*   ft_heredoc_addback.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 11:58:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/26 21:51:10 by mobouifr         ###   ########.fr       */
+/*   Created: 2024/10/02 15:33:30 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/10/02 15:33:33 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstaddback(t_list **lst, t_list *new)
+void	ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new)
 {
-	t_list	*tmp;
-
-	if (!lst)
+	t_heredoc	*tmp;
+	
+	if (!heredoc)
 		return ;
-	if (!*lst)
+	if (!*heredoc)
 	{
-		(*lst) = new;
+		(*heredoc) = new;
 		return ;
 	}
-	tmp = *lst;
+	tmp = *heredoc;
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;
 	}
 	tmp->next = new;
-	new->prev = tmp;
 }

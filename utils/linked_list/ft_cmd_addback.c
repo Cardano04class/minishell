@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstaddback.c                                    :+:      :+:    :+:   */
+/*   ft_cmd_addback.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 11:58:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/26 21:51:10 by mobouifr         ###   ########.fr       */
+/*   Created: 2024/09/26 21:37:25 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/10/02 15:33:43 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstaddback(t_list **lst, t_list *new)
+void	ft_cmd_addback(t_cmd **command, t_cmd *new)
 {
-	t_list	*tmp;
+	t_cmd	*tmp;
 
-	if (!lst)
+	if (!command)
 		return ;
-	if (!*lst)
+	if (!*command)
 	{
-		(*lst) = new;
+		(*command) = new;
 		return ;
 	}
-	tmp = *lst;
+	tmp = *command;
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;
 	}
 	tmp->next = new;
-	new->prev = tmp;
 }

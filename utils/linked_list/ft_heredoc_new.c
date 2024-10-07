@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstaddback.c                                    :+:      :+:    :+:   */
+/*   ft_heredoc_new.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 11:58:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/26 21:51:10 by mobouifr         ###   ########.fr       */
+/*   Created: 2024/10/02 15:26:06 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/10/02 15:38:02 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstaddback(t_list **lst, t_list *new)
+t_heredoc	*ft_heredoc_new(char *delimiter)
 {
-	t_list	*tmp;
+	t_heredoc	*new;
 
-	if (!lst)
-		return ;
-	if (!*lst)
-	{
-		(*lst) = new;
-		return ;
-	}
-	tmp = *lst;
-	while (tmp->next != NULL)
-	{
-		tmp = tmp->next;
-	}
-	tmp->next = new;
-	new->prev = tmp;
+	new = malloc(sizeof(t_cmd));
+	new->delimiter = delimiter;
+	new->content = NULL;
+	new->next = NULL;
+	return (new);
 }
