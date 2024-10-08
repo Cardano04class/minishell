@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/04 20:29:23 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/10/07 23:49:28 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,23 @@ void	ft_cmddisplay(t_cmd *command)
 	while (command != NULL)
 	{
 		while (command->cmd[j])
-			printf("content : %s\n",command->cmd[j++]);
+			// printf("content : %s\n",command->cmd[j++]);
 		puts("");
 		while (command->files != NULL)
 		{
-			printf("filename : %s\n",command->files->filename);			
+			// printf("filename : %s\n",command->files->filename);			
 			if (command->files->type == 0)
-				printf("type : WORD\n");
+				// printf("type : WORD\n");
 			if (command->files->type == 1)
-				printf("type : INRED\n");
+				// printf("type : INRED\n");
 			if (command->files->type == 2)
-				printf("type : OUTRED\n");
+				// printf("type : OUTRED\n");
 			if (command->files->type == 3)
-				printf("type : APPEND\n");
+				// printf("type : APPEND\n");
 			if (command->files->type == 4)
-				printf("type : HERDOC\n");
+				// printf("type : HERDOC\n");
 			if (command->files->type == 5)
-				printf("type : PIPE\n");		
+				// printf("type : PIPE\n");		
 			command->files = command->files->next;
 		}
 		puts("");
@@ -137,7 +137,7 @@ void	parser(t_list *lst)
 		}
 		lst = lst->next;
 	}
-	//ft_cmddisplay(g_mini.command);
+	// ft_cmddisplay(g_mini.command);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/09/29 23:45:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/08 00:14:38 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ int echo(char **str)
     int lock = false;  
     int i = 1;
     bool is_first_argument = true; 
+    
+    if (str[1] == NULL)
+        printf("\n");
     while (str[i])
     {
         if (is_first_argument && str[i][0] == '-' && str[i][1] != '\0')
