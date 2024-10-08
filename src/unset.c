@@ -63,6 +63,8 @@ int unset(char **args, t_env **env_list)
     while (args[i])
     {
         var_name = args[i];
+        if (!env_exist(env_list, var_name))
+            return 1;
         if (!valid_name(var_name, env_list))
             continue;
         if (!remove_variable(var_name, env_list))

@@ -114,6 +114,7 @@ void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
 void print_env(t_env *env);
+int env_exist(t_env **env_list, char *name);
 
 #endif
 

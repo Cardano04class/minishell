@@ -12,42 +12,49 @@
 
 #include "minishell.h"
 
-t_env *sort_env(t_env **env_list) {
-    t_env *current;
-    t_env *next_node;
-    char *tmp_key;
-    char *tmp_value;
-    int swapped;
+t_env *sort_env(t_env *env_list) {
+    t_env *sorted_list = NULL; // New list to hold sorted nodes
+    t_env *current = env_list;
+    t_env *new_node;
 
-    if (env_list == NULL || (*env_list)->next == NULL)
-        return NULL;
-    swapped = 1;
-    while (swapped) 
-    {
-        swapped = 0;
-        current = *env_list;
-        while (current->next != NULL) 
-        {
-            next_node = current->next;
-            if (strcmp(current->key, next_node->key) > 0) 
-            {
-                tmp_key = ft_strdup(current->key);
-                if (current->value == NULL)
-                    tmp_value = NULL;
-                else
-                    tmp_value = ft_strdup(current->value);
-                free(current->key);
-                free(current->value);
-                current->key = next_node->key;
-                current->value = next_node->value;
-                next_node->key = tmp_key;
-                next_node->value = tmp_value;
-                swapped = 1;
-            }
-            current = next_node;
+    // Create a copy of the original list into the sorted list
+    while (current != NULL) {
+        // Create a new node for the current environment variable
+        new_node = (t_env *)malloc(sizeof(t_env));
+        if (!new_node) {
+            perror("Failed to allocate memory for new node");
+            return NULL; // Handle allocation failure
         }
+        
+        new_node->key = ft_strdup(current->key);
+        new_node->value = NULL; // Initialize value to NULL
+
+        // If current node has a value, duplicate it
+        if (current->value != NULL) {
+            new_node->value = ft_strdup(current->value);
+        }
+
+        new_node->next = NULL;
+
+        // Insert new_node into the sorted list in sorted order
+        if (sorted_list == NULL || strcmp(sorted_list->key, new_node->key) > 0) {
+            // Insert at the beginning
+            new_node->next = sorted_list;
+            sorted_list = new_node;
+        } else {
+            // Find the correct position to insert
+            t_env *prev = sorted_list;
+            while (prev->next != NULL && strcmp(prev->next->key, new_node->key) < 0) {
+                prev = prev->next;
+            }
+            new_node->next = prev->next; // Link new node to the next node
+            prev->next = new_node; // Link previous node to the new node
+        }
+
+        current = current->next; // Move to the next node in the original list
     }
-    return *env_list;
+
+    return sorted_list; // Return the new sorted list
 }
 
 int env_exist(t_env **env_list, char *name)
@@ -204,7 +211,7 @@ int export(char **args, t_env **lst)
     variables = NULL;
     if (args[1] == NULL)
     {
-        variables = sort_env(lst);   
+        variables = sort_env(*lst);   
         while(variables)
 	    {
             if (variables->value == NULL)
