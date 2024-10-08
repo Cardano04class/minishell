@@ -28,7 +28,7 @@ void	prompt(char **env)
 	ft_env(env, &env_list);
 	while (1)
 	{
-		rl = readline("minishell$ ");
+		rl = readline("Mini_segfault$ ");
 		if (rl == NULL)
 		{
 			printf("exit\n");

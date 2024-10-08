@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/08 04:04:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/08 04:22:49 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ t_env *sort_env(t_env **env_list) {
         swapped = 0;
         current = *env_list;
         while (current->next != NULL) 
-        { // Ensure we don't access beyond the list
+        {
             next_node = current->next;
             if (strcmp(current->key, next_node->key) > 0) 
             {
                 tmp_key = ft_strdup(current->key);
-                tmp_value = ft_strdup(current->value);
+                if (current->value == NULL)
+                    tmp_value = NULL;
+                else
+                    tmp_value = ft_strdup(current->value);
                 free(current->key);
                 free(current->value);
                 current->key = next_node->key;
