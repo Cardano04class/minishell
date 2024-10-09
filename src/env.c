@@ -1,10 +1,22 @@
 #include "minishell.h"
 
+void print_export(t_env *env)
+{
+	while(env)
+	{
+		if (env->value == NULL)
+            printf("declare -x %s\n", env->key);
+		printf("declare -x %s=%s\n", env->key, env->value);
+		env = env->next;
+	}
+}
+
 void print_env(t_env *env)
 {
 	while(env)
 	{
-		printf("%s=%s\n", env->key, env->value);
+		if (env->is_exported == false)
+			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
 }

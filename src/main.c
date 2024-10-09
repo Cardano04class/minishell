@@ -44,7 +44,6 @@ void	prompt(char **env)
 		syntax_error(list);
 		if (strncmp("env", args[0], 4) == 0)
 		{
-			ft_env(env,&env_list);
 			print_env(env_list);
 		}
 		else if (strcmp("pwd", args[0]) == 0)

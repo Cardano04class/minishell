@@ -50,6 +50,7 @@ typedef struct s_env
 {
 	char				*key;
 	char				*value;
+	bool				is_exported;
 	struct s_env		*next;
 }						t_env;
 
@@ -113,8 +114,9 @@ int						ft_lstsize(t_list *lst);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
-void print_env(t_env *env);
-int env_exist(t_env **env_list, char *name);
+void 					print_env(t_env *env_lst);
+t_env* 					env_exist(t_env **env_list, const char *name);
+void 					print_export(t_env *env);
 
 #endif
 
