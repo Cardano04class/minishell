@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/09 05:34:29 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/14 01:38:07 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,10 @@ t_env *sort_env(const t_env *env_list)
     t_env *sorted_list = NULL;
     const t_env *current = env_list;
 
-    // Create a copy of the original list into the sorted list
     while (current != NULL) 
     {
         t_env *new_node = (t_env *)malloc(sizeof(t_env));
         new_node->key = ft_strdup(current->key);
-        
-        // Allocate memory for value only if it is not NULL
         if (current->value != NULL) 
             new_node->value = ft_strdup(current->value);
         else 
@@ -63,6 +60,7 @@ t_env *sort_env(const t_env *env_list)
     }
     return sorted_list; 
 }
+
 
 t_env *env_exist(t_env **env_list, const char *name)
 {
@@ -124,7 +122,7 @@ t_env *ft_export_node(t_env **env_lst, char *name, char *value)
         }
     }
     else 
-        new_node->value = ft_strdup("''");
+        new_node->value = NULL;
     new_node->is_exported = true;
     new_node->next = NULL;
     if (*env_lst == NULL)
@@ -180,25 +178,18 @@ int set_env(t_env **lst, char *str)
     {
         var_name = ft_substr(str, 0, equal_sign);
         var_value = ft_substr(str, equal_sign + 1, ft_strlen(str) - equal_sign - 1);
-        
+        if (ft_strlen(var_value) == 0)
+            var_value = ft_strdup("\"\"");
         if (!is_valid_name(var_name))
         {
-            printf("invalid var_name: %s\n", var_name);
-            free(var_name);
-            free(var_value);
+            printf("export: '%s': not a valid identifier", var_name);
             return 1;
         }
-
-        // Check if the variable already exists
         t_env *existing_node = env_exist(lst, var_name);
         if (existing_node)
-        {
-            // Update the variable's value
             update_env(lst, var_name, var_value);
-        }
         else
         {
-            // Create a new environment node
             if (!ft_export_node(lst, var_name, var_value)) 
             {
                 perror("Error setting variable:");
@@ -207,30 +198,22 @@ int set_env(t_env **lst, char *str)
                 return 1;
             }
         }
-
         free(var_name);
         free(var_value);
     }
     else
     {
-        // Handle the case where there is no '='
-        var_name = ft_strdup(str); // Duplicate the variable name
+        var_name = ft_strdup(str);
         if (!is_valid_name(var_name))
         {
-            printf("invalid var_name: %s\n", var_name);
-            free(var_name);
+            printf("export: '%s': not a valid identifier", var_name);
             return 1;
         }
-
-        // Check if the variable exists; if it does, update it to an empty string
         t_env *existing_node = env_exist(lst, var_name);
         if (existing_node)
-        {
-            update_env(lst, var_name, ""); // Update to empty string
-        }
+            return 0;
         else
         {
-            // Create a new environment node with an empty value
             if (!ft_export_node(lst, var_name, NULL)) 
             {
                 perror("failed adding variable\n");
@@ -238,7 +221,6 @@ int set_env(t_env **lst, char *str)
                 return 1;
             }
         }
-
         free(var_name);
     }
     return 0;
