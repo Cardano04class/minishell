@@ -174,6 +174,7 @@ int set_env(t_env **lst, char *str)
     int equal_sign;
 
     equal_sign = find_equals(str);
+    var_value = NULL;
     if (equal_sign != -1)
     {
         var_name = ft_substr(str, 0, equal_sign);
@@ -214,7 +215,7 @@ int set_env(t_env **lst, char *str)
             return 0;
         else
         {
-            if (!ft_export_node(lst, var_name, NULL)) 
+            if (!ft_export_node(lst, var_name, "")) 
             {
                 perror("failed adding variable\n");
                 free(var_name);
