@@ -6,7 +6,10 @@ void print_export(t_env *env)
 	{
 		if (env->value == NULL)
             printf("declare -x %s\n", env->key);
-		printf("declare -x %s=%s\n", env->key, env->value);
+		else if (ft_strlen(env->value) == 0)
+			printf("declare -x %s\n", env->key);
+		else
+			printf("declare -x %s=%s\n", env->key, env->value);
 		env = env->next;
 	}
 }
