@@ -84,6 +84,21 @@ typedef struct s_global
 
 extern t_global			g_mini;
 
+typedef struct s_expander
+{
+	char        *beginning;
+    char        *res;
+    char        *invalid;
+    char        *env_val;
+    char        *var;
+    char        *str;
+    char        *conv;
+    int         pos;
+    int         len;
+    int         recently_invalid;
+    int         expanded;
+    int         flag;
+}						t_expander;
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
