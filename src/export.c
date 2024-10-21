@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/21 13:48:51 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/21 14:22:17 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void update_env(t_env **env_list, char *name, char *value, bool plus_sign)
     {
         if (plus_sign == true)
         {
-            if (strcmp(current->key, name) == 0)
+            if (strcmp(current->key, name) == 0 && ft_strlen(current->key) != 0)
             {
                 current->value = ft_strjoin(current->value, value);
                 return;
@@ -203,7 +203,7 @@ int set_env(t_env **lst, char *str)
         if (plus_sign != -1)
             var_name = ft_substr(str, 0, plus_sign);
         if (ft_strlen(var_value) == 0)
-            var_value = ft_strdup("\"\"");
+            var_value = ft_strdup("");     
         if (!is_valid_name(var_name))
         {
             printf("export: '%s': not a valid identifier\n", var_name);
@@ -243,7 +243,7 @@ int set_env(t_env **lst, char *str)
             return 0;
         else
         {
-            if (!ft_export_node(lst, var_name, "")) 
+            if (!ft_export_node(lst, var_name, NULL)) 
             {
                 perror("failed adding variable\n");
                 free(var_name);
@@ -254,7 +254,6 @@ int set_env(t_env **lst, char *str)
     }
     return 0;
 }
-
 
 int export(char **args, t_env **lst)
 {
