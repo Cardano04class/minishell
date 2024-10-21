@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/17 18:01:51 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/21 13:46:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void print_env(t_env *env)
 {
 	while(env)
 	{
-		if (env->is_exported == false)
+		if (env->value != NULL && ft_strlen(env->value) != 0)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}

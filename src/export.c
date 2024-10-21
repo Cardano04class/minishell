@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/17 18:27:15 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/21 13:37:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void update_env(t_env **env_list, char *name, char *value, bool plus_sign)
         {
             if (strcmp(current->key, name) == 0)
             {
-                (*env_list)->is_exported = true;
                 free(current->value);
                 current->value = ft_strjoin(current->value, value);
                 return;
@@ -96,7 +95,6 @@ void update_env(t_env **env_list, char *name, char *value, bool plus_sign)
         {    
             if (strcmp(current->key, name) == 0)
             {
-                (*env_list)->is_exported = true;
                 free(current->value);
                 current->value = ft_strdup(value);
                 return;
@@ -136,7 +134,6 @@ t_env *ft_export_node(t_env **env_lst, char *name, char *value)
     }
     else 
         new_node->value = NULL;
-    new_node->is_exported = true;
     new_node->next = NULL;
     if (*env_lst == NULL)
         *env_lst = new_node;
@@ -239,7 +236,7 @@ int set_env(t_env **lst, char *str)
         var_name = ft_strdup(str);
         if (!is_valid_name(var_name))
         {
-            printf("export: '%s': not a valid identifier", var_name);
+            printf("export: '%s': not a valid identifier\n", var_name);
             return 1;
         }
         t_env *existing_node = env_exist(lst, var_name);
