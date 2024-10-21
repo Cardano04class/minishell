@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/17 18:27:15 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/21 10:37:09 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void update_env(t_env **env_list, char *name, char *value, bool plus_sign)
             if (strcmp(current->key, name) == 0)
             {
                 (*env_list)->is_exported = true;
-                free(current->value);
                 current->value = ft_strjoin(current->value, value);
                 return;
             }
