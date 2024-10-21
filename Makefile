@@ -9,6 +9,7 @@ SRC = ./src/main.c \
 		./src/cd.c \
 		./src/export.c \
 		./src/unset.c \
+		./src/expand.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
@@ -39,7 +40,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strjoin.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

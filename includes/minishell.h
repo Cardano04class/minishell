@@ -85,18 +85,7 @@ extern t_global			g_mini;
 
 typedef struct s_expander
 {
-	char        *beginning;
-    char        *res;
-    char        *invalid;
-    char        *env_val;
-    char        *var;
-    char        *str;
-    char        *conv;
-    int         pos;
-    int         len;
-    int         recently_invalid;
-    int         expanded;
-    int         flag;
+	
 }						t_expander;
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
@@ -108,6 +97,7 @@ void					pwd(void);
 int 					export(char **args, t_env **lstvoid);
 void					parser(t_list *lst);
 int 					unset(char **args, t_env **env_list);
+char 					**expand_var(t_env *env,char *line);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
@@ -131,6 +121,8 @@ void					ft_lstclear(t_list **lst);
 void 					print_env(t_env *env_lst);
 t_env* 					env_exist(t_env **env_list, const char *name);
 void 					print_export(t_env *env);
+char 					*get_env(t_env *env, const char *name);
+
 
 #endif
 

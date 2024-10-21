@@ -42,6 +42,9 @@ void	prompt(char **env)
 		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
+
+		args[1] = expand_var(env_list, args[1]);
+		
 		if (strncmp("env", args[0], 4) == 0)
 		{
 			print_env(env_list);

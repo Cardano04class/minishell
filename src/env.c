@@ -6,11 +6,22 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/21 14:23:13 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/21 18:24:09 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *get_env(t_env *env, const char *name)
+{
+	while(env)
+	{
+		if (strcmp(name, env->key) == 0)
+			return env->value;
+		env = env->next;
+	}
+	return NULL;
+}
 
 void print_export(t_env *env)
 {
