@@ -42,35 +42,10 @@ void	prompt(char **env)
 		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
-
-		args[1] = expand_var(env_list, args[1]);
-		
-		if (strncmp("env", args[0], 4) == 0)
-		{
-			print_env(env_list);
-		}
-		else if (strcmp("pwd", args[0]) == 0)
-			pwd();
-		else if (strcmp("echo", args[0]) == 0)
-			echo(args);
-		else if (strcmp(args[0], "cd") == 0)
-			cd(args);
-		else if (strcmp(args[0], "export") == 0)
-		{
-			export(args, &env_list);
-		}
-		else if (strcmp(args[0], "unset") == 0)
-			unset(args, &env_list);
-		else if (strcmp(args[0], "exit") == 0)
-		{
-			free(rl);
-			free(args);
-			exit(0);
-		}
-		else
-			printf("%s: Command not found\n", rl);
-		// ft_lstdisplay(list);
 		parser(list);
+		expand_var(env_list);
+		run_builtins(&env_list);
+		// ft_lstdisplay(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);

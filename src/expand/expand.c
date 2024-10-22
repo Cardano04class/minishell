@@ -6,38 +6,37 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/21 18:54:02 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/22 15:23:50 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parse_line(char *line,int start, bool open_close)
+int has_dollar(char *str)
 {
-    
-    if (line[start]== '\'' )
-        open_close = true;
-}
-
-char *catch_expand(t_env *env, char *line)
-{
-    char **result;
     int i;
-    bool open_close = true;
+
     i = 0;
-    while(line[i])
+    while (str[i])
     {
-        if (line[i] == '$')
-            parse_line(line, i+1, open_close);
-        
-    }
-    
+        if (str[i] == '$')
+            return 1;
+        i++;
+    }    
+    return 0;
 }
 
-char **expand_var(t_env *env,char *line)
+void expand_var(t_env *env)
 {
-    char **result;
+    int i = 0;
+    while (g_mini.command->cmd[i])
+    {
+        if (has_dollar(g_mini.command->cmd[i]))
+        {
+            printf("entered\n");
+            g_mini.command->cmd[i] = get_env(env, g_mini.command->cmd[i]);
 
-    result = catch_expand(env, line);
-    return result;
+        }    
+        i++;
+    }
 }

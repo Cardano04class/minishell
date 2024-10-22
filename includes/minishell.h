@@ -90,14 +90,16 @@ typedef struct s_expander
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
+void 					run_builtins(t_env **env);
+void					parser(t_list *lst);
+/*--------------Builtins----------*/
 void 					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
 void					cd(char **args);
 void					pwd(void);
 int 					export(char **args, t_env **lstvoid);
-void					parser(t_list *lst);
 int 					unset(char **args, t_env **env_list);
-char 					**expand_var(t_env *env,char *line);
+void 					expand_var(t_env *env);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
