@@ -1,6 +1,7 @@
 #include "minishell.h"
 
 t_global g_mini;
+
 int empty_prompt(char *rl)
 {
 	int i;
@@ -12,6 +13,7 @@ int empty_prompt(char *rl)
 	}
 	return i;
 }
+
 
 void	prompt(char **env)
 {
@@ -42,7 +44,30 @@ void	prompt(char **env)
 		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
-		if (strncmp("env", args[0], 4) == 0)
+		//kano hna
+		parser(list);
+		run_cmd(g_mini.command, env_list);
+		ft_lstclear(&list);
+		add_history(rl);
+		free(rl);
+		free(args);
+	}
+	//rl_clear_history();
+}
+
+int	main(int ac, char **av, char **env)
+{
+	(void)av;
+	if (ac == 1)
+		prompt(env);
+	else
+		return (1);
+	return (0);
+}
+
+
+//hado
+/*if (strncmp("env", args[0], 4) == 0)
 			ft_env(env,&env_list);
 		else if (strcmp("pwd", args[0]) == 0)
 			pwd();
@@ -61,23 +86,5 @@ void	prompt(char **env)
 			exit(0);
 		}
 		else
-			printf("%s: Command not found\n", rl);
-		//ft_lstdisplay(list);
-		parser(list);
-		ft_lstclear(&list);
-		add_history(rl);
-		free(rl);
-		free(args);
-	}
-	rl_clear_history();
-}
-
-int	main(int ac, char **av, char **env)
-{
-	(void)av;
-	if (ac == 1)
-		prompt(env);
-	else
-		return (1);
-	return (0);
-}
+			printf("%s: Command not found\n", rl);*/
+		//ft_lstdisplay(list);*/

@@ -108,10 +108,13 @@ void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
 void					ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new);
 int						ft_lstsize(t_list *lst);
+int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
 void print_env(t_env *env);
+
+void    run_cmd(t_cmd *command, t_env *env);
 
 #endif
 
