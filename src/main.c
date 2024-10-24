@@ -23,13 +23,13 @@ void	prompt(char **env)
 	t_env *env_list = NULL;
 	
 	list = NULL;
-	g_mini.command = malloc(sizeof(t_cmd));
-	g_mini.command->files = NULL;
-	g_mini.command->heredoc = NULL;
-	g_mini.command->next = NULL;
 	ft_env(env, &env_list);
 	while (1)
 	{
+		g_mini.command = malloc(sizeof(t_cmd));
+		g_mini.command->files = NULL;
+		g_mini.command->heredoc = NULL;
+		g_mini.command->next = NULL;
 		rl = readline("minishell$ ");
 		if (rl == NULL)
 		{

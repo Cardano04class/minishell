@@ -76,13 +76,19 @@ void    execute(t_cmd *command, t_env *list_env)
 		write(2, ": command not found\n", 20);
 		return ;
 	}
-	//printf(" fullcmd : %s\n", fullcmd);
 	env = convert_env(list_env);
 	child_pid = fork();
 	if (child_pid == 0)
 	{
 		if (execve(fullcmd, command->cmd, env) == -1)
 		{
+			dprintf(2, "fullcmd  : %s\n", fullcmd);
+			int	i = 0;
+			while (command->cmd[i])
+			{
+				dprintf(2, ">> %s\n", command->cmd[i]);
+				i++;
+			}
 			perror(command->cmd[0]);
 			exit(127);
 		}
@@ -90,31 +96,40 @@ void    execute(t_cmd *command, t_env *list_env)
 	waitpid(child_pid, &status, 0);
 }
 
-/*void	handle_pipe(t_cmd *command, t_env *env)
+void	handle_pipe(t_cmd *command, t_env *env)
 {
 	int		fd[2];
-	pid_t 	child_pid[2];
+	pid_t 	child_pid1;
+	pid_t	child_pid2;
 	int 	status[2];
 	
 	if (pipe(fd) == -1)
 		exit(1);
 	//fd[READ] = fd --> READ mn lpipe
 	//fd[WRITE] = fd --> WRITE mn lpipe
-	child_pid = fork();
-	if (child_pid[0] == 0)
+	child_pid1 = fork();
+	if (child_pid1 == 0)
 	{
 		close(fd[READ]);
 		dup2(fd[WRITE], STDOUT_FILENO);
 		close(fd[WRITE]);
-		if (execve() == -1)
+		execute(command, env);
+		exit(1);
 	}
 	child_pid2 = fork();
-	if (child_pid[1] == 0)
+	if (child_pid2 == 0)
 	{
-
+		close(fd[WRITE]);
+		dup2(fd[READ], STDIN_FILENO);
+		close(fd[READ]);
+		run_cmd(command->next, env);
+		exit(1);
 	}
-	waitpid(child_pid1, );
-}*/
+	close(fd[READ]);
+	close(fd[WRITE]);
+	waitpid(child_pid1, &status[0], 0);
+	waitpid(child_pid2, &status[1], 0);
+}
 
 void    run_cmd(t_cmd *command, t_env *env)
 {
@@ -122,6 +137,6 @@ void    run_cmd(t_cmd *command, t_env *env)
         execute(command, env);
 	else
 	{
-		//handle_pipe(command, env);
+		handle_pipe(command, env);
 	}
 }

@@ -35,6 +35,7 @@ void	ft_cmddisplay(t_cmd *command)
 	//printf("lst size : %d\n\n", ft_cmdsize(command));
 	while (command != NULL)
 	{
+		j = 0;
 		while (command->cmd[j])
 			printf("content : %s\n",command->cmd[j++]);
 		puts("");
@@ -55,9 +56,24 @@ void	ft_cmddisplay(t_cmd *command)
 				printf("type : PIPE\n");		
 			command->files = command->files->next;
 		}
-		puts("");
+		puts("________________________");
 		command = command->next;
 	}
+}
+
+int	cmd_argument_size(t_list *lst)
+{
+	int count = 0;
+	
+	while (lst != NULL && lst->type != PIPE)
+	{
+		if (lst->type == WORD)
+			count++;
+		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
+			count--;
+		lst = lst->next;
+	}
+	return (count);
 }
 
 int	command_size(t_list *lst)
@@ -77,18 +93,20 @@ int	command_size(t_list *lst)
 
 void	parser(t_list *lst)
 {
-	int			cmd_size;
+	int			cmd_arg_size;
 	int 		index_count;
 	t_state		state;
+	t_cmd		*tmp_cmd;
 	
 	index_count = 0;
 	state = STATE_DEFAULT;
-	cmd_size = command_size(lst);
-	g_mini.command->cmd = malloc(sizeof(char *) * (cmd_size + 1));
-	g_mini.command->cmd[cmd_size] = NULL;
+	cmd_arg_size = cmd_argument_size(lst);
+	g_mini.command->cmd = malloc(sizeof(char *) * (cmd_arg_size + 1));
+	g_mini.command->cmd[cmd_arg_size] = NULL;
+	tmp_cmd = g_mini.command;
 	while (lst != NULL)
 	{
-		if (lst->type == WORD && index_count <= cmd_size)
+		if (lst->type == WORD && index_count <= cmd_arg_size)
 		{
 			if (state == STATE_REDIRECTION)
 			{
@@ -108,12 +126,14 @@ void	parser(t_list *lst)
 				if (g_mini.command->files->type == 5)
 					printf("type : PIPE\n");		
 				 puts("");*/
-				//g_mini.command->files = g_mini.command->files->next;
+				tmp_cmd->files = tmp_cmd->files->next;
 				state = STATE_DEFAULT;
 			}
 			else
 			{
-				g_mini.command->cmd[index_count] = ft_strdup(lst->content);
+			//	printf(">> %d\n", index_count);
+				tmp_cmd->cmd[index_count] = ft_strdup(lst->content);
+			//	printf("cc: %s\n", tmp_cmd->cmd[index_count]);
 				//printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);
 				index_count++;
 			}
@@ -126,18 +146,22 @@ void	parser(t_list *lst)
 		}
 		else if (lst->type == PIPE)
 		{
-			//puts("_____________");
-			ft_cmd_addback(&g_mini.command, ft_cmd_new(NULL));
-			g_mini.command= g_mini.command->next;
+			ft_cmd_addback(&tmp_cmd, ft_cmd_new(NULL));
+			tmp_cmd = tmp_cmd->next;
 			lst = lst->next;
-			cmd_size = command_size(lst);
+			//printf("next : %s\n", lst->content);
+			cmd_arg_size = cmd_argument_size(lst);
 			lst = lst->prev;
+			//printf("prev : %s\n", lst->content);
 			index_count = 0;
-			g_mini.command->cmd = malloc(sizeof(char *) * (cmd_size + 1));
+			tmp_cmd->cmd = malloc(sizeof(char *) * (cmd_arg_size + 1));
+			tmp_cmd->cmd[cmd_arg_size] = NULL;
 		}
-		lst = lst->next;
+		if (lst != NULL)
+			lst = lst->next;
 	}
-	//ft_cmddisplay(g_mini.command);
+	
+		//ft_cmddisplay(g_mini.command);
 }
 
 
