@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/22 15:20:59 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/24 15:02:30 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char *get_env(t_env *env, const char *name)
 {
 	while(env)
 	{
-		if (strcmp(name+1, env->key) == 0)
+		if (strcmp(name, env->key) == 0)
 			return env->value;
 		env = env->next;
 	}

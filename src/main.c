@@ -31,7 +31,7 @@ void	prompt(char **env)
 		rl = readline("Mini_segfault$ ");
 		if (rl == NULL)
 		{
-			printf("exit\n");
+			printf("\nexit\n");
 			exit(0);
 		}
 		if (empty_prompt(rl) == 0)
@@ -44,7 +44,6 @@ void	prompt(char **env)
 		parser(list);
 		expand(env_list);
 		run_builtins(&env_list);
-		// ft_lstdisplay(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
