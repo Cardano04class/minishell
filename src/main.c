@@ -17,9 +17,9 @@ void	prompt(char **env)
 {
 	char	*rl;
 	t_list	*list;
-	char	**args;
-	t_env *env_list = NULL;
+	t_env *env_list;
 	
+	env_list = NULL;
 	list = NULL;
 	g_mini.command = malloc(sizeof(t_cmd));
 	g_mini.command->files = NULL;
@@ -39,17 +39,15 @@ void	prompt(char **env)
 			free(rl);
 			continue;
 		}
-		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
 		parser(list);
-		expand_var(env_list);
+		expand(env_list);
 		run_builtins(&env_list);
 		// ft_lstdisplay(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
-		free(args);
 	}
 	// rl_clear_history();
 }

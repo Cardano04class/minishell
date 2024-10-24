@@ -99,7 +99,7 @@ void					cd(char **args);
 void					pwd(void);
 int 					export(char **args, t_env **lstvoid);
 int 					unset(char **args, t_env **env_list);
-void 					expand_var(t_env *env);
+void 					expand(t_env *env);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
