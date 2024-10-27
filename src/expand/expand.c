@@ -6,11 +6,12 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/24 16:09:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/27 15:24:47 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 int calc_var_len(t_env *env, char *line)
 {
@@ -144,8 +145,7 @@ void expand(t_env *env)
             {
                 char *var_value = get_env(env, var_name);  
                 char *new = get_new_string(var_value, line); 
-                g_mini.command->cmd[i] = new;  
-                // printf("STR: %s\n", new);
+                g_mini.command->cmd[i] = new;
                 free(var_name);  
             }
         }
