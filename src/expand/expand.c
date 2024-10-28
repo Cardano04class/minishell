@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/27 23:28:34 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/28 14:55:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,27 @@ char *expand_variables(t_env *env, char *line)
     {
         if (line[line_idx] == '\'' && !in_double_quote)
         {
-            in_single_quote = !in_single_quote;  // Toggle single-quote mode
-            result[result_idx++] = line[line_idx++];  // Copy quote as-is
+            in_single_quote = !in_single_quote;
+            result[result_idx++] = line[line_idx++];
             continue;
         }
         else if (line[line_idx] == '\"' && !in_single_quote)
         {
-            in_double_quote = !in_double_quote;  // Toggle double-quote mode
-            result[result_idx++] = line[line_idx++];  // Copy quote as-is
+            in_double_quote = !in_double_quote;
+            result[result_idx++] = line[line_idx++];
             continue;
         }
 
-        if (line[line_idx] == '$' && !in_single_quote)  // Expand only if not in single quotes
+        if (line[line_idx] == '$' && !in_single_quote)
         {
             line_idx++;  // Move past '$'
-
-            // Check for $" syntax (localized string) and handle as plain text
+            
+            // Handle the $" pattern (localized string) by copying only the quoted content
             if (line[line_idx] == '\"')
             {
-                line_idx++;  // Skip past the double-quote after $
+                line_idx++;  // Move past the double-quote after $
 
-                // Copy everything inside $"..." as-is
+                // Copy everything inside $"..." as-is, ignoring `$` and surrounding quotes
                 while (line[line_idx] && line[line_idx] != '\"')
                 {
                     result[result_idx++] = line[line_idx++];
@@ -58,18 +58,14 @@ char *expand_variables(t_env *env, char *line)
             char var_name[100];
             int var_name_idx = 0;
 
-            // Extract variable name
-            while (isalnum(line[line_idx]) || line[line_idx] == '_')
+            // Extract variable name after '$'
+            while (ft_isalnum(line[line_idx]) || line[line_idx] == '_')
             {
                 var_name[var_name_idx++] = line[line_idx++];
             }
             var_name[var_name_idx] = '\0';
 
-            if (var_name_idx == 0)  // No valid variable name found
-            {
-                result[result_idx++] = '$';  // Keep the `$` as-is
-            }
-            else
+            if (var_name_idx > 0)  // Valid variable name found
             {
                 // Lookup environment variable
                 char *var_value = get_env(env, var_name);
@@ -79,6 +75,7 @@ char *expand_variables(t_env *env, char *line)
                     result_idx += strlen(var_value);
                 }
             }
+            // If no valid variable name is found, '$' should be ignored in this case.
         }
         else
         {
@@ -90,45 +87,45 @@ char *expand_variables(t_env *env, char *line)
     return result;
 }
 
-char *get_new_string(char *var_value, char *line)
-{
-    char *result;
-    int i;
-    int new_len;
-    int line_idx;
-    int result_idx;
+// char *get_new_string(char *var_value, char *line)
+// {
+//     char *result;
+//     int i;
+//     int new_len;
+//     int line_idx;
+//     int result_idx;
 
-    new_len = ft_strlen(line)+ ft_strlen(var_value);
-    result = malloc(new_len + 1);
-    if (!result)
-        return NULL;
-    line_idx = 0;
-    result_idx = 0;
-    while (line[line_idx])
-    {
-        if (line[line_idx] == '$')
-        {
-            line_idx++;
-            while (ft_isalnum(line[line_idx]) && line[line_idx])
-                line_idx++;
-            i = 0;
-            while(var_value[i])
-            {
-                result[result_idx] = var_value[i];
-                i++;
-                result_idx++;
-            }
-        }
-        else
-        {
-            result[result_idx] = line[line_idx];
-            line_idx++;
-            result_idx++;
-        }
-    }
-    result[result_idx] = '\0';
-    return result;
-}
+//     new_len = ft_strlen(line)+ ft_strlen(var_value);
+//     result = malloc(new_len + 1);
+//     if (!result)
+//         return NULL;
+//     line_idx = 0;
+//     result_idx = 0;
+//     while (line[line_idx])
+//     {
+//         if (line[line_idx] == '$')
+//         {
+//             line_idx++;
+//             while (ft_isalnum(line[line_idx]) && line[line_idx])
+//                 line_idx++;
+//             i = 0;
+//             while(var_value[i])
+//             {
+//                 result[result_idx] = var_value[i];
+//                 i++;
+//                 result_idx++;
+//             }
+//         }
+//         else
+//         {
+//             result[result_idx] = line[line_idx];
+//             line_idx++;
+//             result_idx++;
+//         }
+//     }
+//     result[result_idx] = '\0';
+//     return result;
+// }
 
 char *extract_var_name(char *line)
 {
@@ -184,6 +181,7 @@ void expand(t_env *env)
         {
             free(g_mini.command->cmd[i]);
             g_mini.command->cmd[i] = expanded_line;
+            // printf("%s\n", expanded_line);
         }
         i++;
     }
