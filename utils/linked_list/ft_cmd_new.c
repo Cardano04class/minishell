@@ -20,5 +20,6 @@ t_cmd	*ft_cmd_new(char **content)
 	new->cmd = content;
 	new->files = NULL;
 	new->next = NULL;
+	new->heredoc = NULL;
 	return (new);
 }

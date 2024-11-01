@@ -7,6 +7,7 @@ SRC = ./src/main.c \
 		./src/env.c \
 		./src/echo.c \
 		./src/cd.c \
+		./src/run_cmd.c \
 		./src/export.c \
 		./src/unset.c \
 		./utils/linked_list/ft_lstnew.c \
@@ -16,6 +17,7 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_file_addback.c \
 		./utils/linked_list/ft_lstaddfront.c \
 		./utils/linked_list/ft_lstsize.c \
+		./utils/linked_list/ft_envsize.c \
 		./utils/linked_list/ft_lstmax.c \
 		./utils/linked_list/ft_lstmin.c \
 		./utils/linked_list/ft_lstdisplay.c \
@@ -36,9 +38,10 @@ SRC = ./src/main.c \
 		./utils/libft/ft_ssplit.c \
 		./utils/libft/ft_isalnum.c \
 		./utils/libft/ft_isalpha.c \
+		./utils/libft/ft_strjoin.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
