@@ -86,10 +86,12 @@ void lexer(char *str, t_list **lst)
                 while (str[i] != '\0' && !is_special_char(str[i]) && !ft_isspace(str[i]) && str[i] != 34 && str[i] != 39)
                     i++;
                 ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
+                printf("index : %d | str[i] = %s\n", i, &str[i]);
                 if (str[i] == 34 || str[i] == 39)
                 {
                     quote_char = str[i];
                     state = IN_QUOTE;
+                    start = i;
                     continue ;
                 }
                 else if (is_special_char(str[i]))

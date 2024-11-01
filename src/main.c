@@ -45,7 +45,12 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		syntax_error(list);
 		//kano hna
+		ft_lstdisplay(list);
 		parser(list);
+		
+		// printf("%s\n", g_mini.command->cmd[0]);
+		// printf("%s\n", g_mini.command->cmd[1]);
+		// printf("%s\n", g_mini.command->cmd[2]);
 		run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);
