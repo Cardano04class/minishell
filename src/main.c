@@ -44,13 +44,8 @@ void	prompt(char **env)
 		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
-		//kano hna
 		ft_lstdisplay(list);
 		parser(list);
-		
-		// printf("%s\n", g_mini.command->cmd[0]);
-		// printf("%s\n", g_mini.command->cmd[1]);
-		// printf("%s\n", g_mini.command->cmd[2]);
 		run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);
@@ -69,27 +64,3 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	return (0);
 }
-
-
-//hado
-/*if (strncmp("env", args[0], 4) == 0)
-			ft_env(env,&env_list);
-		else if (strcmp("pwd", args[0]) == 0)
-			pwd();
-		else if (strcmp("echo", args[0]) == 0)
-			echo(args);
-		else if (strcmp(args[0], "cd") == 0)
-			cd(args);
-		else if (strcmp(args[0], "cd") == 0)
-			cd(args);
-		else if (strcmp(args[0], "export") == 0)
-			export(args, &env_list);
-		else if (strcmp(args[0], "exit") == 0)
-		{
-			free(rl);
-			free(args);
-			exit(0);
-		}
-		else
-			printf("%s: Command not found\n", rl);*/
-		//ft_lstdisplay(list);*/
