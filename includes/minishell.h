@@ -50,7 +50,6 @@ typedef struct s_env
 {
 	char				*key;
 	char				*value;
-	bool				is_exported;
 	struct s_env		*next;
 }						t_env;
 
@@ -84,16 +83,23 @@ typedef struct s_global
 
 extern t_global			g_mini;
 
+typedef struct s_expander
+{
+	
+}						t_expander;
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
+void 					run_builtins(t_env **env);
+void					parser(t_list *lst);
+/*--------------Builtins----------*/
 void 					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
 void					cd(char **args);
 void					pwd(void);
 int 					export(char **args, t_env **lstvoid);
-void					parser(t_list *lst);
 int 					unset(char **args, t_env **env_list);
+void 					expand(t_env *env);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
@@ -118,6 +124,8 @@ void					ft_lstclear(t_list **lst);
 void 					print_env(t_env *env_lst);
 t_env* 					env_exist(t_env **env_list, const char *name);
 void 					print_export(t_env *env);
+char 					*get_env(t_env *env, const char *name);
+
 
 void    run_cmd(t_cmd *command, t_env *env);
 

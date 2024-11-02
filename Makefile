@@ -4,12 +4,14 @@ SRC = ./src/main.c \
 		./src/lexer.c \
 		./src/parser.c \
 		./src/syntax.c \
-		./src/env.c \
-		./src/echo.c \
-		./src/cd.c \
+		./src/builtins.c\
+		./src/builtins/env.c \
+		./src/builtins/echo.c \
+		./src/builtins/cd.c \
 		./src/run_cmd.c \
-		./src/export.c \
-		./src/unset.c \
+		./src/builtins/export.c \
+		./src/builtins/unset.c \
+		./src/expand/expand.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/14 01:38:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/10/21 14:22:17 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,29 @@ t_env *env_exist(t_env **env_list, const char *name)
     return NULL;
 }
 
-void update_env(t_env **env_list, char *name, char *value)
+void update_env(t_env **env_list, char *name, char *value, bool plus_sign)
 {
     t_env *current;
 
     current = *env_list;
     while (current)
     {
-        if (strcmp(current->key, name) == 0)
+        if (plus_sign == true)
         {
-            (*env_list)->is_exported = true;
-            free(current->value);
-            current->value = ft_strdup(value);
-            return;
+            if (strcmp(current->key, name) == 0 && ft_strlen(current->key) != 0)
+            {
+                current->value = ft_strjoin(current->value, value);
+                return;
+            }
+        }
+        else
+        {    
+            if (strcmp(current->key, name) == 0)
+            {
+                free(current->value);
+                current->value = ft_strdup(value);
+                return;
+            }
         }
         current = current->next;
     }
@@ -123,7 +133,6 @@ t_env *ft_export_node(t_env **env_lst, char *name, char *value)
     }
     else 
         new_node->value = NULL;
-    new_node->is_exported = true;
     new_node->next = NULL;
     if (*env_lst == NULL)
         *env_lst = new_node;
@@ -154,8 +163,19 @@ int is_valid_name(char *str)
     }
     return 1;
 }
+int find_plus(char *str)
+{
+    int i = 0;
+    while(str[i])
+    {
+        if (str[i+1] == '=' && str[i] == '+')
+            return i;
+        i++;
+    }
+    return -1;
+}
 
-char find_equals(char *str)
+int find_equals(char *str)
 {
     int i = 0;
     while(str[i])
@@ -172,23 +192,31 @@ int set_env(t_env **lst, char *str)
     char *var_name;
     char *var_value;
     int equal_sign;
-
+    int plus_sign;
     equal_sign = find_equals(str);
+    plus_sign = find_plus(str);
     var_value = NULL;
     if (equal_sign != -1)
     {
         var_name = ft_substr(str, 0, equal_sign);
         var_value = ft_substr(str, equal_sign + 1, ft_strlen(str) - equal_sign - 1);
+        if (plus_sign != -1)
+            var_name = ft_substr(str, 0, plus_sign);
         if (ft_strlen(var_value) == 0)
-            var_value = ft_strdup("\"\"");
+            var_value = ft_strdup("");     
         if (!is_valid_name(var_name))
         {
-            printf("export: '%s': not a valid identifier", var_name);
+            printf("export: '%s': not a valid identifier\n", var_name);
             return 1;
         }
         t_env *existing_node = env_exist(lst, var_name);
         if (existing_node)
-            update_env(lst, var_name, var_value);
+        {
+            if (plus_sign != -1)
+                update_env(lst, var_name, var_value, true);
+            else    
+                update_env(lst, var_name, var_value, false);
+        }
         else
         {
             if (!ft_export_node(lst, var_name, var_value)) 
@@ -207,7 +235,7 @@ int set_env(t_env **lst, char *str)
         var_name = ft_strdup(str);
         if (!is_valid_name(var_name))
         {
-            printf("export: '%s': not a valid identifier", var_name);
+            printf("export: '%s': not a valid identifier\n", var_name);
             return 1;
         }
         t_env *existing_node = env_exist(lst, var_name);
@@ -215,7 +243,7 @@ int set_env(t_env **lst, char *str)
             return 0;
         else
         {
-            if (!ft_export_node(lst, var_name, "")) 
+            if (!ft_export_node(lst, var_name, NULL)) 
             {
                 perror("failed adding variable\n");
                 free(var_name);
@@ -226,7 +254,6 @@ int set_env(t_env **lst, char *str)
     }
     return 0;
 }
-
 
 int export(char **args, t_env **lst)
 {
