@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/03 16:01:15 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/05 21:50:43 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,20 @@ char *expand_variables(t_env *env, char *line)
     int i = 0;
     int in_single_quote = 0;
     int in_double_quote = 0;
-    int prev_quote = 0;
 
     while (line[i])
     {
-        if (line[i] == '\'')
+        if (line[i] == '\'' && !in_double_quote)
         {
-            if (!in_double_quote)
-            {
-                if (!in_single_quote || !prev_quote)
-                {
-                    in_single_quote = !in_single_quote;
-                }
-            }
-            prev_quote = (line[i] == '\'');
-            result[result_idx++] = line[i++];
-            continue;
+            in_single_quote = !in_single_quote;
+            i++;
+            continue; // Skip the single quote
         }
-        if (line[i] == '\"')
+        if (line[i] == '\"' && !in_single_quote)
         {
-            if (!in_single_quote)
-            {
-                in_double_quote = !in_double_quote;
-            }
-            result[result_idx++] = line[i++];
-            continue;
+            in_double_quote = !in_double_quote;
+            i++;
+            continue; // Skip the double quote
         }
         if (line[i] == '$' && !in_single_quote)
         {
@@ -71,12 +60,12 @@ char *expand_variables(t_env *env, char *line)
             continue;
         }
         result[result_idx++] = line[i++];
-        prev_quote = 0;
     }
 
     result[result_idx] = '\0';
     return result;
 }
+
 
 char *handle_quotes(char *str)
 {
