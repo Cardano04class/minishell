@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/21 14:22:17 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/05 22:05:23 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,6 @@ int	set_env(t_env **lst, char *str)
 	char	*var_value;
 	int		equal_sign;
 	int		plus_sign;
-	t_env	*existing_node;
 	t_env	*existing_node;
 
 	equal_sign = find_equals(str);

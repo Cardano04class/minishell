@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/08 00:14:38 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/05 22:03:01 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	echo(char **str)
 	bool	is_first_argument;
 	int		j;
 	bool	all_n;
-	int		j;
 
 	flag = false;
 	lock = false;

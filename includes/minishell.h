@@ -98,8 +98,8 @@ void					parser(t_list *lst);
 /*--------------Builtins----------*/
 void 					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
-void					cd(char **args);
-void					pwd(void);
+void 					cd(t_env **env, char **args);
+void					pwd(t_env **env);
 int 					export(char **args, t_env **lstvoid);
 int 					unset(char **args, t_env **env_list);
 void 					expand(t_env *env);

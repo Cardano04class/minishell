@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/03 15:57:12 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/05 22:02:39 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int run_builtins(t_env **env)
     if (strncmp("env", arg[0], 4) == 0)
 		print_env(*env);
 	else if (strcmp("pwd", arg[0]) == 0)
-		pwd();
+		pwd(env);
 	else if (strcmp("echo", arg[0]) == 0)
 		echo(arg);
 	else if (strcmp(arg[0], "cd") == 0)
-		cd(arg);
+		cd(env, arg);
 	else if (strcmp(arg[0], "export") == 0)
 		export(arg, env);
 	else if (strcmp(arg[0], "unset") == 0)
