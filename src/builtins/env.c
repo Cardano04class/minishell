@@ -12,23 +12,23 @@
 
 #include "minishell.h"
 
-char *get_env(t_env *env, const char *name)
+char	*get_env(t_env *env, const char *name)
 {
-	while(env)
+	while (env)
 	{
 		if (strcmp(name, env->key) == 0)
-			return env->value;
+			return (env->value);
 		env = env->next;
 	}
-	return NULL;
+	return (NULL);
 }
 
-void print_export(t_env *env)
+void	print_export(t_env *env)
 {
-	while(env)
+	while (env)
 	{
 		if (env->value == NULL)
-            printf("declare -x %s\n", env->key);
+			printf("declare -x %s\n", env->key);
 		else if (ft_strlen(env->value) == 0)
 			printf("declare -x %s=\"\"\n", env->key);
 		else
@@ -37,9 +37,9 @@ void print_export(t_env *env)
 	}
 }
 
-void print_env(t_env *env)
+void	print_env(t_env *env)
 {
-	while(env)
+	while (env)
 	{
 		if (env->value != NULL && ft_strlen(env->value) != 0)
 			printf("%s=%s\n", env->key, env->value);
@@ -47,15 +47,15 @@ void print_env(t_env *env)
 	}
 }
 
-void ft_env(char **env, t_env **env_lst)
+void	ft_env(char **env, t_env **env_lst)
 {
-	t_env *node;
-
-	int i = 0;
-	while (env[i])
-	{
+	t_env	*node;
+	int		i;
 		char *equal_sign;
 
+	i = 0;
+	while (env[i])
+	{
 		equal_sign = ft_strchr(env[i], '=');
 		if (equal_sign)
 		{
