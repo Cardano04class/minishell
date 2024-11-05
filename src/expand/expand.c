@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/30 11:21:44 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/03 16:01:15 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char *expand_variables(t_env *env, char *line)
 
     while (line[i])
     {
-        // Handle single quotes
         if (line[i] == '\'')
         {
             if (!in_double_quote)
@@ -38,8 +37,6 @@ char *expand_variables(t_env *env, char *line)
             result[result_idx++] = line[i++];
             continue;
         }
-
-        // Handle double quotes
         if (line[i] == '\"')
         {
             if (!in_single_quote)
@@ -49,12 +46,9 @@ char *expand_variables(t_env *env, char *line)
             result[result_idx++] = line[i++];
             continue;
         }
-
-        // Handle variables
         if (line[i] == '$' && !in_single_quote)
         {
-            i++; // Skip $
-            
+            i++;
             char var_name[100];
             int var_idx = 0;
             
@@ -74,10 +68,8 @@ char *expand_variables(t_env *env, char *line)
                 }
                 continue;
             }
-            continue;  // Skip lone $ if no valid variable
+            continue;
         }
-
-        // Copy regular character
         result[result_idx++] = line[i++];
         prev_quote = 0;
     }
@@ -86,29 +78,13 @@ char *expand_variables(t_env *env, char *line)
     return result;
 }
 
-int has_dollar(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == '$')
-            return i;
-        i++;
-    }    
-    return -1;
-}
-
 char *handle_quotes(char *str)
 {
     if (!str)
         return NULL;
-
     char *result = malloc(strlen(str) + 1);
     if (!result)
         return NULL;
-
     int i = 0;
     int j = 0;
     int in_single_quote = 0;
@@ -116,7 +92,6 @@ char *handle_quotes(char *str)
 
     while (str[i])
     {
-        // Detect and toggle quotes, skipping the empty quotes
         if (str[i] == '\'' && !in_double_quote)
         {
             in_single_quote = !in_single_quote;
@@ -129,14 +104,9 @@ char *handle_quotes(char *str)
             i++;
             continue;
         }
-
-        // Append character if it's not part of an empty quote
         result[j++] = str[i++];
     }
-
     result[j] = '\0';
-
-    // Handle completely empty quotes case (like '' or "") by returning an empty string
     if (j == 0)
     {
         free(result);
@@ -145,6 +115,7 @@ char *handle_quotes(char *str)
 
     return result;
 }
+
 void expand(t_env *env)
 {
     int i = 0;
@@ -156,7 +127,6 @@ void expand(t_env *env)
     {
         line = g_mini.command->cmd[i];
         expanded_line = expand_variables(env, line);
-
         if (expanded_line)
         {
             final_line = handle_quotes(expanded_line);

@@ -44,10 +44,9 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		syntax_error(list);
 		parser(list);
-		printf("line: %s\n", g_mini.command->cmd[2]);
 		expand(env_list);
-		run_builtins(&env_list);
-		run_cmd(g_mini.command, env_list);
+		if (!run_builtins(&env_list))
+			run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);

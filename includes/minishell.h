@@ -15,6 +15,9 @@
 # include <string.h>
 # include <sysexits.h>
 # include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 
 typedef enum e_token
 {
@@ -90,7 +93,7 @@ typedef struct s_expander
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
-void 					run_builtins(t_env **env);
+int 					run_builtins(t_env **env);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
 void 					ft_env(char **env, t_env **env_lst);
