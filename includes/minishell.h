@@ -86,6 +86,14 @@ typedef struct s_global
 
 extern t_global			g_mini;
 
+typedef struct s_expand_var_params {
+    char *line;          // Input line containing the variable
+    int *index;         // Current index in the line
+    t_env *env;         // Environment variable linked list
+    char *result;       // Result string to store expanded value
+    int *result_idx;    // Current index in the result string
+} t_expand_var_params;
+
 typedef struct s_expander
 {
 	
