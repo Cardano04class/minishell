@@ -45,6 +45,10 @@ void	prompt(char **env)
 		syntax_error(list);
 		parser(list);
 		expand(env_list);
+		// for (int i = 0; g_mini.command->cmd[i]; i++) 
+		// {
+    	// 	printf("gcmd[%d] : %s (length: %zu)\n", i, g_mini.command->cmd[i], strlen(g_mini.command->cmd[i]));
+		// }
 		if (!run_builtins(&env_list))
 			run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
