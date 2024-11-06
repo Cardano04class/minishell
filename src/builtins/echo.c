@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/05 23:00:01 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/06 15:55:09 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	echo(char **str)
 	int		j;
 	bool	all_n;
 
-	// printf("str[1] : %s\n", str[1]);
 	flag = false;
 	lock = false;
 	i = 1;
@@ -30,6 +29,7 @@ int	echo(char **str)
 		printf("\n");
 	while (str[i])
 	{
+		// printf("str[%d] : %s\n", i, str[i]);
 		if (is_first_argument && str[i][0] == '-' && str[i][1] != '\0')
 		{
 			j = 1;

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/05 23:09:33 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/06 16:30:49 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,115 +24,122 @@ void toggle_quote(char quote_char, int *in_single_quote, int *in_double_quote) {
     }
 }
 
-void expand_variable(t_expand_var_params *params)
-{
-    char var_name[100];
-    int var_idx = 0;
-    int i = *(params->index);  // Use the correct index
-
-    // Process the variable (expand it) as before
-    while (params->line[i] && (ft_isalnum(params->line[i]) || params->line[i] == '_'))
-    {
-        var_name[var_idx++] = params->line[i++];
-    }
-    var_name[var_idx] = '\0';
-
-    // Expand variable (if found) and add to result
-    if (var_idx > 0)
-    {
-        char *var_value = get_env(params->env, var_name);
-        if (var_value)
-        {
-            strcpy(&params->result[*(params->result_idx)], var_value);
-            *(params->result_idx) += strlen(var_value);
+char *expand_variable(t_env *env, const char *var_name) {
+    t_env *current = env;
+    while (current) {
+        if (strcmp(current->key, var_name) == 0) {
+            return current->value;
         }
+        current = current->next;
     }
-
-    *(params->index) = i;  // Update the index
+    return NULL; // Return NULL if the variable is not found
 }
 
-// Main function to expand variables and handle quotes in input
-void expand_variables(t_env *env, char *line, char *result)
-{
+char *expand_variables(t_env *env, char *line) {
+    char *result = malloc(1024); // Buffer for expanded result
+    if (!result) return NULL;
+
     int result_idx = 0;
     int i = 0;
     int in_single_quote = 0;
     int in_double_quote = 0;
 
-    t_expand_var_params params;
-
-    // Initialize struct
-    params.line = line;
-    params.index = &i;
-    params.env = env;
-    params.result = result;
-    params.result_idx = &result_idx;
-
-    while (line[i])
-    {
-        if (line[i] == '\'' || line[i] == '\"')
-        {
-            toggle_quote(line[i], &in_single_quote, &in_double_quote);
-            i++;
+    while (line[i]) {
+        // Toggle quotes
+        if (line[i] == '\'' && !in_double_quote) {
+            in_single_quote = !in_single_quote;
+            result[result_idx++] = line[i++];
+            continue;
+        } else if (line[i] == '\"' && !in_single_quote) {
+            in_double_quote = !in_double_quote;
+            result[result_idx++] = line[i++];
             continue;
         }
+        // Variable expansion (skip inside single quotes)
+        if (line[i] == '$' && !in_single_quote) {
+            i++; // Skip the '$'
+            char var_name[100];
+            int var_idx = 0;
 
-        if (line[i] == '$' && !in_single_quote)
-        {
-            expand_variable(&params);  // Pass struct to the function
+            // Capture the variable name (alphanumeric + '_')
+            while (line[i] && (isalnum(line[i]) || line[i] == '_')) {
+                var_name[var_idx++] = line[i++];
+            }
+            var_name[var_idx] = '\0'; // Null-terminate the variable name
+            // Get the variable value from the environment
+            char *var_value = expand_variable(env, var_name);
+            if (var_value) 
+            {
+                strcpy(&result[result_idx], var_value);
+                result_idx += strlen(var_value);
+            }
+            continue;
         }
-        else
-        {
-            result[result_idx++] = line[i++];
-        }
+        
+        // Copy normal characters
+        result[result_idx++] = line[i++];
     }
 
-    result[result_idx] = '\0';  // Null-terminate the string
+    result[result_idx] = '\0';
+    return result;
 }
 
-
-
-
-
 // Function to handle and remove quotes from a string
-char *handle_quotes(char *str)
+char *handle_quotes(const char *str)
 {
     if (!str)
         return NULL;
 
-    char *result;
-    int i = 0;
-    int j = 0;
-    int in_single_quote = 0;
-    int in_double_quote = 0;
-
-    result = malloc(strlen(str) + 1);
+    size_t len = strlen(str);
+    char *result = malloc(len + 1);
     if (!result)
         return NULL;
 
+    int i = 0, j = 0;
+    int in_single_quote = 0;
+    int in_double_quote = 0;
+
     while (str[i])
     {
-        // Handle single and double quotes
         if (str[i] == '\'' && !in_double_quote)
         {
-            in_single_quote = !in_single_quote;
-            i++;
-            continue;
+            // Toggle single quotes and only skip if fully enclosing
+            if (in_single_quote && str[i + 1] == '\0') {
+                in_single_quote = 0;
+                i++;
+                continue;
+            }
+            if (!in_single_quote && j == 0 && str[i + 1] != '\0') {
+                in_single_quote = 1;
+                i++;
+                continue;
+            }
+            result[j++] = str[i];
         }
-        if (str[i] == '\"' && !in_single_quote)
+        else if (str[i] == '\"' && !in_single_quote)
         {
-            in_double_quote = !in_double_quote;
-            i++;
-            continue;
+            // Toggle double quotes and only skip if fully enclosing
+            if (in_double_quote && str[i + 1] == '\0') {
+                in_double_quote = 0;
+                i++;
+                continue;
+            }
+            if (!in_double_quote && j == 0 && str[i + 1] != '\0') {
+                in_double_quote = 1;
+                i++;
+                continue;
+            }
+            result[j++] = str[i];
         }
-
-        // Add non-quote characters to the result
-        result[j++] = str[i++];
+        else
+        {
+            result[j++] = str[i];
+        }
+        i++;
     }
-
     result[j] = '\0';
 
-    // If the resulting string is empty, return an empty string instead of NULL
+    // If all quotes were stripped, return an empty string to avoid incorrect behavior
     if (j == 0)
     {
         free(result);
@@ -143,40 +150,36 @@ char *handle_quotes(char *str)
 }
 
 
+
+
 // Function to expand commands in the mini shell
 void expand(t_env *env)
 {
     int i = 0;
     char *line;
-    char expanded_line[BUFFER_SIZE];  // Make sure this is large enough
+    char *expanded_line;
+    char *final_line;
 
     while (g_mini.command->cmd[i])
     {
         line = g_mini.command->cmd[i];
 
-        // Call expand_variables with a result buffer
-        expand_variables(env, line, expanded_line);
-
-        // Handle the expanded line (quotes, etc.)
-        char *final_line = handle_quotes(expanded_line);
-
-        free(g_mini.command->cmd[i]);
-        g_mini.command->cmd[i] = final_line;
-
-        // If empty string, remove the command
-        if (final_line[0] == '\0')
-        {
-            int j = i;
-            free(g_mini.command->cmd[i]);
-            while (g_mini.command->cmd[j + 1])
-            {
-                g_mini.command->cmd[j] = g_mini.command->cmd[j + 1];
-                j++;
-            }
-            g_mini.command->cmd[j] = NULL;
+        // Expand variables
+        expanded_line = expand_variables(env, line);
+        if (!expanded_line) {
+            // Handle memory allocation failure or any other issues
             continue;
         }
+
+        // Handle quotes while preserving literals
+        final_line = handle_quotes(expanded_line);
+        free(expanded_line); // Free the expanded line, as it's no longer needed
+
+        // Replace the original command string with the final processed string
+        free(g_mini.command->cmd[i]);
+        g_mini.command->cmd[i] = final_line;
 
         i++;
     }
 }
+
