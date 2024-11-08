@@ -22,6 +22,7 @@ void	prompt(char **env)
 	char	**args;
 	t_env *env_list = NULL;
 	
+	
 	list = NULL;
 	ft_env(env, &env_list);
 	while (1)
@@ -44,8 +45,15 @@ void	prompt(char **env)
 		args = ft_split(rl, ' ');
 		lexer(rl, &list);
 		syntax_error(list);
-		ft_lstdisplay(list);
+		//ft_lstdisplay(list);
 		parser(list);
+		// t_cmd *tmp = g_mini.command;
+		// while (tmp->files != NULL)
+		// {
+		// 	printf("files : %s\n", tmp->files->filename);
+		// 	tmp->files = tmp->files->next;
+		// }
+		// printf("test %p\n", g_mini.command->files);
 		run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);

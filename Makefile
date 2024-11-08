@@ -49,7 +49,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline
-	
+
 .o:.c
 	$(CC) $(CFLAGS) -c $< -o $@
 

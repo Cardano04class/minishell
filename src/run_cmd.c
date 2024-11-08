@@ -68,8 +68,14 @@ void    execute(t_cmd *command, t_env *list_env)
 	pid_t	child_pid;
 	int		status;
 	char	*fullcmd;
+	int 	fd_in = 0;
+	int		fd_out = 1;
+	// int 	std_in = dup(STDIN_FILENO);
+	// int 	std_out = dup(STDOUT_FILENO);
 
     fullcmd = find_path(command->cmd[0], list_env);
+		// puts("hna");
+		//printf("commands file : %s\n", command->files->filename);
 	if (fullcmd == NULL)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
@@ -80,19 +86,70 @@ void    execute(t_cmd *command, t_env *list_env)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
+		while (command->files != NULL)
+		{
+			if (command->files->type == INRED)
+			{
+				fd_in = open(command->files->filename, O_RDONLY);
+				printf("infile = %d\n", fd_in);
+				if (fd_in == -1)
+				{
+					puts("infile ");
+					perror(command->files->filename);
+					exit(1);
+				}
+				if(dup2(fd_in, STDIN_FILENO) == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_in);
+			}
+			if (command->files->type == OUTRED)
+			{
+				printf("out\n");
+				fd_out = open(command->files->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				printf("outfile = %d\n", fd_out);
+				if (fd_out == -1)
+				{
+					puts("outfile ");
+					perror(command->files->filename);
+					exit(1);
+				}
+				if(dup2(fd_out, STDOUT_FILENO) == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_out);
+			}
+			if (command->files->type == APPEND)
+			{
+				printf("append\n");
+				fd_out = open(command->files->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if (fd_out == -1)
+				{
+					puts("append ");
+					perror(command->files->filename);
+					exit(1);
+				}
+				if(dup2(fd_out, STDOUT_FILENO) == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_out);
+			}
+			command->files = command->files->next;
+		}
 		if (execve(fullcmd, command->cmd, env) == -1)
 		{
-			dprintf(2, "fullcmd  : %s\n", fullcmd);
-			int	i = 0;
-			while (command->cmd[i])
-			{
-				dprintf(2, ">> %s\n", command->cmd[i]);
-				i++;
-			}
 			perror(command->cmd[0]);
 			exit(127);
 		}
 	}
+	// close(fd_out);
+	// close(fd_in);
 	waitpid(child_pid, &status, 0);
 }
 
@@ -140,3 +197,6 @@ void    run_cmd(t_cmd *command, t_env *env)
 		handle_pipe(command, env);
 	}
 }
+
+
+// souwa 7louwa :

@@ -1,0 +1,10 @@
+Makefile
+README.md
+includes
+k
+minishell
+out
+readline.supp
+src
+utils
+minishell$ 

@@ -38,7 +38,7 @@ void	ft_cmddisplay(t_cmd *command)
 		j = 0;
 		while (command->cmd[j])
 			// printf("content : %s\n",command->cmd[j++]);
-		puts("");
+		// puts("");
 		while (command->files != NULL)
 		{
 			// printf("filename : %s\n",command->files->filename);			
@@ -56,7 +56,7 @@ void	ft_cmddisplay(t_cmd *command)
 				// printf("type : PIPE\n");		
 			command->files = command->files->next;
 		}
-		puts("________________________");
+		// puts("________________________");
 		command = command->next;
 	}
 }
@@ -110,7 +110,9 @@ void	parser(t_list *lst)
 		{
 			if (state == STATE_REDIRECTION)
 			{
+				// puts("3amra");
 				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
+				// printf("test %s\n", g_mini.command->files->filename);
 				/*puts("");
 				printf("filename : %s\n",g_mini.command->files->filename);			
 				if (g_mini.command->files->type == 0)
@@ -126,7 +128,8 @@ void	parser(t_list *lst)
 				if (g_mini.command->files->type == 5)
 					printf("type : PIPE\n");		
 				 puts("");*/
-				tmp_cmd->files = tmp_cmd->files->next;
+				// tmp_cmd->files = tmp_cmd->files->next;
+				// printf("test %p\n", g_mini.command->files);
 				state = STATE_DEFAULT;
 			}
 			else
@@ -160,7 +163,6 @@ void	parser(t_list *lst)
 		if (lst != NULL)
 			lst = lst->next;
 	}
-	
 		//ft_cmddisplay(g_mini.command);
 }
 
