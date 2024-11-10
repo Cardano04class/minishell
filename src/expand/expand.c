@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/06 16:30:49 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/06 23:07:22 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,34 @@ char *expand_variables(t_env *env, char *line) {
             result[result_idx++] = line[i++];
             continue;
         }
-        // Variable expansion (skip inside single quotes)
+
+        // Handle $ for variable expansion, skipping if there's no variable name
         if (line[i] == '$' && !in_single_quote) {
-            i++; // Skip the '$'
+            i++; // Move past the '$'
+            if (!isalnum(line[i]) && line[i] != '_') {
+                // If no valid variable name follows, treat `$` as literal
+                result[result_idx++] = '$';
+                continue;
+            }
+
             char var_name[100];
             int var_idx = 0;
 
-            // Capture the variable name (alphanumeric + '_')
+            // Capture the variable name
             while (line[i] && (isalnum(line[i]) || line[i] == '_')) {
                 var_name[var_idx++] = line[i++];
             }
             var_name[var_idx] = '\0'; // Null-terminate the variable name
+
             // Get the variable value from the environment
             char *var_value = expand_variable(env, var_name);
-            if (var_value) 
-            {
+            if (var_value) {
                 strcpy(&result[result_idx], var_value);
                 result_idx += strlen(var_value);
             }
             continue;
         }
-        
+
         // Copy normal characters
         result[result_idx++] = line[i++];
     }
@@ -83,6 +90,8 @@ char *expand_variables(t_env *env, char *line) {
     result[result_idx] = '\0';
     return result;
 }
+
+
 
 // Function to handle and remove quotes from a string
 char *handle_quotes(const char *str)
@@ -149,10 +158,6 @@ char *handle_quotes(const char *str)
     return result;
 }
 
-
-
-
-// Function to expand commands in the mini shell
 void expand(t_env *env)
 {
     int i = 0;
