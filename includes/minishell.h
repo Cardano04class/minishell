@@ -86,6 +86,18 @@ typedef struct s_global
 
 extern t_global			g_mini;
 
+typedef struct s_parse_state
+{
+	int		in_single_quote;
+	int		in_double_quote;
+	char	*result;
+	size_t	result_size;
+	size_t	result_idx;
+	char	*line;
+	size_t	i;
+	t_env	*env;
+}	t_parse_state;
+
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
