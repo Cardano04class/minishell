@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/13 13:21:31 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/13 14:06:03 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,29 +105,55 @@ static void	copy_var_value(t_parse_state *state, char *value)
 
 static void expand_env_var(t_parse_state *state)
 {
-    char var_name[256];
-    size_t var_idx = 0;
+    char literal_value[256];
+    size_t literal_idx = 0;
     char *value;
+    char quote_char;
 
-    state->i++;
-    if (state->line[state->i] == '\"')
+    state->i++; // Skip the '$'
+
+    // Check if next character is a single or double quote
+    if (state->line[state->i] == '\'' || state->line[state->i] == '\"')
     {
-        state->i++;
-        while (state->line[state->i] && state->line[state->i] != '\"' && var_idx < 255)
+        // Store the type of quote (single or double)
+        quote_char = state->line[state->i++];
+        
+        // Copy characters until we reach the same closing quote
+        while (state->line[state->i] && state->line[state->i] != quote_char && literal_idx < 255)
         {
-            var_name[var_idx++] = state->line[state->i++];
+            literal_value[literal_idx++] = state->line[state->i++];
         }
-        if (state->line[state->i] == '\"')
+        
+        // Skip the closing quote if present
+        if (state->line[state->i] == quote_char)
             state->i++;
-        var_name[var_idx] = '\0';
-        copy_var_value(state, var_name);
+        
+        // Null-terminate the literal string
+        literal_value[literal_idx] = '\0';
+
+        // Ensure space in result buffer and copy the literal value with quotes
+        if (!ensure_buffer_space(state, literal_idx + 2))
+            return;
+        
+        // Add the literal value surrounded by the original quotes
+        state->result[state->result_idx++] = quote_char;
+        ft_memcpy(&state->result[state->result_idx], literal_value, literal_idx);
+        state->result_idx += literal_idx;
+        state->result[state->result_idx++] = quote_char;
+        
         return;
     }
+
+    // Regular variable expansion
+    char var_name[256];
+    size_t var_idx = 0;
+    
     while (state->line[state->i] && (ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') && var_idx < 255)
     {
         var_name[var_idx++] = state->line[state->i++];
     }
     var_name[var_idx] = '\0';
+
     if (var_idx > 0)
     {
         value = expand_variable(state->env, var_name);
@@ -135,11 +161,13 @@ static void expand_env_var(t_parse_state *state)
     }
     else
     {
+        // In case of no variable name, add a literal '$'
         if (!ensure_buffer_space(state, 1))
             return;
         state->result[state->result_idx++] = '$';
     }
 }
+
 
 char    *expand_variables(t_env *env, char *line)
 {
