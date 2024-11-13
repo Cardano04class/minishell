@@ -48,13 +48,13 @@ void	prompt(char **env)
 		//ft_lstdisplay(list);
 		parser(list);
 		// t_cmd *tmp = g_mini.command;
-		// while (tmp->files != NULL)
+		// while (tmp->heredoc != NULL)
 		// {
-		// 	printf("files : %s\n", tmp->files->filename);
-		// 	tmp->files = tmp->files->next;
+		// 	printf("heredoc : %s\n", tmp->heredoc->delimiter);
+		// 	tmp->heredoc = tmp->heredoc->next;
 		// }
-		// printf("test %p\n", g_mini.command->files);
-		run_cmd(g_mini.command, env_list);
+		//printf("test %p\n", g_mini.command->heredoc);
+		//run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);

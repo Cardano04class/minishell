@@ -12,18 +12,16 @@
 
 #include "minishell.h"
 
-void	ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new)
+void	ft_heredoc_addback(t_heredoc *new)
 {
 	t_heredoc	*tmp;
-	
-	if (!heredoc)
-		return ;
-	if (!*heredoc)
+
+	if (g_mini.command->heredoc == NULL)
 	{
-		(*heredoc) = new;
+		g_mini.command->heredoc = new;
 		return ;
 	}
-	tmp = *heredoc;
+	tmp = g_mini.command->heredoc;
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;

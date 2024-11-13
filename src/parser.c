@@ -108,6 +108,11 @@ void	parser(t_list *lst)
 	{
 		if (lst->type == WORD && index_count <= cmd_arg_size)
 		{
+			if (state == STATE_HEREDOC)
+			{
+				ft_heredoc_addback(ft_heredoc_new(ft_strdup(lst->content)));
+				state = STATE_DEFAULT;
+			}
 			if (state == STATE_REDIRECTION)
 			{
 				// puts("3amra");
@@ -144,9 +149,7 @@ void	parser(t_list *lst)
 		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
 			state = STATE_REDIRECTION;
 		else if (lst->type == HEREDOC)
-		{
-			
-		}
+			state = STATE_HEREDOC;
 		else if (lst->type == PIPE)
 		{
 			ft_cmd_addback(&tmp_cmd, ft_cmd_new(NULL));

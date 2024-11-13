@@ -10,11 +10,11 @@ SRC = ./src/main.c \
 		./src/run_cmd.c \
 		./src/export.c \
 		./src/unset.c \
-		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
 		./utils/linked_list/ft_file_addback.c \
+		./utils/linked_list/ft_heredoc_addback.c \
 		./utils/linked_list/ft_lstaddfront.c \
 		./utils/linked_list/ft_lstsize.c \
 		./utils/linked_list/ft_envsize.c \
@@ -22,10 +22,12 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_lstmin.c \
 		./utils/linked_list/ft_lstdisplay.c \
 		./utils/linked_list/ft_lstclear.c \
-		./utils/linked_list/ft_env_new.c \
 		./utils/linked_list/ft_env_clear.c \
+		./utils/linked_list/ft_lstnew.c \
+		./utils/linked_list/ft_env_new.c \
 		./utils/linked_list/ft_cmd_new.c \
 		./utils/linked_list/ft_file_new.c \
+		./utils/linked_list/ft_heredoc_new.c \
 		./utils/libft/ft_strdup.c \
 		./utils/libft/ft_split.c \
 		./utils/libft/ft_strncmp.c \

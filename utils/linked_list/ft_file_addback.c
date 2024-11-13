@@ -16,16 +16,12 @@ void	ft_file_addback(t_file *new)
 {
 	t_file	*tmp;
 
-	// if (!g_mini.command)
-	// 	return ;
 	if (g_mini.command->files == NULL)
 	{
-		// puts("d");
 		g_mini.command->files = new;
 		return ;
 	}
 	tmp = g_mini.command->files;
-	// printf("testttt %p\n", tmp);
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;

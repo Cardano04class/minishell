@@ -35,6 +35,7 @@ typedef enum e_state
 	IN_WHITESPACE,
 	STATE_DEFAULT,
 	STATE_REDIRECTION,
+	STATE_HEREDOC,
 	STATE_PIPE
 }						t_state;
 
@@ -64,9 +65,7 @@ typedef struct s_file
 typedef struct s_heredoc
 {
 	char				*delimiter;
-	char				**content;
 	struct s_heredoc	*next;
-
 }						t_heredoc;
 
 typedef struct s_cmd
@@ -109,7 +108,7 @@ void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
-void					ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new);
+void					ft_heredoc_addback(t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
