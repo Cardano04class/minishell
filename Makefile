@@ -4,7 +4,7 @@ SRC = ./src/main.c \
 		./src/lexer.c \
 		./src/parser.c \
 		./src/syntax.c \
-		./src/builtins.c\
+		./src/builtins/builtins.c\
 		./src/builtins/env.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \

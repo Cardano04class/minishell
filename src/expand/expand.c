@@ -6,12 +6,11 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:26:11 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/12 11:54:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/13 13:18:27 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
 #define BUFFER_SIZE 1024
 
@@ -70,20 +69,27 @@ static void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 	state->env = env;
 }
 
-static void	handle_quotes(t_parse_state *state)
+static void handle_quotes(t_parse_state *state)
 {
-	if (!ensure_buffer_space(state, 1))
-		return ;
-	if (state->line[state->i] == '\'' && !state->in_double_quote)
-	{
-		state->in_single_quote = !state->in_single_quote;
-		state->result[state->result_idx++] = state->line[state->i++];
-	}
-	else if (state->line[state->i] == '\"' && !state->in_single_quote)
-	{
-		state->in_double_quote = !state->in_double_quote;
-		state->result[state->result_idx++] = state->line[state->i++];
-	}
+    if (!ensure_buffer_space(state, 1))
+        return;
+    // Only toggle quote state if not in the other type of quotes
+    if (state->line[state->i] == '\'' && !state->in_double_quote)
+    {
+        state->in_single_quote = !state->in_single_quote;
+        state->result[state->result_idx++] = state->line[state->i];
+    }
+    else if (state->line[state->i] == '\"' && !state->in_single_quote)
+    {
+        state->in_double_quote = !state->in_double_quote;
+        state->result[state->result_idx++] = state->line[state->i];
+    }
+    else
+    {
+        // If we're in quotes and encounter the other type of quote, just copy it
+        state->result[state->result_idx++] = state->line[state->i];
+    }
+    state->i++; // Always advance the index
 }
 
 static void	copy_var_value(t_parse_state *state, char *value)
@@ -99,58 +105,81 @@ static void	copy_var_value(t_parse_state *state, char *value)
 	state->result_idx += value_len;
 }
 
-static void	expand_env_var(t_parse_state *state)
+static void expand_env_var(t_parse_state *state)
 {
-	char	var_name[256];
-	size_t	var_idx;
-	char	*value;
+    char var_name[256];
+    size_t var_idx = 0;
+    char *value;
 
-	var_idx = 0;
-	state->i++;
-	if (!state->line[state->i] || state->line[state->i] == ' '
-		|| state->line[state->i] == '\'' || state->line[state->i] == '\"')
-	{
-		if (!ensure_buffer_space(state, 1))
-			return ;
-		state->result[state->result_idx++] = '$';
-		return ;
-	}
-	while (state->line[state->i] && (ft_isalnum(state->line[state->i])
-			|| state->line[state->i] == '_') && var_idx < 255)
-		var_name[var_idx++] = state->line[state->i++];
-	var_name[var_idx] = '\0';
-	value = expand_variable(state->env, var_name);
-	copy_var_value(state, value);
+    state->i++; // Skip the '$'
+
+    // Handle $"VAR" case - return "VAR" literally without expansion
+    if (state->line[state->i] == '\"')
+    {
+        state->i++; // Skip the opening quote
+        while (state->line[state->i] && state->line[state->i] != '\"' && var_idx < 255)
+        {
+            var_name[var_idx++] = state->line[state->i++];
+        }
+        if (state->line[state->i] == '\"')
+            state->i++; // Skip the closing quote
+        
+        // Output the literal name without expanding it
+        var_name[var_idx] = '\0';
+        copy_var_value(state, var_name); // Copy the literal "VAR_NAME"
+        return;
+    }
+
+    // Normal variable expansion
+    while (state->line[state->i] && (ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') && var_idx < 255)
+    {
+        var_name[var_idx++] = state->line[state->i++];
+    }
+    var_name[var_idx] = '\0';
+
+    // Expand and copy variable value if we have a name
+    if (var_idx > 0)
+    {
+        value = expand_variable(state->env, var_name);
+        copy_var_value(state, value);
+    }
+    else
+    {
+        // In case of no variable name, add a literal '$'
+        if (!ensure_buffer_space(state, 1))
+            return;
+        state->result[state->result_idx++] = '$';
+    }
 }
 
-char	*expand_variables(t_env *env, char *line)
+char    *expand_variables(t_env *env, char *line)
 {
-	t_parse_state	state;
+    t_parse_state    state;
 
-	init_parse_state(&state, line, env);
-	if (!state.result)
-		return (NULL);
-	while (line[state.i])
-	{
-		if (!ensure_buffer_space(&state, 1))
-		{
-			free(state.result);
-			return (NULL);
-		}
-		if (line[state.i] == '\'' || line[state.i] == '\"')
-		{
-			handle_quotes(&state);
-			continue ;
-		}
-		if (line[state.i] == '$' && !state.in_single_quote)
-		{
-			expand_env_var(&state);
-			continue ;
-		}
-		state.result[state.result_idx++] = line[state.i++];
-	}
-	state.result[state.result_idx] = '\0';
-	return (state.result);
+    init_parse_state(&state, line, env);
+    if (!state.result)
+        return (NULL);
+    while (line[state.i])
+    {
+        if (!ensure_buffer_space(&state, 1))
+        {
+            free(state.result);
+            return (NULL);
+        }
+        if (line[state.i] == '\'' || line[state.i] == '\"')
+        {
+            handle_quotes(&state);
+            continue;
+        }
+        if (line[state.i] == '$' && !state.in_single_quote)
+        {
+            expand_env_var(&state);
+            continue;
+        }
+        state.result[state.result_idx++] = line[state.i++];
+    }
+    state.result[state.result_idx] = '\0';
+    return (state.result);
 }
 
 char	*remove_quotes(char *str)
@@ -183,23 +212,23 @@ char	*remove_quotes(char *str)
 	return (result);
 }
 
-void	process_expanded(int i, char *expanded_line)
-{
-	char	*final_line;
 
-	if (!expanded_line)
-		return ;
-	final_line = remove_quotes(expanded_line);
-	free(expanded_line);
-	if (!final_line || final_line[0] == '\0')
-	{
-		free(final_line);
-		free(g_mini.command->cmd[i]);
-		shift_left(i);
-		return ;
-	}
-	free(g_mini.command->cmd[i]);
-	g_mini.command->cmd[i] = final_line;
+void    process_expanded(int i, char *expanded_line)
+{
+    char    *final_line;
+
+    if (!expanded_line)
+        return;
+    final_line = remove_quotes(expanded_line);
+    free(expanded_line);
+    if (!final_line)  // Only shift if NULL, not if empty
+    {
+        free(g_mini.command->cmd[i]);
+        shift_left(i);
+        return;
+    }
+    free(g_mini.command->cmd[i]);
+    g_mini.command->cmd[i] = final_line;
 }
 
 void	remove_empty_arg(int i)
@@ -208,23 +237,54 @@ void	remove_empty_arg(int i)
 	shift_left(i);
 }
 
-void	expand(t_env *env)
+void expand(t_env *env)
 {
-	int		i;
-	char	*line;
-	char	*expanded_line;
+    int i = 0;
+    char *line;
+    char *merged_arg = NULL;
+    char *expanded_line;
 
-	i = 0;
-	while (g_mini.command->cmd[i])
-	{
-		line = g_mini.command->cmd[i];
-		if (!line || (line[0] == '$' && line[1] == '\0'))
-		{
-			remove_empty_arg(i);
-			continue ;
-		}
-		expanded_line = expand_variables(env, line);
-		process_expanded(i, expanded_line);
-		i++;
-	}
+    while (g_mini.command->cmd[i])
+    {
+        line = g_mini.command->cmd[i];
+        
+        // Debugging to check current argument
+        // printf("Debug: Current argument [%d]: \"%s\"\n", i, line);
+
+        // Check if the current argument is just a standalone '$'
+        if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
+        {
+            char *next_arg = g_mini.command->cmd[i + 1];
+            // Check if the next argument is a quoted string (starts with " or ')
+            if (next_arg[0] == '\"' || next_arg[0] == '\'')
+            {
+                // printf("Debug: Merging standalone $ with next argument \"%s\"\n", next_arg);
+
+                // Allocate memory for the merged argument
+                merged_arg = malloc(ft_strlen(next_arg) + 2); // $ + next arg + null terminator
+                if (!merged_arg)
+                    return;
+
+                // Create the merged argument "$" + next argument
+                strcpy(merged_arg, "$");
+                strcat(merged_arg, next_arg);
+
+                // Free the standalone `$` argument and replace it with the merged one
+                free(g_mini.command->cmd[i]);
+                g_mini.command->cmd[i] = merged_arg;
+
+                // Shift left to remove the next argument since it's merged
+                shift_left(i + 1);
+            }
+        }
+        // Expand the merged or current argument
+        expanded_line = expand_variables(env, g_mini.command->cmd[i]);
+        process_expanded(i, expanded_line);
+
+        // Debugging after processing
+        // printf("Debug: Processed argument [%d]: \"%s\"\n", i, g_mini.command->cmd[i]);
+
+        i++;
+    }
 }
+
