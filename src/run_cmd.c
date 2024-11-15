@@ -190,6 +190,19 @@ void	handle_pipe(t_cmd *command, t_env *env)
 
 void    run_cmd(t_cmd *command, t_env *env)
 {
+	char	*line;
+
+	while (command->heredoc != NULL)
+	{
+		while (1)
+		{
+			line = readline(">");
+			if (ft_strnstr(command->heredoc->delimiter, line, 
+				ft_strlen(command->heredoc->delimiter)) != NULL)
+					break ;
+		}
+		command->heredoc = command->heredoc->next;
+	}
     if (command->next == NULL)
         execute(command, env);
 	else
