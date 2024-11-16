@@ -6,265 +6,90 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/05 22:05:23 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/16 14:59:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	already_sorted(t_env *lst)
-{
-	while (lst)
-	{
-		if (strcmp(lst->key, lst->next->key) > 0)
-			return (1);
-		if (strcmp(lst->key, lst->next->key) < 0)
-			return (1);
-		lst = lst->next;
-	}
-	return (0);
-}
-
-t_env	*sort_env(const t_env *env_list)
-{
-	t_env		*sorted_list;
-	const t_env	*current = env_list;
-	t_env		*new_node;
-	t_env		*prev;
-
-	sorted_list = NULL;
-	while (current != NULL)
-	{
-		new_node = (t_env *)malloc(sizeof(t_env));
-		new_node->key = ft_strdup(current->key);
-		if (current->value != NULL)
-			new_node->value = ft_strdup(current->value);
-		else
-			new_node->value = NULL;
-		new_node->next = NULL;
-		// Insert new_node into the sorted list in sorted order
-		if (sorted_list == NULL || strcmp(sorted_list->key, new_node->key) > 0)
-		{
-			new_node->next = sorted_list;
-			sorted_list = new_node;
-		}
-		else
-		{
-			prev = sorted_list;
-			while (prev->next != NULL && strcmp(prev->next->key,
-					new_node->key) < 0)
-			{
-				prev = prev->next;
-			}
-			new_node->next = prev->next;
-			prev->next = new_node;
-		}
-		current = current->next;
-	}
-	return (sorted_list);
-}
-
-t_env	*env_exist(t_env **env_list, const char *name)
-{
-	t_env	*current;
-
-	current = *env_list;
-	while (current)
-	{
-		if (strcmp(current->key, name) == 0)
-			return (current);
-		current = current->next;
-	}
-	return (NULL);
-}
-
-void	update_env(t_env **env_list, char *name, char *value, bool plus_sign)
-{
-	t_env	*current;
-
-	current = *env_list;
-	while (current)
-	{
-		if (plus_sign == true)
-		{
-			if (strcmp(current->key, name) == 0 && ft_strlen(current->key) != 0)
-			{
-				current->value = ft_strjoin(current->value, value);
-				return ;
-			}
-		}
-		else
-		{
-			if (strcmp(current->key, name) == 0)
-			{
-				free(current->value);
-				current->value = ft_strdup(value);
-				return ;
-			}
-		}
-		current = current->next;
-	}
-}
 
 t_env	*ft_export_node(t_env **env_lst, char *name, char *value)
 {
 	t_env	*new_node;
 	t_env	*current;
 
-	new_node = (t_env *)malloc(sizeof(t_env));
+	new_node = init_export_node(name);
 	if (!new_node)
-	{
-		perror("Failed to allocate memory for new environment node");
 		return (NULL);
-	}
-	new_node->key = ft_strdup(name);
-	if (!new_node->key)
-	{
-		perror("Failed to allocate memory for variable name");
-		free(new_node);
+	if (set_node_value(new_node, value))
 		return (NULL);
-	}
-	if (value)
-	{
-		new_node->value = ft_strdup(value);
-		if (!new_node->value)
-		{
-			perror("Failed to allocate memory for variable value");
-			free(new_node->key);
-			free(new_node);
-			return (NULL);
-		}
-	}
-	else
-		new_node->value = NULL;
-	new_node->next = NULL;
 	if (*env_lst == NULL)
 		*env_lst = new_node;
 	else
 	{
 		current = *env_lst;
 		while (current->next != NULL)
-		{
 			current = current->next;
-		}
 		current->next = new_node;
 	}
 	return (new_node);
 }
 
-int	is_valid_name(char *str)
+static int	handle_existing_node(t_env **lst, char *var_name, char *var_value,
+		int plus_sign)
 {
-	int	i;
+	t_env	*existing_node;
 
-	i = 0;
-	if (!ft_isalpha(str[i]) && str[i] != '_')
-		return (0);
-	i++;
-	while (str[i])
+	existing_node = env_exist(lst, var_name);
+	if (existing_node)
 	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
+		if (plus_sign != -1)
+			update_env(lst, var_name, var_value, true);
+		else
+			update_env(lst, var_name, var_value, false);
 	}
-	return (1);
-}
-int	find_plus(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
+	else if (!ft_export_node(lst, var_name, var_value))
 	{
-		if (str[i + 1] == '=' && str[i] == '+')
-			return (i);
-		i++;
+		perror("Error setting variable:");
+		free(var_name);
+		free(var_value);
+		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
-int	find_equals(char *str)
+static int	handle_no_equal_sign(t_env **lst, char *str)
 {
-	int	i;
+	char	*var_name;
+	t_env	*existing_node;
 
-	i = 0;
-	while (str[i])
+	var_name = ft_strdup(str);
+	if (!is_valid_name(var_name))
 	{
-		if (str[i] == '=')
-			return (i);
-		i++;
+		printf("export: '%s': not a valid identifier\n", var_name);
+		free(var_name);
+		return (1);
 	}
-	return -1;
+	existing_node = env_exist(lst, var_name);
+	if (!existing_node && !ft_export_node(lst, var_name, NULL))
+	{
+		perror("failed adding variable\n");
+		free(var_name);
+		return (1);
+	}
+	free(var_name);
+	return (0);
 }
 
 int	set_env(t_env **lst, char *str)
 {
-	char	*var_name;
-	char	*var_value;
-	int		equal_sign;
-	int		plus_sign;
-	t_env	*existing_node;
+	int	equal_sign;
+	int	plus_sign;
 
 	equal_sign = find_equals(str);
 	plus_sign = find_plus(str);
-	var_value = NULL;
-	if (equal_sign != -1)
-	{
-		var_name = ft_substr(str, 0, equal_sign);
-		var_value = ft_substr(str, equal_sign + 1, ft_strlen(str) - equal_sign
-				- 1);
-		if (plus_sign != -1)
-			var_name = ft_substr(str, 0, plus_sign);
-		if (ft_strlen(var_value) == 0)
-			var_value = ft_strdup("");
-		if (!is_valid_name(var_name))
-		{
-			printf("export: '%s': not a valid identifier\n", var_name);
-			return 1;
-		}
-		existing_node = env_exist(lst, var_name);
-		if (existing_node)
-		{
-			if (plus_sign != -1)
-				update_env(lst, var_name, var_value, true);
-			else
-				update_env(lst, var_name, var_value, false);
-		}
-		else
-		{
-			if (!ft_export_node(lst, var_name, var_value))
-			{
-				perror("Error setting variable:");
-				free(var_name);
-				free(var_value);
-				return 1;
-			}
-		}
-		free(var_name);
-		free(var_value);
-	}
-	else
-	{
-		var_name = ft_strdup(str);
-		if (!is_valid_name(var_name))
-		{
-			printf("export: '%s': not a valid identifier\n", var_name);
-			return 1;
-		}
-		existing_node = env_exist(lst, var_name);
-		if (existing_node)
-			return 0;
-		else
-		{
-			if (!ft_export_node(lst, var_name, NULL))
-			{
-				perror("failed adding variable\n");
-				free(var_name);
-				return 1;
-			}
-		}
-		free(var_name);
-	}
-	return 0;
+	if (equal_sign == -1)
+		return (handle_no_equal_sign(lst, str));
+	return (handle_equal_sign(lst, str, equal_sign, plus_sign));
 }
 
 int	export(char **args, t_env **lst)
@@ -277,7 +102,7 @@ int	export(char **args, t_env **lst)
 	{
 		sorted = sort_env(*lst);
 		print_export(sorted);
-		return 0;
+		return (0);
 	}
 	i = 1;
 	while (args[i])
@@ -285,5 +110,5 @@ int	export(char **args, t_env **lst)
 		set_env(lst, args[i]);
 		i++;
 	}
-	return 0;
+	return (0);
 }

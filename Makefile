@@ -9,10 +9,13 @@ SRC = ./src/main.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \
 		./src/builtins/cd_functions.c \
-		./src/run_cmd.c \
 		./src/builtins/export.c \
+		./src/builtins/export_helpers.c \
+		./src/builtins/export_helpers_2.c \
+		./src/builtins/export_helpers_3.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
+		./src/run_cmd.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \

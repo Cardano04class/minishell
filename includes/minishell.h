@@ -13,11 +13,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <sysexits.h>
 # include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
 
 typedef enum e_token
 {
@@ -88,35 +87,50 @@ extern t_global			g_mini;
 
 typedef struct s_parse_state
 {
-	int		in_single_quote;
-	int		in_double_quote;
-	char	*result;
-	size_t	result_size;
-	size_t	result_idx;
-	char	*line;
-	size_t	i;
-	t_env	*env;
-}	t_parse_state;
+	int					in_single_quote;
+	int					in_double_quote;
+	char				*result;
+	size_t				result_size;
+	size_t				result_idx;
+	char				*line;
+	size_t				i;
+	t_env				*env;
+}						t_parse_state;
 
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
-int 					run_builtins(t_env **env);
+int						run_builtins(t_env **env);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
-void 					ft_env(char **env, t_env **env_lst);
+void					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
-void 					cd(t_env **env, char **args);
+void					cd(t_env **env, char **args);
 void					pwd(t_env **env);
-int 					export(char **args, t_env **lstvoid);
-int 					unset(char **args, t_env **env_list);
-void 					expand(t_env *env);
+int						export(char **args, t_env **lstvoid);
+int						unset(char **args, t_env **env_list);
+void					expand(t_env *env);
 /*-------------CD_functions----------------*/
-t_env 					*find_env_var(t_env *env, const char *name);
-void 					update_env_var(t_env **env, const char *name, const char *value);
-void 					cd_home(char *home);
-void 					cd_oldpwd(t_env *oldpwd_env);
-void 					cd_path(const char *path);
+t_env					*find_env_var(t_env *env, const char *name);
+void					update_env_var(t_env **env, const char *name,
+							const char *value);
+void					cd_home(char *home);
+void					cd_oldpwd(t_env *oldpwd_env);
+void					cd_path(const char *path);
+/*---------------Export_helpers-----------*/
+int						find_equals(char *str);
+int						is_valid_name(char *str);
+int						find_plus(char *str);
+t_env					*sort_env(const t_env *env_list);
+t_env					*create_env_node(const t_env *current);
+t_env					*env_exist(t_env **env_list, const char *name);
+void					update_env(t_env **env_list, char *name, char *value, bool plus_sign);
+t_env					*init_export_node(char *name);
+int						set_node_value(t_env *new_node, char *value);
+void					insert_sorted_node(t_env **sorted_list, t_env *new_node);
+int						handle_equal_sign(t_env **lst, char *str, int equal_sign, int plus_sign);
+int						validate_and_handle(t_env **lst, char *var_name, char *var_value, int plus_sign);
+
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
@@ -138,27 +152,11 @@ int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
-void 					print_env(t_env *env_lst);
-t_env* 					env_exist(t_env **env_list, const char *name);
-void 					print_export(t_env *env);
-char 					*get_env(t_env *env, const char *name);
+void					print_env(t_env *env_lst);
+t_env					*env_exist(t_env **env_list, const char *name);
+void					print_export(t_env *env);
+char					*get_env(t_env *env, const char *name);
 
-
-void    run_cmd(t_cmd *command, t_env *env);
+void					run_cmd(t_cmd *command, t_env *env);
 
 #endif
-
-// add this :
-// typedef struct s_cmd
-// {
-// 	char			**cmd;
-// 	t_node			*input_fd;
-// 	t_node			*output_fd;
-// }					t_cmd;
-
-// typedef struct s_node
-// {
-// 	int				data;
-// 	struct s_node	*next;
-// 	struct s_node	*prev;
-// }					t_node;
