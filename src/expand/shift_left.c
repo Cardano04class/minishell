@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   shift_left.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/16 15:36:55 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 15:37:02 by mamir            ###   ########.fr       */
+/*   Created: 2024/11/16 15:41:10 by mamir             #+#    #+#             */
+/*   Updated: 2024/11/16 15:41:18 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand(t_env *env)
+void	shift_left(int i)
 {
-	int		i;
-	char	*expanded_line;
-
-	i = 0;
-	while (g_mini.command->cmd[i])
+	while (g_mini.command->cmd[i + 1])
 	{
-		expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-		process_expanded(i, expanded_line);
+		g_mini.command->cmd[i] = g_mini.command->cmd[i + 1];
 		i++;
 	}
+	g_mini.command->cmd[i] = NULL;
 }

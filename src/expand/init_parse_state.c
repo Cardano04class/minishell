@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   init_parse_state.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/16 15:36:55 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 15:37:02 by mamir            ###   ########.fr       */
+/*   Created: 2024/11/16 15:40:22 by mamir             #+#    #+#             */
+/*   Updated: 2024/11/16 15:40:33 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand(t_env *env)
+void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 {
-	int		i;
-	char	*expanded_line;
-
-	i = 0;
-	while (g_mini.command->cmd[i])
-	{
-		expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-		process_expanded(i, expanded_line);
-		i++;
-	}
+	state->in_single_quote = 0;
+	state->in_double_quote = 0;
+	state->result = malloc(BUFFER_SIZE);
+	state->result_size = BUFFER_SIZE;
+	state->result_idx = 0;
+	state->line = line;
+	state->i = 0;
+	state->env = env;
 }

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 14:59:21 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/16 15:44:51 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_env	*ft_export_node(t_env **env_lst, char *name, char *value)
 	return (new_node);
 }
 
-static int	handle_existing_node(t_env **lst, char *var_name, char *var_value,
+int	handle_existing_node(t_env **lst, char *var_name, char *var_value,
 		int plus_sign)
 {
 	t_env	*existing_node;

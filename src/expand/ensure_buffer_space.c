@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   ensure_buffer_space.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/16 15:36:55 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 15:37:02 by mamir            ###   ########.fr       */
+/*   Created: 2024/11/16 15:40:46 by mamir             #+#    #+#             */
+/*   Updated: 2024/11/16 15:40:56 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand(t_env *env)
+int	ensure_buffer_space(t_parse_state *state, size_t needed)
 {
-	int		i;
-	char	*expanded_line;
+	char	*new_buf;
+	size_t	new_size;
 
-	i = 0;
-	while (g_mini.command->cmd[i])
+	if (state->result_idx + needed >= state->result_size)
 	{
-		expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-		process_expanded(i, expanded_line);
-		i++;
+		new_size = state->result_size * 2;
+		new_buf = malloc(new_size);
+		if (!new_buf)
+			return (0);
+		ft_memcpy(new_buf, state->result, state->result_idx);
+		free(state->result);
+		state->result = new_buf;
+		state->result_size = new_size;
 	}
+	return (1);
 }

@@ -15,6 +15,19 @@ SRC = ./src/main.c \
 		./src/builtins/export_helpers_3.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
+		./src/expand/copy_var_value.c \
+		./src/expand/expand_variable.c \
+		./src/expand/handle_quotes.c \
+		./src/expand/init_parse_state.c \
+		./src/expand/remove_empty_arg.c \
+		./src/expand/shift_left.c \
+		./src/expand/ensure_buffer_space.c \
+		./src/expand/expand_env_var.c \
+		./src/expand/expand_variables.c \
+		./src/expand/handle_regular_var.c \
+		./src/expand/process_expanded.c \
+		./src/expand/remove_quotes.c \
+		./src/expand/handle_quoted_var.c \
 		./src/run_cmd.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \

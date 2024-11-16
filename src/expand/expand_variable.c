@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/16 15:36:55 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 15:37:02 by mamir            ###   ########.fr       */
+/*   Created: 2024/11/16 15:41:28 by mamir             #+#    #+#             */
+/*   Updated: 2024/11/16 15:41:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand(t_env *env)
+char	*expand_variable(t_env *env, const char *var_name)
 {
-	int		i;
-	char	*expanded_line;
+	t_env	*current;
 
-	i = 0;
-	while (g_mini.command->cmd[i])
+	current = env;
+	while (current)
 	{
-		expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-		process_expanded(i, expanded_line);
-		i++;
+		if (strcmp(current->key, var_name) == 0)
+			return (current->value);
+		current = current->next;
 	}
+	return (NULL);
 }

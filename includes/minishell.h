@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define BUFFER_SIZE 1024
 # include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -109,7 +110,6 @@ void					cd(t_env **env, char **args);
 void					pwd(t_env **env);
 int						export(char **args, t_env **lstvoid);
 int						unset(char **args, t_env **env_list);
-void					expand(t_env *env);
 /*-------------CD_functions----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
@@ -130,8 +130,24 @@ int						set_node_value(t_env *new_node, char *value);
 void					insert_sorted_node(t_env **sorted_list, t_env *new_node);
 int						handle_equal_sign(t_env **lst, char *str, int equal_sign, int plus_sign);
 int						validate_and_handle(t_env **lst, char *var_name, char *var_value, int plus_sign);
-
-
+int						handle_existing_node(t_env **lst, char *var_name, char *var_value,
+	int plus_sign);
+/*------------Expand-----------------*/
+char	*expand_variable(t_env *env, const char *var_name);
+void	shift_left(int i);
+int		ensure_buffer_space(t_parse_state *state, size_t needed);
+void	init_parse_state(t_parse_state *state, char *line, t_env *env);
+void	handle_quotes(t_parse_state *state);
+void	copy_var_value(t_parse_state *state, char *value);
+void	handle_regular_var(t_parse_state *state);
+void	expand_env_var(t_parse_state *state);
+char	*expand_variables(t_env *env, char *line);
+char	*remove_quotes(char *str);
+void	process_quotes(char *str, size_t *i, size_t *j, char *result, int *in_quotes);
+void	process_expanded(int i, char *expanded_line);
+void	remove_empty_arg(int i);
+void	handle_quoted_var(t_parse_state *state, char quote_char);
+void	expand(t_env *env);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);
