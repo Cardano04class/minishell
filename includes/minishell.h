@@ -111,6 +111,12 @@ void					pwd(t_env **env);
 int 					export(char **args, t_env **lstvoid);
 int 					unset(char **args, t_env **env_list);
 void 					expand(t_env *env);
+/*-------------CD_functions----------------*/
+t_env 					*find_env_var(t_env *env, const char *name);
+void 					update_env_var(t_env **env, const char *name, const char *value);
+void 					cd_home(char *home);
+void 					cd_oldpwd(t_env *oldpwd_env);
+void 					cd_path(const char *path);
 
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);

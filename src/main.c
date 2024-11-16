@@ -51,7 +51,7 @@ void	prompt(char **env)
 		add_history(rl);
 		free(rl);
 	}
-	rl_clear_history();
+	//rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)

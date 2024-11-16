@@ -8,6 +8,7 @@ SRC = ./src/main.c \
 		./src/builtins/env.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \
+		./src/builtins/cd_functions.c \
 		./src/run_cmd.c \
 		./src/builtins/export.c \
 		./src/builtins/unset.c \
