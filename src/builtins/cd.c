@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/13 15:09:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/16 14:37:43 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,14 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 	}
 }
 
-void	cd(t_env **env, char **args)
+void	cd_handle_args(t_env **env, char **args)
 {
 	t_env	*home_env;
 	t_env	*oldpwd_env;
-	t_env	*pwd_env;
 	char	*home;
-	char	cwd[1024];
 
 	home_env = find_env_var(*env, "HOME");
 	oldpwd_env = find_env_var(*env, "OLDPWD");
-	pwd_env = find_env_var(*env, "PWD");
 	if (home_env != NULL)
 		home = home_env->value;
 	else
@@ -59,6 +56,15 @@ void	cd(t_env **env, char **args)
 		cd_oldpwd(oldpwd_env);
 	else
 		cd_path(args[1]);
+}
+
+void	cd(t_env **env, char **args)
+{
+	char	cwd[1024];
+	t_env	*pwd_env;
+
+	pwd_env = find_env_var(*env, "PWD");
+	cd_handle_args(env, args);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		if (pwd_env != NULL)
