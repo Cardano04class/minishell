@@ -51,7 +51,7 @@ void	ft_env(char **env, t_env **env_lst)
 {
 	t_env	*node;
 	int		i;
-		char *equal_sign;
+	char	*equal_sign;
 
 	i = 0;
 	while (env[i])
