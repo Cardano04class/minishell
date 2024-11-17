@@ -111,11 +111,11 @@ void	parser(t_list *lst)
 			if (state == STATE_HEREDOC)
 			{
 				ft_heredoc_addback(ft_heredoc_new(ft_strdup(lst->content)));
-				state = STATE_DEFAULT;
+				puts("heredoooc");
 			}
-			if (state == STATE_REDIRECTION)
+			else if (state == STATE_REDIRECTION)
 			{
-				// puts("3amra");
+				puts("3amra");
 				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
 				// printf("test %s\n", g_mini.command->files->filename);
 				/*puts("");
@@ -135,16 +135,18 @@ void	parser(t_list *lst)
 				 puts("");*/
 				// tmp_cmd->files = tmp_cmd->files->next;
 				// printf("test %p\n", g_mini.command->files);
-				state = STATE_DEFAULT;
+				
 			}
-			else
+			else if (state == STATE_DEFAULT)
 			{
 			//	printf(">> %d\n", index_count);
+				puts("commmmaaaand");
 				tmp_cmd->cmd[index_count] = ft_strdup(lst->content);
 			//	printf("cc: %s\n", tmp_cmd->cmd[index_count]);
 				//printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);
 				index_count++;
 			}
+			state = STATE_DEFAULT;
 		}
 		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
 			state = STATE_REDIRECTION;

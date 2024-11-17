@@ -191,7 +191,25 @@ void	handle_pipe(t_cmd *command, t_env *env)
 void    run_cmd(t_cmd *command, t_env *env)
 {
 	char	*line;
+	t_cmd	*tmp;
 
+	tmp = command;
+	int j = 0;
+	while (tmp != NULL)
+	{
+		while (tmp->cmd[j] != NULL)
+		{
+			printf("cmd = %s\n", tmp->cmd[j]);
+			j++;
+		}
+		while (tmp->heredoc != NULL)
+		{
+			printf("herdoc delimiter = %s\n", tmp->heredoc->delimiter);
+			tmp->heredoc = tmp->heredoc->next;
+		}
+		tmp = tmp->next;
+	}
+	puts("______________________________");
 	while (command->heredoc != NULL)
 	{
 		while (1)
@@ -203,6 +221,7 @@ void    run_cmd(t_cmd *command, t_env *env)
 		}
 		command->heredoc = command->heredoc->next;
 	}
+
     if (command->next == NULL)
         execute(command, env);
 	else
@@ -210,6 +229,3 @@ void    run_cmd(t_cmd *command, t_env *env)
 		handle_pipe(command, env);
 	}
 }
-
-
-// souwa 7louwa :
