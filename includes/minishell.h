@@ -98,6 +98,16 @@ typedef struct s_parse_state
 	t_env				*env;
 }						t_parse_state;
 
+typedef struct s_quote_state
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+	char	*result;
+	int		in_single;
+	int		in_double;
+}	t_quote_state;
+
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 void					syntax_error(t_list *list);
@@ -133,21 +143,21 @@ int						validate_and_handle(t_env **lst, char *var_name, char *var_value, int p
 int						handle_existing_node(t_env **lst, char *var_name, char *var_value,
 	int plus_sign);
 /*------------Expand-----------------*/
-char	*expand_variable(t_env *env, const char *var_name);
-void	shift_left(int i);
-int		ensure_buffer_space(t_parse_state *state, size_t needed);
-void	init_parse_state(t_parse_state *state, char *line, t_env *env);
-void	handle_quotes(t_parse_state *state);
-void	copy_var_value(t_parse_state *state, char *value);
-void	handle_regular_var(t_parse_state *state);
-void	expand_env_var(t_parse_state *state);
-char	*expand_variables(t_env *env, char *line);
-char	*remove_quotes(char *str);
-void	process_quotes(char *str, size_t *i, size_t *j, char *result, int *in_quotes);
-void	process_expanded(int i, char *expanded_line);
-void	remove_empty_arg(int i);
-void	handle_quoted_var(t_parse_state *state, char quote_char);
 void	expand(t_env *env);
+void	handle_quotes(t_parse_state *state);
+void	init_parse_state(t_parse_state *state, char *line, t_env *env);
+int	ensure_buffer_space(t_parse_state *state, size_t needed);
+void	shift_left(int i);
+char	*expand_variable(t_env *env, const char *var_name);
+void	process_standard_char(t_parse_state *state);
+void	expand_env_var(t_parse_state *state);
+void	handle_regular_var(t_parse_state *state);
+void	handle_quoted_var(t_parse_state *state, char quote_char);
+void	copy_var_value(t_parse_state *state, char *value);
+void	process_char(t_parse_state *state);
+void	process_quotes(t_quote_state *state);
+char	*remove_quotes(char *str);
+
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);
