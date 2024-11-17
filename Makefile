@@ -3,7 +3,8 @@ NAME = minishell
 SRC = ./src/main.c \
 		./src/lexer.c \
 		./src/parser.c \
-		./src/syntax.c \
+		./src/syntax_error/syntax.c \
+		./src/syntax_error/syntax_1.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env.c \
 		./src/builtins/echo.c \

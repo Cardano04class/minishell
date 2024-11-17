@@ -108,9 +108,27 @@ typedef struct s_quote_state
 	int		in_double;
 }	t_quote_state;
 
+typedef enum e_error_type {
+    NO_ERROR,
+    UNCLOSED_QUOTES,
+    INVALID_POSITION,
+    CONSECUTIVE_SPECIAL,
+    PIPE_AT_START,
+    MISSING_CONTEXT
+} t_error_type;
+
+typedef struct s_error {
+    t_error_type type;
+    char *token;
+} t_error;
+
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
+
 void					syntax_error(t_list *list);
+t_error					create_error(t_error_type type, char *token);
+void					print_error(t_error error);
+
 int						run_builtins(t_env **env);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
