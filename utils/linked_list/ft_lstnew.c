@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:50:10 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/10 15:11:24 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:34:00 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,3 @@ t_list	*ft_lstnew(char *content, t_token type)
 	new->prev = NULL;
 	return (new);
 }
-
