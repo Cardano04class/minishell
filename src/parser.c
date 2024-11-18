@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/07 23:49:28 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/17 15:27:50 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	parser(t_list *lst)
 			{
 				ft_heredoc_addback(ft_heredoc_new(ft_strdup(lst->content)));
 				puts("heredoooc");
+				state = STATE_DEFAULT;
 			}
 			else if (state == STATE_REDIRECTION)
 			{
@@ -136,8 +137,9 @@ void	parser(t_list *lst)
 				// tmp_cmd->files = tmp_cmd->files->next;
 				// printf("test %p\n", g_mini.command->files);
 				
+				state = STATE_DEFAULT;
 			}
-			else if (state == STATE_DEFAULT)
+			else
 			{
 			//	printf(">> %d\n", index_count);
 				puts("commmmaaaand");
@@ -146,7 +148,6 @@ void	parser(t_list *lst)
 				//printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);
 				index_count++;
 			}
-			state = STATE_DEFAULT;
 		}
 		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
 			state = STATE_REDIRECTION;

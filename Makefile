@@ -8,6 +8,7 @@ SRC = ./src/main.c \
 		./src/echo.c \
 		./src/cd.c \
 		./src/run_cmd.c \
+		./src/run_heredoc.c \
 		./src/export.c \
 		./src/unset.c \
 		./utils/linked_list/ft_lstaddback.c \
@@ -44,7 +45,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strjoin.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
@@ -63,5 +64,9 @@ fclean : clean
 	rm -rf $(NAME)
 
 re : fclean all
+
+sup:
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
+
 
 .SECONDARY: $(OBJ)

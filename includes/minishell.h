@@ -15,6 +15,9 @@
 # include <string.h>
 # include <sysexits.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 
 typedef enum e_token
 {
@@ -118,7 +121,8 @@ void 					print_env(t_env *env_lst);
 t_env* 					env_exist(t_env **env_list, const char *name);
 void 					print_export(t_env *env);
 
-void    run_cmd(t_cmd *command, t_env *env);
+void    				run_cmd(t_cmd *command, t_env *env);
+void 					run_heredoc(t_cmd	*command);
 
 #endif
 

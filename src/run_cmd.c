@@ -190,42 +190,13 @@ void	handle_pipe(t_cmd *command, t_env *env)
 
 void    run_cmd(t_cmd *command, t_env *env)
 {
-	char	*line;
-	t_cmd	*tmp;
-
-	tmp = command;
-	int j = 0;
-	while (tmp != NULL)
-	{
-		while (tmp->cmd[j] != NULL)
-		{
-			printf("cmd = %s\n", tmp->cmd[j]);
-			j++;
-		}
-		while (tmp->heredoc != NULL)
-		{
-			printf("herdoc delimiter = %s\n", tmp->heredoc->delimiter);
-			tmp->heredoc = tmp->heredoc->next;
-		}
-		tmp = tmp->next;
-	}
-	puts("______________________________");
-	while (command->heredoc != NULL)
-	{
-		while (1)
-		{
-			line = readline(">");
-			if (ft_strnstr(command->heredoc->delimiter, line, 
-				ft_strlen(command->heredoc->delimiter)) != NULL)
-					break ;
-		}
-		command->heredoc = command->heredoc->next;
-	}
-
-    if (command->next == NULL)
+    
+	if (command->next == NULL)
         execute(command, env);
 	else
 	{
 		handle_pipe(command, env);
 	}
 }
+
+

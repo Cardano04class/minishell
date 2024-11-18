@@ -54,6 +54,7 @@ void	prompt(char **env)
 		// 	tmp->heredoc = tmp->heredoc->next;
 		// }
 		//printf("test %p\n", g_mini.command->heredoc);
+		run_heredoc(g_mini.command);
 		run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);
