@@ -14,6 +14,13 @@ int empty_prompt(char *rl)
 	return i;
 }
 
+void	handle_sigint1(int signum)
+{
+	(void)signum;
+
+	write(1, "minishell$ ", 12);
+
+}
 
 void	prompt(char **env)
 {
@@ -31,6 +38,8 @@ void	prompt(char **env)
 		g_mini.command->files = NULL;
 		g_mini.command->heredoc = NULL;
 		g_mini.command->next = NULL;
+		
+		signal(SIGINT, handle_sigint1);
 		rl = readline("minishell$ ");
 		if (rl == NULL)
 		{
