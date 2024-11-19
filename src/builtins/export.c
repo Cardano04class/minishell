@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 15:44:51 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/19 09:30:26 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	handle_existing_node(t_env **lst, char *var_name, char *var_value,
 	return (0);
 }
 
-static int	handle_no_equal_sign(t_env **lst, char *str)
+int	handle_no_equal_sign(t_env **lst, char *str)
 {
 	char	*var_name;
 	t_env	*existing_node;
