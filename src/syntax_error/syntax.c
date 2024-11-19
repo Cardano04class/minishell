@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/17 15:22:33 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/19 23:01:45 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_error	check_quotes(char *str)
 		return (create_error(UNCLOSED_QUOTES, str));
 	return (create_error(NO_ERROR, NULL));
 }
-
+	
 t_error	check_special_token_position(t_list *token)
 {
 	if (!token->next && is_special(token))
