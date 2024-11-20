@@ -93,8 +93,6 @@ void    execute(t_cmd *command, t_env *list_env)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGINT, handle_sigint);
 		while (command->files != NULL)
 		{
 			if (command->files->type == INRED)
@@ -159,6 +157,8 @@ void    execute(t_cmd *command, t_env *list_env)
 	}
 	// close(fd_out);
 	// close(fd_in);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, handle_sigint);
 	waitpid(child_pid, &status, 0);
 	signal(SIGINT, SIG_DFL);
 }
