@@ -1,4 +1,4 @@
-#ifndef MINISHELL_H
+# ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "libft.h"
@@ -28,6 +28,13 @@ typedef enum e_token
 	HEREDOC,
 	PIPE
 }						t_token;
+
+typedef enum e_sig
+{
+	IN_CHILD,
+	IN_HEREDOC,
+	IN_PROMPT
+}						t_sig;
 
 typedef enum e_state
 {
@@ -82,6 +89,7 @@ typedef struct s_cmd
 typedef struct s_global
 {
 	t_cmd				*command;
+	int					sig_flag;
 }						t_global;
 
 extern t_global			g_mini;
@@ -123,6 +131,8 @@ void 					print_export(t_env *env);
 
 void    				run_cmd(t_cmd *command, t_env *env);
 void 					run_heredoc(t_cmd	*command);
+void 					signal_handler(int sig);
+void						handle_sigint(int signum);
 
 #endif
 

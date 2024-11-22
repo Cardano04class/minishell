@@ -25,6 +25,7 @@ char	*find_path(char *cmd, t_env *env)
 	if (path == NULL)
 		return (cmd);
 	cmd = ft_strjoin("/", cmd);
+	printf("cmd : %s\n", cmd);
 	paths = ft_split(path, ':');
 	if (paths == NULL)
 		return (NULL);
@@ -60,13 +61,6 @@ char	**convert_env(t_env *list_env)
 	}
 	env[j] = NULL;
 	return (env);
-}
-void	handle_sigint(int signum)
-{
-	(void)signum;
-
-	write(1, "\n", 1);
-
 }
 
 void    execute(t_cmd *command, t_env *list_env)
@@ -155,12 +149,9 @@ void    execute(t_cmd *command, t_env *list_env)
 			exit(127);
 		}
 	}
-	// close(fd_out);
-	// close(fd_in);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, handle_sigint);
 	waitpid(child_pid, &status, 0);
-	signal(SIGINT, SIG_DFL);
+	signal_handler(IN_CHILD);
+
 }
 
 void	handle_pipe(t_cmd *command, t_env *env)

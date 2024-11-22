@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/17 15:27:50 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:05:21 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,10 @@ void	parser(t_list *lst)
 			if (state == STATE_HEREDOC)
 			{
 				ft_heredoc_addback(ft_heredoc_new(ft_strdup(lst->content)));
-				puts("heredoooc");
 				state = STATE_DEFAULT;
 			}
 			else if (state == STATE_REDIRECTION)
 			{
-				puts("3amra");
 				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
 				// printf("test %s\n", g_mini.command->files->filename);
 				/*puts("");
@@ -142,7 +140,6 @@ void	parser(t_list *lst)
 			else
 			{
 			//	printf(">> %d\n", index_count);
-				puts("commmmaaaand");
 				tmp_cmd->cmd[index_count] = ft_strdup(lst->content);
 			//	printf("cc: %s\n", tmp_cmd->cmd[index_count]);
 				//printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);

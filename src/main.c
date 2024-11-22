@@ -14,14 +14,6 @@ int empty_prompt(char *rl)
 	return i;
 }
 
-void	handle_sigint1(int signum)
-{
-	(void)signum;
-
-	write(1, "minishell$ ", 12);
-
-}
-
 void	prompt(char **env)
 {
 	char	*rl;
@@ -34,13 +26,15 @@ void	prompt(char **env)
 	ft_env(env, &env_list);
 	while (1)
 	{
+		g_mini.sig_flag = 0;
 		g_mini.command = malloc(sizeof(t_cmd));
 		g_mini.command->files = NULL;
 		g_mini.command->heredoc = NULL;
 		g_mini.command->next = NULL;
 		
-		signal(SIGINT, handle_sigint1);
+		signal_handler(IN_PROMPT);
 		rl = readline("minishell$ ");
+		g_mini.sig_flag = 1;
 		if (rl == NULL)
 		{
 			printf("exit\n");
@@ -69,6 +63,8 @@ void	prompt(char **env)
 		add_history(rl);
 		free(rl);
 		free(args);
+		signal_handler(IN_PROMPT);
+		
 	}
 	//rl_clear_history();
 }

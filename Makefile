@@ -11,6 +11,7 @@ SRC = ./src/main.c \
 		./src/run_heredoc.c \
 		./src/export.c \
 		./src/unset.c \
+		./src/signal_handler.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
@@ -45,7 +46,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strjoin.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
