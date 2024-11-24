@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:23:26 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/17 10:36:46 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/24 13:00:41 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,25 @@ void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 	state->env = env;
 }
 
-void	handle_quotes(t_parse_state *state)
+void handle_quotes(t_parse_state *state)
 {
-	if (!ensure_buffer_space(state, 1))
-		return ;
-	if (state->line[state->i] == '\'' && !state->in_double_quote)
-	{
-		state->in_single_quote = !state->in_single_quote;
-		state->result[state->result_idx++] = state->line[state->i];
-	}
-	else if (state->line[state->i] == '\"' && !state->in_single_quote)
-	{
-		state->in_double_quote = !state->in_double_quote;
-		state->result[state->result_idx++] = state->line[state->i];
-	}
-	else
-		state->result[state->result_idx++] = state->line[state->i];
-	state->i++;
+    if (!ensure_buffer_space(state, 1))
+        return ;
+    if (state->line[state->i] == '\'' && !state->in_double_quote)
+    {
+        state->in_single_quote = !state->in_single_quote;
+        // Keep the quote in the result for proper removal later
+        state->result[state->result_idx++] = state->line[state->i];
+    }
+    else if (state->line[state->i] == '\"' && !state->in_single_quote)
+    {
+        state->in_double_quote = !state->in_double_quote;
+        // Keep the quote in the result for proper removal later
+        state->result[state->result_idx++] = state->line[state->i];
+    }
+    else
+    {
+        state->result[state->result_idx++] = state->line[state->i];
+    }
+    state->i++;
 }

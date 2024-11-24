@@ -10,10 +10,10 @@ SRC = ./src/main.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \
 		./src/builtins/cd_functions.c \
-		./src/builtins/export.c \
-		./src/builtins/export_helpers.c \
-		./src/builtins/export_helpers_2.c \
-		./src/builtins/export_helpers_3.c \
+		./src/builtins/export/export.c \
+		./src/builtins/export/export_helpers.c \
+		./src/builtins/export/export_helpers_2.c \
+		./src/builtins/export/export_helpers_3.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
 		./src/expand/expand_1.c \

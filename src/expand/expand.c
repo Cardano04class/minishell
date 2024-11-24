@@ -6,11 +6,40 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:24:12 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/17 10:31:10 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/24 13:06:07 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int should_merge_with_next(char *current, char *next)
+{
+    if (!next)
+        return (0);
+    
+    // If current ends with an unmatched quote or next starts with an unmatched quote
+    size_t cur_len = ft_strlen(current);
+    return ((!ft_strchr("'\"", current[0]) && cur_len > 0 && 
+            (current[cur_len - 1] == '\'' || current[cur_len - 1] == '\"')) ||
+            (current[0] != '\'' && current[0] != '\"' && 
+            (next[0] == '\'' || next[0] == '\"')));
+}
+
+char *merge_args(char *arg1, char *arg2)
+{
+    char *merged;
+    size_t len1 = ft_strlen(arg1);
+    size_t len2 = ft_strlen(arg2);
+    
+    merged = malloc(len1 + len2 + 1);
+    if (!merged)
+        return (NULL);
+    
+    strcpy(merged, arg1);
+    strcpy(merged + len1, arg2);
+    
+    return (merged);
+}
 
 void	remove_empty_arg(int i)
 {
@@ -75,20 +104,34 @@ void	handle_merged_arg(int *i)
 	}
 }
 
-void	expand(t_env *env)
+void expand(t_env *env)
 {
-	int		i;
-	char	*line;
-	char	*expanded_line;
+    int     i;
+    char    *line;
+    char    *expanded_line;
+    char    *merged_arg;
 
-	i = 0;
-	while (g_mini.command->cmd[i])
-	{
-		line = g_mini.command->cmd[i];
-		if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
-			handle_merged_arg(&i);
-		expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-		process_expanded(i, expanded_line);
-		i++;
-	}
+    i = 0;
+    while (g_mini.command->cmd[i])
+    {
+        line = g_mini.command->cmd[i];
+        if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
+        {
+            handle_merged_arg(&i);
+            continue;
+        }
+        while (g_mini.command->cmd[i + 1] && 
+               should_merge_with_next(g_mini.command->cmd[i], g_mini.command->cmd[i + 1]))
+        {
+            merged_arg = merge_args(g_mini.command->cmd[i], g_mini.command->cmd[i + 1]);
+            if (!merged_arg)
+                return;
+            free(g_mini.command->cmd[i]);
+            g_mini.command->cmd[i] = merged_arg;
+            shift_left(i + 1);
+        }
+        expanded_line = expand_variables(env, g_mini.command->cmd[i]);
+        process_expanded(i, expanded_line);
+        i++;
+    }
 }
