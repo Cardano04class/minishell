@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:29:25 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/17 10:37:39 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/25 12:21:09 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,50 +46,59 @@ void	handle_quoted_var(t_parse_state *state, char quote_char)
 	state->result[state->result_idx++] = quote_char;
 }
 
-void	handle_regular_var(t_parse_state *state)
+void handle_regular_var(t_parse_state *state)
 {
-	char	var_name[256];
-	size_t	var_idx;
-	char	*value;
+    char    var_name[256];
+    size_t  var_idx;
+    char    *value;
 
-	var_idx = 0;
-	if (!state->line[state->i])
-	{
-		if (!ensure_buffer_space(state, 1))
-			return ;
-		state->result[state->result_idx++] = '$';
-		return ;
-	}
-	while (state->line[state->i] && (ft_isalnum(state->line[state->i])
-			|| state->line[state->i] == '_') && var_idx < 255)
-		var_name[var_idx++] = state->line[state->i++];
-	var_name[var_idx] = '\0';
-	if (var_idx > 0)
-	{
-		value = expand_variable(state->env, var_name);
-		copy_var_value(state, value);
-	}
-	else if (!ensure_buffer_space(state, 1))
-		return ;
-	else
-		state->result[state->result_idx++] = '$';
+    var_idx = 0;
+    if (!state->line[state->i])
+    {
+        if (!ensure_buffer_space(state, 1))
+            return;
+        state->result[state->result_idx++] = '$';
+        return;
+    }
+
+    if (!ft_isalnum(state->line[state->i]) && state->line[state->i] != '_')
+    {
+        if (!ensure_buffer_space(state, 1))
+            return;
+        state->result[state->result_idx++] = '$';
+        return;
+    }
+
+    while (state->line[state->i] && (ft_isalnum(state->line[state->i])
+            || state->line[state->i] == '_') && var_idx < 255)
+        var_name[var_idx++] = state->line[state->i++];
+    var_name[var_idx] = '\0';
+
+    if (var_idx > 0)
+    {
+        value = expand_variable(state->env, var_name);
+        copy_var_value(state, value);
+    }
 }
 
-void	expand_env_var(t_parse_state *state)
+void expand_env_var(t_parse_state *state)
 {
-	state->i++;
-	if (!state->line[state->i] || state->line[state->i] == ' '
-		|| state->line[state->i] == '\t')
-	{
-		if (!ensure_buffer_space(state, 1))
-			return ;
-		state->result[state->result_idx++] = '$';
-		return ;
-	}
-	if (state->line[state->i] == '\'' || state->line[state->i] == '\"')
-		handle_quoted_var(state, state->line[state->i]);
-	else
-		handle_regular_var(state);
+    state->i++;  // Skip the '$'
+
+    // Handle special cases immediately after $
+    if (!state->line[state->i] || state->line[state->i] == ' '
+        || state->line[state->i] == '\t' || state->line[state->i] == '\"')
+    {
+        if (!ensure_buffer_space(state, 1))
+            return;
+        state->result[state->result_idx++] = '$';
+        return;
+    }
+
+    if (state->line[state->i] == '\'')
+        handle_quoted_var(state, state->line[state->i]);
+    else
+        handle_regular_var(state);
 }
 
 void	process_standard_char(t_parse_state *state)

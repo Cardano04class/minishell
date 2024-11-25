@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:30:29 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/24 13:04:54 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/25 12:20:38 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ void process_quotes(t_quote_state *state)
             state->in_single = !state->in_single;
         else
             state->in_double = !state->in_double;
+        // Skip the quote without adding space
         state->i++;
     }
     else
+    {
+        // Copy character without adding space
         state->result[state->j++] = state->str[state->i++];
+    }
 }
 
 char *remove_quotes(char *str)

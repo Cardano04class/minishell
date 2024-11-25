@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:24:12 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/24 13:06:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/25 12:20:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,18 @@ int should_merge_with_next(char *current, char *next)
     if (!next)
         return (0);
     
-    // If current ends with an unmatched quote or next starts with an unmatched quote
     size_t cur_len = ft_strlen(current);
+    
+    // Never merge if current is a command (i.e., if it's the first word)
+    if (g_mini.command->cmd[0] == current)
+        return (0);
+        
     return ((!ft_strchr("'\"", current[0]) && cur_len > 0 && 
             (current[cur_len - 1] == '\'' || current[cur_len - 1] == '\"')) ||
             (current[0] != '\'' && current[0] != '\"' && 
             (next[0] == '\'' || next[0] == '\"')));
 }
+
 
 char *merge_args(char *arg1, char *arg2)
 {
@@ -35,8 +40,8 @@ char *merge_args(char *arg1, char *arg2)
     if (!merged)
         return (NULL);
     
-    strcpy(merged, arg1);
-    strcpy(merged + len1, arg2);
+    ft_strlcpy(merged, arg1, len1 + 1);
+    ft_strlcat(merged, arg2, len1 + len2 + 1);
     
     return (merged);
 }
@@ -85,23 +90,27 @@ char	*expand_variables(t_env *env, char *line)
 	return (state.result);
 }
 
-void	handle_merged_arg(int *i)
+void handle_merged_arg(int *i)
 {
-	char	*next_arg;
-	char	*merged_arg;
+    char    *next_arg;
+    char    *merged_arg;
 
-	next_arg = g_mini.command->cmd[*i + 1];
-	if (next_arg[0] == '\"' || next_arg[0] == '\'')
-	{
-		merged_arg = malloc(ft_strlen(next_arg) + 2);
-		if (!merged_arg)
-			return ;
-		strcpy(merged_arg, "$");
-		strcat(merged_arg, next_arg);
-		free(g_mini.command->cmd[*i]);
-		g_mini.command->cmd[*i] = merged_arg;
-		shift_left(*i + 1);
-	}
+    next_arg = g_mini.command->cmd[*i + 1];
+    // Skip merging if next argument is empty quotes
+    if (next_arg[0] == '\"' && next_arg[1] == '\"')
+        return;
+        
+    if (next_arg[0] == '\"' || next_arg[0] == '\'')
+    {
+        merged_arg = malloc(ft_strlen(next_arg) + 2);
+        if (!merged_arg)
+            return;
+        strcpy(merged_arg, "$");
+        strcat(merged_arg, next_arg);
+        free(g_mini.command->cmd[*i]);
+        g_mini.command->cmd[*i] = merged_arg;
+        shift_left(*i + 1);
+    }
 }
 
 void expand(t_env *env)
@@ -115,21 +124,28 @@ void expand(t_env *env)
     while (g_mini.command->cmd[i])
     {
         line = g_mini.command->cmd[i];
-        if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
+        
+        // For the command (i == 0), only do quote removal, no merging
+        if (i == 0)
         {
-            handle_merged_arg(&i);
+            expanded_line = expand_variables(env, line);
+            process_expanded(i, expanded_line);
+            i++;
             continue;
         }
-        while (g_mini.command->cmd[i + 1] && 
-               should_merge_with_next(g_mini.command->cmd[i], g_mini.command->cmd[i + 1]))
+
+        // For arguments, process normally
+        if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
         {
-            merged_arg = merge_args(g_mini.command->cmd[i], g_mini.command->cmd[i + 1]);
+            // Handle $ differently - directly join with next argument
+            merged_arg = merge_args("$", g_mini.command->cmd[i + 1]);
             if (!merged_arg)
                 return;
             free(g_mini.command->cmd[i]);
             g_mini.command->cmd[i] = merged_arg;
             shift_left(i + 1);
         }
+        
         expanded_line = expand_variables(env, g_mini.command->cmd[i]);
         process_expanded(i, expanded_line);
         i++;
