@@ -46,7 +46,7 @@ void	prompt(char **env)
 		}
 		lexer(rl, &list);
 		syntax_error(list);
-		ft_lstdisplay(list);
+		// ft_lstdisplay(list);
 		parser(list);
 		expand(env_list); // SEGV in the expand(should be fixed piw) :p
 		run_heredoc(g_mini.command);
@@ -56,7 +56,6 @@ void	prompt(char **env)
 		add_history(rl);
 		free(rl);
 		signal_handler(IN_PROMPT);
-		
 	}
 	// rl_clear_history();
 }
