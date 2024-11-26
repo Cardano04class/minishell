@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:28:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/03 15:21:40 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/26 11:58:42 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void lexer(char *str, t_list **lst)
                 i++;
             }
             else if (str[i] == '>')
-			    ft_lstaddback(lst, ft_lstnew(ft_strdup(">"), INRED));
+			    ft_lstaddback(lst, ft_lstnew(ft_strdup(">"), OUTRED));
             else if (str[i] == '<')
-			    ft_lstaddback(lst, ft_lstnew(ft_strdup("<"), OUTRED));
+			    ft_lstaddback(lst, ft_lstnew(ft_strdup("<"), INRED));
             state = INITIAL;
         }
         else if (state == IN_WORD || state == IN_QUOTE)
@@ -86,7 +86,7 @@ void lexer(char *str, t_list **lst)
                 while (str[i] != '\0' && !is_special_char(str[i]) && !ft_isspace(str[i]) && str[i] != 34 && str[i] != 39)
                     i++;
                 ft_lstaddback(lst, ft_lstnew(create_token(str, start, i), WORD));
-                // printf("index : %d | str[i] = %s\n", i, &str[i]);
+                //// printf("index : %d | str[i] = %s\n", i, &str[i]);
                 if (str[i] == 34 || str[i] == 39)
                 {
                     quote_char = str[i];

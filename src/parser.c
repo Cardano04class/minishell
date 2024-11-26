@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/07 23:49:28 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/22 17:05:21 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_cmddisplay(t_cmd *command)
 		j = 0;
 		while (command->cmd[j])
 			// printf("content : %s\n",command->cmd[j++]);
-		puts("");
+		// puts("");
 		while (command->files != NULL)
 		{
 			// printf("filename : %s\n",command->files->filename);			
@@ -56,7 +56,7 @@ void	ft_cmddisplay(t_cmd *command)
 				// printf("type : PIPE\n");		
 			command->files = command->files->next;
 		}
-		puts("________________________");
+		// puts("________________________");
 		command = command->next;
 	}
 }
@@ -108,9 +108,15 @@ void	parser(t_list *lst)
 	{
 		if (lst->type == WORD && index_count <= cmd_arg_size)
 		{
-			if (state == STATE_REDIRECTION)
+			if (state == STATE_HEREDOC)
+			{
+				ft_heredoc_addback(ft_heredoc_new(ft_strdup(lst->content)));
+				state = STATE_DEFAULT;
+			}
+			else if (state == STATE_REDIRECTION)
 			{
 				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
+				// printf("test %s\n", g_mini.command->files->filename);
 				/*puts("");
 				printf("filename : %s\n",g_mini.command->files->filename);			
 				if (g_mini.command->files->type == 0)
@@ -126,7 +132,9 @@ void	parser(t_list *lst)
 				if (g_mini.command->files->type == 5)
 					printf("type : PIPE\n");		
 				 puts("");*/
-				tmp_cmd->files = tmp_cmd->files->next;
+				// tmp_cmd->files = tmp_cmd->files->next;
+				// printf("test %p\n", g_mini.command->files);
+				
 				state = STATE_DEFAULT;
 			}
 			else
@@ -141,9 +149,7 @@ void	parser(t_list *lst)
 		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
 			state = STATE_REDIRECTION;
 		else if (lst->type == HEREDOC)
-		{
-			
-		}
+			state = STATE_HEREDOC;
 		else if (lst->type == PIPE)
 		{
 			ft_cmd_addback(&tmp_cmd, ft_cmd_new(NULL));
@@ -160,7 +166,6 @@ void	parser(t_list *lst)
 		if (lst != NULL)
 			lst = lst->next;
 	}
-	
 		//ft_cmddisplay(g_mini.command);
 }
 

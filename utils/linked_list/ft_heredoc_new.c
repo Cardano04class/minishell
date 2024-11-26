@@ -18,7 +18,6 @@ t_heredoc	*ft_heredoc_new(char *delimiter)
 
 	new = malloc(sizeof(t_cmd));
 	new->delimiter = delimiter;
-	new->content = NULL;
 	new->next = NULL;
 	return (new);
 }

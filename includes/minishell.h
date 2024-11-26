@@ -1,4 +1,4 @@
-#ifndef MINISHELL_H
+# ifndef MINISHELL_H
 # define MINISHELL_H
 
 # define BUFFER_SIZE 1024
@@ -18,6 +18,9 @@
 # include <sys/wait.h>
 # include <sysexits.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 
 typedef enum e_token
 {
@@ -29,6 +32,13 @@ typedef enum e_token
 	PIPE
 }						t_token;
 
+typedef enum e_sig
+{
+	IN_CHILD,
+	IN_HEREDOC,
+	IN_PROMPT
+}						t_sig;
+
 typedef enum e_state
 {
 	INITIAL,
@@ -38,6 +48,7 @@ typedef enum e_state
 	IN_WHITESPACE,
 	STATE_DEFAULT,
 	STATE_REDIRECTION,
+	STATE_HEREDOC,
 	STATE_PIPE
 }						t_state;
 
@@ -66,9 +77,7 @@ typedef struct s_file
 typedef struct s_heredoc
 {
 	char				*delimiter;
-	char				**content;
 	struct s_heredoc	*next;
-
 }						t_heredoc;
 
 typedef struct s_cmd
@@ -82,6 +91,7 @@ typedef struct s_cmd
 typedef struct s_global
 {
 	t_cmd				*command;
+	int					sig_flag;
 }						t_global;
 
 extern t_global			g_mini;
@@ -172,7 +182,7 @@ void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
-void					ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new);
+void					ft_heredoc_addback(t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
@@ -183,6 +193,9 @@ t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
-void					run_cmd(t_cmd *command, t_env *env);
+void    				run_cmd(t_cmd *command, t_env *env);
+void 					run_heredoc(t_cmd	*command);
+void 					signal_handler(int sig);
+void						handle_sigint(int signum);
 
 #endif
