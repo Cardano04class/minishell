@@ -3,17 +3,15 @@
 void	handle_sigint(int signum)
 {
 	(void)signum;
-
     if (g_mini.sig_flag == 0)
     {    
         rl_on_new_line();
         rl_replace_line("", 0);
+        write(1, "\n", 1);
         rl_redisplay();
-        write(1, "\nminishell$ ", 12);
     }
     else
         write(1, "\n", 1);
-
 }
 
 void signal_handler(int sig)
@@ -22,17 +20,21 @@ void signal_handler(int sig)
     {    
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
-
     }
     else if (sig == IN_PROMPT)
     {
         signal(SIGINT, handle_sigint);
         signal(SIGQUIT, SIG_IGN);
     }
-   /* else if (sig == IN_HEREDOC)
+    else if (sig == IN_PARENT)
+    {
+        signal(SIGINT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN);
+    }
+    else if (sig == IN_HEREDOC)
     {
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_IGN);
-    }*/
+    }
 }
 

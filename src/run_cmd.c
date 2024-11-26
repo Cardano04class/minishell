@@ -26,8 +26,8 @@ char	*find_path(char *cmd, t_env *env)
 		return (cmd);
 	if (cmd == NULL)
 		return (NULL);
+	//printf("cmd : %s\n", cmd);
 	cmd = ft_strjoin("/", cmd);
-	printf("cmd : %s\n", cmd);
 	paths = ft_split(path, ':');
 	if (paths == NULL)
 		return (NULL);
@@ -80,7 +80,7 @@ void    execute(t_cmd *command, t_env *list_env)
     if (command->cmd[0] == NULL)
 	 return ;
 	fullcmd = find_path(command->cmd[0], list_env);
-	printf("command->cmd[0] :%s\n", command->cmd[0]);
+	//printf("command->cmd[0] :%s\n", command->cmd[0]);
 	if (fullcmd == NULL)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));

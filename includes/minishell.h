@@ -36,6 +36,7 @@ typedef enum e_sig
 {
 	IN_CHILD,
 	IN_HEREDOC,
+	IN_PARENT,
 	IN_PROMPT
 }						t_sig;
 
@@ -198,4 +199,4 @@ void 					run_heredoc(t_cmd	*command);
 void 					signal_handler(int sig);
 void						handle_sigint(int signum);
 
-#endif
+# endif

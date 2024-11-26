@@ -6,60 +6,11 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/22 17:05:21 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/11/26 21:53:48 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_cmdsize(t_cmd *lst)
-{
-	int	count;
-
-	count = 0;
-	if (lst == NULL)
-		return (0);
-	while (lst != NULL)
-	{
-		lst = lst->next;
-		count++;
-	}
-	return (count);
-}
-
-void	ft_cmddisplay(t_cmd *command)
-{
-	int j;
-	
-	j = 0;
-	//printf("lst size : %d\n\n", ft_cmdsize(command));
-	while (command != NULL)
-	{
-		j = 0;
-		while (command->cmd[j])
-			// printf("content : %s\n",command->cmd[j++]);
-		// puts("");
-		while (command->files != NULL)
-		{
-			// printf("filename : %s\n",command->files->filename);			
-			if (command->files->type == 0)
-				// printf("type : WORD\n");
-			if (command->files->type == 1)
-				// printf("type : INRED\n");
-			if (command->files->type == 2)
-				// printf("type : OUTRED\n");
-			if (command->files->type == 3)
-				// printf("type : APPEND\n");
-			if (command->files->type == 4)
-				// printf("type : HERDOC\n");
-			if (command->files->type == 5)
-				// printf("type : PIPE\n");		
-			command->files = command->files->next;
-		}
-		// puts("________________________");
-		command = command->next;
-	}
-}
 
 int	cmd_argument_size(t_list *lst)
 {
@@ -69,22 +20,7 @@ int	cmd_argument_size(t_list *lst)
 	{
 		if (lst->type == WORD)
 			count++;
-		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
-			count--;
-		lst = lst->next;
-	}
-	return (count);
-}
-
-int	command_size(t_list *lst)
-{
-	int count = 0;
-	
-	while (lst != NULL && lst->type != PIPE)
-	{
-		if (lst->type == WORD)
-			count++;
-		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
+		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND || lst->type == HEREDOC)
 			count--;
 		lst = lst->next;
 	}
@@ -116,33 +52,11 @@ void	parser(t_list *lst)
 			else if (state == STATE_REDIRECTION)
 			{
 				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
-				// printf("test %s\n", g_mini.command->files->filename);
-				/*puts("");
-				printf("filename : %s\n",g_mini.command->files->filename);			
-				if (g_mini.command->files->type == 0)
-					printf("type : WORD\n");
-				if (g_mini.command->files->type == 1)
-					printf("type : INRED\n");
-				if (g_mini.command->files->type == 2)
-					printf("type : OUTRED\n");
-				if (g_mini.command->files->type == 3)
-					printf("type : APPEND\n");
-				if (g_mini.command->files->type == 4)
-					printf("type : HERDOC\n");
-				if (g_mini.command->files->type == 5)
-					printf("type : PIPE\n");		
-				 puts("");*/
-				// tmp_cmd->files = tmp_cmd->files->next;
-				// printf("test %p\n", g_mini.command->files);
-				
 				state = STATE_DEFAULT;
 			}
 			else
 			{
-			//	printf(">> %d\n", index_count);
 				tmp_cmd->cmd[index_count] = ft_strdup(lst->content);
-			//	printf("cc: %s\n", tmp_cmd->cmd[index_count]);
-				//printf("\ncommand : %s\n\n", g_mini.command->cmd[index_count]);
 				index_count++;
 			}
 		}
@@ -155,10 +69,8 @@ void	parser(t_list *lst)
 			ft_cmd_addback(&tmp_cmd, ft_cmd_new(NULL));
 			tmp_cmd = tmp_cmd->next;
 			lst = lst->next;
-			//printf("next : %s\n", lst->content);
 			cmd_arg_size = cmd_argument_size(lst);
 			lst = lst->prev;
-			//printf("prev : %s\n", lst->content);
 			index_count = 0;
 			tmp_cmd->cmd = malloc(sizeof(char *) * (cmd_arg_size + 1));
 			tmp_cmd->cmd[cmd_arg_size] = NULL;
@@ -166,7 +78,6 @@ void	parser(t_list *lst)
 		if (lst != NULL)
 			lst = lst->next;
 	}
-		//ft_cmddisplay(g_mini.command);
 }
 
 

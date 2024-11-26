@@ -13,7 +13,7 @@ void run_heredoc(t_cmd	*command)
 		{
 			while (1)
 			{
-				signal_handler(IN_CHILD);
+				signal_handler(IN_HEREDOC);
 				line = readline(">");
 				if (!ft_strncmp(command->heredoc->delimiter, line, 
 					ft_strlen(command->heredoc->delimiter)) &&
@@ -25,6 +25,7 @@ void run_heredoc(t_cmd	*command)
 			}
 			command->heredoc = command->heredoc->next;
 		}
+		exit(0);
 	}
 	waitpid(child_pid, &status, 0);
 }

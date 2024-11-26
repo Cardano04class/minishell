@@ -27,18 +27,19 @@ void	prompt(char **env)
 	{
 		g_mini.sig_flag = 0;
 		g_mini.command = malloc(sizeof(t_cmd));
+		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
 		g_mini.command->heredoc = NULL;
 		g_mini.command->next = NULL;
 		
 		signal_handler(IN_PROMPT);
 		rl = readline("minishell$ ");
-		g_mini.sig_flag = 1;
-		if (rl == NULL)
+		if (rl == NULL || !ft_strncmp(rl,"exit",5))
 		{
 			printf("exit\n");
 			exit(0);
 		}
+		g_mini.sig_flag = 1;
 		if (empty_prompt(rl) == 0)
 		{
 			free(rl);
@@ -46,19 +47,19 @@ void	prompt(char **env)
 		}
 		lexer(rl, &list);
 		syntax_error(list);
-		ft_lstdisplay(list);
+		//ft_lstdisplay(list);
 		parser(list);
-		expand(env_list); // SEGV in the expand(should be fixed piw) :p
-		run_heredoc(g_mini.command);
-		if (!run_builtins(&env_list))
+		//expand(env_list); // SEGV in the expand(should be fixed piw) :p.
+		if(g_mini.command->heredoc)
+			run_heredoc(g_mini.command);
+		// if (!run_builtins(&env_list)) // also a SEGV here, but i still nedd to check if it from the heredoc.
 			run_cmd(g_mini.command, env_list);
+		signal_handler(IN_PARENT);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
-		signal_handler(IN_PROMPT);
-		
 	}
-	//rl_clear_history();
+	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)
