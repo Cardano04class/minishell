@@ -1,25 +1,25 @@
 #include "minishell.h"
 
-t_global g_mini;
+t_global	g_mini;
 
-int empty_prompt(char *rl)
+int	empty_prompt(char *rl)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (rl[i] && (rl[i] != ' ' && rl[i] != '\t'))
 	{
 		i++;
 	}
-	return i;
+	return (i);
 }
 
 void	prompt(char **env)
 {
 	char	*rl;
 	t_list	*list;
-	t_env *env_list;
-	
+	t_env	*env_list;
+
 	env_list = NULL;
 	list = NULL;
 	ft_env(env, &env_list);
@@ -42,7 +42,7 @@ void	prompt(char **env)
 		if (empty_prompt(rl) == 0)
 		{
 			free(rl);
-			continue;
+			continue ;
 		}
 		lexer(rl, &list);
 		syntax_error(list);
@@ -58,7 +58,7 @@ void	prompt(char **env)
 		signal_handler(IN_PROMPT);
 		
 	}
-	//rl_clear_history();
+	// rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ssplit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:16:37 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/24 11:25:40 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:38:28 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ char	**ft_ssplit(char const *s)
 	if (!s)
 		return (NULL);
 	ptr = (char **)malloc((wrdcount(s) + 1) * sizeof(char *));
-
 	printf("count =  %d\n", wrdcount(s));
 	if (!ptr)
 		return (NULL);

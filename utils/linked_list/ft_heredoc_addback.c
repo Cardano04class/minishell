@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc_addback.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:33:30 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/02 15:33:33 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:32:15 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ void	ft_heredoc_addback(t_heredoc *new)
 	t_heredoc	*tmp;
 
 	if (g_mini.command->heredoc == NULL)
+
+	if (!heredoc)
+		return ;
+	if (!*heredoc)
 	{
 		g_mini.command->heredoc = new;
 		return ;
