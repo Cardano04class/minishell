@@ -24,6 +24,8 @@ char	*find_path(char *cmd, t_env *env)
 	path = ft_getenv("PATH", env);
 	if (path == NULL)
 		return (cmd);
+	if (cmd == NULL)
+		return (NULL);
 	cmd = ft_strjoin("/", cmd);
 	printf("cmd : %s\n", cmd);
 	paths = ft_split(path, ':');
@@ -37,6 +39,7 @@ char	*find_path(char *cmd, t_env *env)
 			return (fullcmd);
 		j++;
 	}
+	free (cmd);
 	return (NULL);
 }
 
@@ -68,19 +71,20 @@ void    execute(t_cmd *command, t_env *list_env)
 	char	**env;
 	pid_t	child_pid;
 	int		status;
-	char	*fullcmd;
+	char	*fullcmd = NULL;
 	int 	fd_in = 0;
 	int		fd_out = 1;
 	// int 	std_in = dup(STDIN_FILENO);
 	// int 	std_out = dup(STDOUT_FILENO);
 
-    fullcmd = find_path(command->cmd[0], list_env);
-		// puts("hna");
-		//printf("commands file : %s\n", command->files->filename);
+    if (command->cmd[0] == NULL)
+	 return ;
+	fullcmd = find_path(command->cmd[0], list_env);
+	printf("command->cmd[0] :%s\n", command->cmd[0]);
 	if (fullcmd == NULL)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
-		write(2, ": command not found\n", 20);
+		write(2, ": command not found\n", 21);
 		return ;
 	}
 	env = convert_env(list_env);
@@ -198,6 +202,7 @@ void    run_cmd(t_cmd *command, t_env *env)
 	{
 		handle_pipe(command, env);
 	}
+	//if the heredoc is 
 }
 
 
