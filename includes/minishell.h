@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:30:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/25 12:08:01 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/26 23:10:33 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void					print_error(t_error error);
 
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
-int						run_builtins(t_env **env);
+int						run_builtins(t_env **env, t_list *list);
 void					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
 void					cd(t_env **env, char **args);
@@ -180,7 +180,7 @@ int						validate_and_handle(t_env **lst, char *var_name,
 int						handle_existing_node(t_env **lst, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
-void					expand(t_env *env);
+void					expand(t_env *env, t_list *list);
 void					handle_quotes(t_parse_state *state);
 void					init_parse_state(t_parse_state *state, char *line,
 							t_env *env);

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:24:12 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/25 12:20:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/26 23:13:52 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	remove_empty_arg(int i)
 	shift_left(i);
 }
 
-void	process_expanded(int i, char *expanded_line)
+void	process_expanded(int i, char *expanded_line, t_list *list)
 {
 	char	*final_line;
 
@@ -66,8 +66,8 @@ void	process_expanded(int i, char *expanded_line)
 		shift_left(i);
 		return ;
 	}
-	free(g_mini.command->cmd[i]);
-	g_mini.command->cmd[i] = final_line;
+	// free(g_mini.command->cmd[i]);
+	list->content = final_line;
 }
 
 char	*expand_variables(t_env *env, char *line)
@@ -98,7 +98,10 @@ void handle_merged_arg(int *i)
     next_arg = g_mini.command->cmd[*i + 1];
     // Skip merging if next argument is empty quotes
     if (next_arg[0] == '\"' && next_arg[1] == '\"')
+    {
+        shift_left(*i + 1);
         return;
+    }
         
     if (next_arg[0] == '\"' || next_arg[0] == '\'')
     {
@@ -113,7 +116,7 @@ void handle_merged_arg(int *i)
     }
 }
 
-void expand(t_env *env)
+void expand(t_env *env, t_list *list)
 {
     int     i;
     char    *line;
@@ -121,33 +124,38 @@ void expand(t_env *env)
     char    *merged_arg;
 
     i = 0;
-    while (g_mini.command->cmd[i])
+    while (list)
     {
-        line = g_mini.command->cmd[i];
+        line = list->content;
         
         // For the command (i == 0), only do quote removal, no merging
         if (i == 0)
         {
             expanded_line = expand_variables(env, line);
-            process_expanded(i, expanded_line);
+            process_expanded(i, expanded_line, list);
             i++;
             continue;
         }
 
         // For arguments, process normally
-        if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
+        if (line[0] == '$' && line[1] == '\0' && list->next != NULL)
         {
             // Handle $ differently - directly join with next argument
-            merged_arg = merge_args("$", g_mini.command->cmd[i + 1]);
+            merged_arg = merge_args("$", list->next->content);
             if (!merged_arg)
                 return;
-            free(g_mini.command->cmd[i]);
-            g_mini.command->cmd[i] = merged_arg;
+            // free(g_mini.command->cmd[i]);
+            list->content = merged_arg;
             shift_left(i + 1);
         }
+        else if (line[0] == '$' && list->next != NULL)
+        {
+            handle_merged_arg(&i);
+        }
         
-        expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-        process_expanded(i, expanded_line);
+        expanded_line = expand_variables(env, list->content);
+        process_expanded(i, expanded_line, list);
         i++;
+        list = list->next;
     }
 }

@@ -43,9 +43,9 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		syntax_error(list);
 		parser(list);
-		expand(env_list);
-		if (!run_builtins(&env_list))
-			run_cmd(g_mini.command, env_list);
+		expand(env_list, list);
+		run_builtins(&env_list, list);
+		run_cmd(g_mini.command, env_list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
