@@ -55,8 +55,8 @@ void	prompt(char **env)
 			parser(list);
 			if (!run_builtins(&env_list, list))
 				run_cmd(g_mini.command, env_list);
-			debug_list(list);
 		}
+		debug_list(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);
