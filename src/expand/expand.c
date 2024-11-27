@@ -6,11 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:24:12 by mamir             #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2024/11/27 18:14:03 by mamir            ###   ########.fr       */
-=======
-/*   Updated: 2024/11/27 17:43:24 by mamir            ###   ########.fr       */
->>>>>>> 3e573e0 (Working export and expand still need edge cases to be fixed)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -619,22 +615,18 @@ void expand(t_env *env, t_list **list)
     t_list *prev = NULL;  // To track the previous node
     char *expanded_line;
     char *final_line;
-    char **split_parts;
 
-    current = *list;
+    current = *list;  // Start from the head of the list
 
     while (current)
     {
-        if (strcmp(current->content, "export") == 0)
-            break;
-
         // Skip empty quote nodes (""), which have no meaningful content
         if (strcmp(current->content, "") == 0)
         {
             t_list *to_free = current;
             current = current->next;
 
-            // Update the list pointers
+            // If the node to remove is the first node, update the head
             if (prev == NULL)
                 *list = current;
             else
@@ -645,48 +637,42 @@ void expand(t_env *env, t_list **list)
 
             free(to_free->content);
             free(to_free);
-            continue;
+            continue;  // Skip further processing for this iteration
         }
-
+        // Handle the case of ""$"" (empty string with $ inside)
+        if (strcmp(current->content, "\"$\"") == 0)
+        {
+            free(current->content);
+            current->content = strdup("");  // Treat ""$"" as an empty string
+            continue;  // Skip further processing for this iteration
+        }
         // Expand variables in the current node's content
         expanded_line = expand_variables(env, current->content);
 
-        // Split expanded variables by spaces
-        split_parts = ft_split(expanded_line, ' ');
+        // Handle the expanded line and ensure quotes are removed
+        final_line = remove_quotes(expanded_line);
         free(expanded_line);
+        free(current->content);
+        current->content = final_line;
 
-        if (split_parts && split_parts[1]) // If splitting occurred
+        // Merge "$" and "HOME" into "$HOME"
+        if (prev != NULL && prev->content != NULL)
         {
-            // Replace the current node's content with the first part
-            free(current->content);
-            current->content = strdup(split_parts[0]);
-
-            // Insert additional parts as new nodes
-            t_list *next = current->next;
-            t_list *new_node;
-            for (int i = 1; split_parts[i]; i++)
+            if ((prev->content[strlen(prev->content) - 1] == '"' || prev->content[strlen(prev->content) - 1] == '\'') &&
+                current->content[0] != ' ' && current->content[0] != '"' && current->content[0] != '\'')
             {
-                new_node = malloc(sizeof(t_list));
-                if (!new_node)
-                    return; // Allocation error
-                new_node->content = strdup(split_parts[i]);
-                new_node->next = next;
-                new_node->prev = current;
-                if (next)
-                    next->prev = new_node;
-                current->next = new_node;
-                current = new_node;
+                // Merge the "$" and "HOME"
+                char *merged_content = merge_args(prev->content, current->content);
+                free(prev->content);
+                prev->content = merged_content;
+                prev->next = current->next;
+                if (current->next != NULL)
+                    current->next->prev = prev;
+                free(current->content);
+                free(current);
+                continue;  // Skip further processing for this iteration
             }
         }
-        else if (split_parts) // No splitting occurred
-        {
-            final_line = remove_quotes(split_parts[0]);
-            free(current->content);
-            current->content = final_line;
-        }
-
-        // Free the split parts array
-        free(split_parts);
 
         // Move to the next node
         prev = current;
