@@ -16,9 +16,6 @@ SRC = ./src/main.c \
 		./src/builtins/export/export_helpers_3.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
-		./src/expand/expand_1.c \
-		./src/expand/expand_2.c \
-		./src/expand/expand_3.c \
 		./src/run_cmd.c \
 		./utils/linked_list/ft_lstnew.c \
 		./utils/linked_list/ft_lstaddback.c \
@@ -52,6 +49,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isalpha.c \
 		./utils/libft/ft_strjoin.c \
 		./utils/libft/ft_memcpy.c \
+		./utils/libft/ft_memmove.c \
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address

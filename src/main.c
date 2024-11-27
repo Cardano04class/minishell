@@ -13,6 +13,14 @@ int	empty_prompt(char *rl)
 	}
 	return (i);
 }
+void debug_list(t_list *list)
+{
+    while (list)
+    {
+        printf("Node content: %s\n", list->content);
+        list = list->next;
+    }
+}
 
 void	prompt(char **env)
 {
@@ -41,11 +49,14 @@ void	prompt(char **env)
 			continue ;
 		}
 		lexer(rl, &list);
-		syntax_error(list);
-		parser(list);
-		expand(env_list, list);
-		run_builtins(&env_list, list);
-		run_cmd(g_mini.command, env_list);
+		expand(env_list, &list);
+		if(!syntax_error(list))
+		{
+			parser(list);
+			if (!run_builtins(&env_list, list))
+				run_cmd(g_mini.command, env_list);
+			debug_list(list);
+		}
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);

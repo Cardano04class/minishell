@@ -6,46 +6,97 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/26 23:20:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/27 18:10:00 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_builtins(t_env **env, t_list *lst)
+char **list_to_array(t_list *list, t_env *env)
 {
-	char	**arg = NULL;
-	int i = 0;
-	
-	if (!lst)
-		return 0;
-	while (lst)
-	{
-		arg[i] = ft_strdup(lst->content);
-		printf("content: %s\n", arg[i]);
-		if (arg[0] == NULL)
-			return (0);
-		if (strcmp(arg[0], "export") == 0)
-			export(arg, env);
-		else if (strncmp("env", arg[0], 4) == 0)
-			print_env(*env);
-		else if (strcmp("pwd", arg[0]) == 0)
-			pwd(env);
-		else if (strcmp("echo", arg[0]) == 0)
-			echo(arg);
-		else if (strcmp(arg[0], "cd") == 0)
-			cd(env, arg);
-		else if (strcmp(arg[0], "unset") == 0)
-			unset(arg, env);
-		else if (strcmp(arg[0], "exit") == 0)
-		{
-			free(arg);
-			exit(0);
-		}
-		else
-			return (0);
-		i++;
-		lst = lst->next;
-	}
-		return (1);
+    size_t count = 0;
+    t_list *temp = list;
+    char **array;
+    char *processed;
+
+    // First, count how many nodes are not empty strings
+    while (temp)
+    {
+        if (strcmp(temp->content, "") != 0)  // Only count non-empty strings
+            count++;
+        temp = temp->next;
+    }
+    // Allocate memory for the array (with one extra space for NULL terminator)
+    array = malloc(sizeof(char *) * (count + 1));
+    if (!array)
+        return (NULL);
+
+    count = 0;  // Reset count to reuse it for array filling
+
+    // Now fill the array with processed content
+    while (list)
+    {
+        if (strcmp(list->content, "") != 0)  // Skip empty nodes
+        {
+            processed = expand_variables(env, list->content);
+            if (processed)
+            {
+                char *final = remove_quotes(processed);
+                free(processed);
+                array[count++] = final;  // Add the processed content to the array
+            }
+            else
+            {
+                array[count++] = strdup(list->content);  // Fallback to original content
+            }
+        }
+        list = list->next;
+    }
+
+    array[count] = NULL;  // Null-terminate the array
+    return (array);
 }
+
+
+int run_builtins(t_env **env, t_list *list)
+{
+    char **arg;
+
+    arg = list_to_array(list, *env);
+    if (!arg || !arg[0])
+    {
+        free(arg);
+        return (0);
+    }
+    if (strcmp(arg[0], "export") == 0)
+        export(arg, env);
+    else if (strncmp("env", arg[0], 4) == 0)
+        print_env(*env);
+    else if (strcmp("pwd", arg[0]) == 0)
+        pwd(env);
+    else if (strcmp("echo", arg[0]) == 0)
+        echo(arg);
+    else if (strcmp(arg[0], "cd") == 0)
+        cd(env, arg);
+    else if (strcmp(arg[0], "unset") == 0)
+        unset(arg, env);
+    else if (strcmp(arg[0], "exit") == 0)
+    {
+        free(arg);
+        exit(0);
+    }
+    else
+    {
+        free(arg);
+        return (0);
+    }
+	size_t i = 0;
+    while (arg[i])
+	{
+		free(arg[i]);
+		i++;
+	}
+	free(arg);
+    return (1);
+}
+

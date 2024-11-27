@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:30:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/26 23:10:33 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/27 18:07:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,13 +140,13 @@ typedef struct s_error
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 
-void					syntax_error(t_list *list);
+int						syntax_error(t_list *list);
 t_error					create_error(t_error_type type, char *token);
 void					print_error(t_error error);
 
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
-int						run_builtins(t_env **env, t_list *list);
+int 					run_builtins(t_env **env, t_list *list);
 void					ft_env(char **env, t_env **env_lst);
 int						echo(char **args);
 void					cd(t_env **env, char **args);
@@ -180,24 +180,9 @@ int						validate_and_handle(t_env **lst, char *var_name,
 int						handle_existing_node(t_env **lst, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
-void					expand(t_env *env, t_list *list);
-void					handle_quotes(t_parse_state *state);
-void					init_parse_state(t_parse_state *state, char *line,
-							t_env *env);
-int						ensure_buffer_space(t_parse_state *state,
-							size_t needed);
-void					shift_left(int i);
-char					*expand_variable(t_env *env, const char *var_name);
-void					process_standard_char(t_parse_state *state);
-void					expand_env_var(t_parse_state *state);
-void					handle_regular_var(t_parse_state *state);
-void					handle_quoted_var(t_parse_state *state,
-							char quote_char);
-void					copy_var_value(t_parse_state *state, char *value);
-void					process_char(t_parse_state *state);
-void					process_quotes(t_quote_state *state);
+void					expand(t_env *env, t_list **list);
+char					*expand_variables(t_env *env, char *line);
 char					*remove_quotes(char *str);
-
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);

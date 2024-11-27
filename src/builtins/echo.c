@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 14:40:52 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/27 13:01:43 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,44 +26,54 @@ bool	is_n_option(char *str)
 	return (false);
 }
 
-int	print_arguments(char **str, int i)
+int print_arguments(char **str, int i)
 {
-	int	j;
+    int j;
 
-	while (str[i])
-	{
-		j = 0;
-		while (str[i][j])
-		{
-			write(1, &str[i][j], 1);
-			j++;
-		}
-		if (str[i + 1])
-			write(1, " ", 1);
-		i++;
-	}
-	return (i);
+    while (str[i])
+    {
+        j = 0;
+        while (str[i][j])
+        {
+            write(1, &str[i][j], 1);  // Print each character of the current argument
+            j++;
+        }
+        // Only print a space if there is another argument
+        if (str[i + 1])
+            write(1, " ", 1);
+        i++;
+    }
+    return (i);
 }
 
-int	echo(char **str)
-{
-	int		i;
-	bool	n_option;
 
-	i = 1;
-	n_option = false;
-	if (str[1] == NULL)
-	{
-		write(1, "\n", 1);
-		return (0);
-	}
-	while (str[i] && is_n_option(str[i]))
-	{
-		n_option = true;
-		i++;
-	}
-	print_arguments(str, i);
-	if (!n_option)
-		write(1, "\n", 1);
-	return (0);
+int echo(char **str)
+{
+    int i;
+    bool n_option;
+
+    i = 1;
+    n_option = false;
+
+    if (str[1] == NULL)
+    {
+        write(1, "\n", 1);
+        return (0);
+    }
+
+    // Check for the -n option (which prevents printing a newline)
+    while (str[i] && is_n_option(str[i]))
+    {
+        n_option = true;
+        i++;
+    }
+
+    // Print the arguments
+    print_arguments(str, i);
+
+    // If -n option is not set, print a newline
+    if (!n_option)
+        write(1, "\n", 1);
+
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/25 12:07:56 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/27 10:35:59 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,15 @@ t_error	syntax_check(t_list *list)
 	return (create_error(NO_ERROR, NULL));
 }
 
-void	syntax_error(t_list *list)
+int	syntax_error(t_list *list)
 {
 	t_error	error;
 
 	error = syntax_check(list);
 	if (error.type != NO_ERROR)
+	{
 		print_error(error);
+		return 1;
+	}
+	return 0;
 }
