@@ -6,7 +6,11 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/11/27 18:10:00 by mamir            ###   ########.fr       */
+=======
+/*   Updated: 2024/11/27 17:45:10 by mamir            ###   ########.fr       */
+>>>>>>> 3e573e0 (Working export and expand still need edge cases to be fixed)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +22,7 @@ char **list_to_array(t_list *list, t_env *env)
     t_list *temp = list;
     char **array;
     char *processed;
+    char *merged;
 
     // First, count how many nodes are not empty strings
     while (temp)
@@ -26,6 +31,7 @@ char **list_to_array(t_list *list, t_env *env)
             count++;
         temp = temp->next;
     }
+
     // Allocate memory for the array (with one extra space for NULL terminator)
     array = malloc(sizeof(char *) * (count + 1));
     if (!array)
@@ -38,16 +44,35 @@ char **list_to_array(t_list *list, t_env *env)
     {
         if (strcmp(list->content, "") != 0)  // Skip empty nodes
         {
-            processed = expand_variables(env, list->content);
-            if (processed)
+            if (strchr(list->content, '=') && list->next && list->next->content[0] == '"')
             {
-                char *final = remove_quotes(processed);
+                // If the current node is a variable assignment (a=) and the next node is a quoted value ("ls")
+                processed = expand_variables(env, list->next->content);
+                char *value = remove_quotes(processed);
                 free(processed);
-                array[count++] = final;  // Add the processed content to the array
+
+                merged = merge_args(list->content, value);
+                free(value);
+
+                array[count++] = merged;  // Add the merged variable to the array
+
+                // Skip the next node (value node)
+                list = list->next;
             }
             else
             {
-                array[count++] = strdup(list->content);  // Fallback to original content
+                // Regular node processing
+                processed = expand_variables(env, list->content);
+                if (processed)
+                {
+                    char *final = remove_quotes(processed);
+                    free(processed);
+                    array[count++] = final;  // Add the processed content to the array
+                }
+                else
+                {
+                    array[count++] = strdup(list->content);  // Fallback to original content
+                }
             }
         }
         list = list->next;
@@ -56,6 +81,7 @@ char **list_to_array(t_list *list, t_env *env)
     array[count] = NULL;  // Null-terminate the array
     return (array);
 }
+
 
 
 int run_builtins(t_env **env, t_list *list)

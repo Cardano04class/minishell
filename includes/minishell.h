@@ -6,7 +6,11 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:30:48 by mamir             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/11/27 18:07:34 by mamir            ###   ########.fr       */
+=======
+/*   Updated: 2024/11/27 17:54:34 by mamir            ###   ########.fr       */
+>>>>>>> 3e573e0 (Working export and expand still need edge cases to be fixed)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +187,7 @@ int						handle_existing_node(t_env **lst, char *var_name,
 void					expand(t_env *env, t_list **list);
 char					*expand_variables(t_env *env, char *line);
 char					*remove_quotes(char *str);
+char					*merge_args(char *arg1, char *arg2);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);
