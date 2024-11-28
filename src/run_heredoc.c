@@ -19,7 +19,7 @@ void run_heredoc(t_cmd	*command)
 					ft_strlen(command->heredoc->delimiter)) &&
 					(ft_strlen(command->heredoc->delimiter) == ft_strlen(line)))
 					{
-						// printf("%d\n", ft_strlen(command->heredoc->delimiter));
+						
 						break ;
 					}
 			}

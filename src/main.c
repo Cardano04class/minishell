@@ -49,7 +49,7 @@ void	prompt(char **env)
 		syntax_error(list);
 		//ft_lstdisplay(list);
 		parser(list);
-		//expand(env_list); // SEGV in the expand(should be fixed piw) :p.
+		expand(env_list); // SEGV in the expand(should be fixed piw) :p.
 		if(g_mini.command->heredoc)
 			run_heredoc(g_mini.command);
 		// if (!run_builtins(&env_list)) // also a SEGV here, but i still nedd to check if it from the heredoc.
