@@ -6,11 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:30:48 by mamir             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/11/27 18:07:34 by mamir            ###   ########.fr       */
-=======
-/*   Updated: 2024/11/27 17:54:34 by mamir            ###   ########.fr       */
->>>>>>> 3e573e0 (Working export and expand still need edge cases to be fixed)
+/*   Updated: 2024/11/28 15:01:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
