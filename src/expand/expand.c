@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/28 15:02:52 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/29 11:25:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,66 +14,76 @@
 
 /* --- Helper Functions --- */
 
-int ensure_buffer_space(t_parse_state *state, size_t needed)
+int	ensure_buffer_space(t_parse_state *state, size_t needed)
 {
-    // More conservative growth strategy
-    if (state->result_idx + needed >= state->result_size)
-    {
-        size_t new_size = state->result_size * 2;
-        if (new_size < state->result_idx + needed)
-            new_size = state->result_idx + needed + 1;
+	size_t	new_size;
+	char	*new_buf;
 
-        char *new_buf = realloc(state->result, new_size);
-        if (!new_buf)
-            return (0);
-
-        state->result = new_buf;
-        state->result_size = new_size;
-    }
-    return (1);
+	if (state->result_idx + needed < state->result_size)
+		return (1);
+	new_size = state->result_size * 2;
+	if (new_size < state->result_idx + needed)
+		new_size = state->result_idx + needed + 1;
+	new_buf = realloc(state->result, new_size);
+	if (!new_buf)
+		return (0);
+	state->result = new_buf;
+	state->result_size = new_size;
+	return (1);
+}
+void	handle_dollar_cases(t_parse_state *state)
+{
+	// Special case: lone $
+	if (!state->line[state->i] || 
+		!(ft_isalnum(state->line[state->i]) || state->line[state->i] == '_'))
+	{
+		if (!ensure_buffer_space(state, 1))
+			return ;
+		
+		if (!state->in_single_quote)
+		{
+			state->result[state->result_idx++] = '$';
+		}
+		return ;
+	}
 }
 
-void handle_quotes(t_parse_state *state)
+void	handle_quotes(t_parse_state *state)
 {
-    if (!ensure_buffer_space(state, 1))
-        return;
-
-    if (state->line[state->i] == '\'' && !state->in_double_quote)
-    {
-        state->in_single_quote = !state->in_single_quote;
-        state->result[state->result_idx++] = state->line[state->i++];
-    }
-    else if (state->line[state->i] == '\"' && !state->in_single_quote)
-    {
-        state->in_double_quote = !state->in_double_quote;
-        state->result[state->result_idx++] = state->line[state->i++];
-    }
-    else
-    {
-        state->result[state->result_idx++] = state->line[state->i++];
-    }
+	if (!ensure_buffer_space(state, 1))
+		return ;
+	if (state->line[state->i] == '\'' && !state->in_double_quote)
+	{
+		state->in_single_quote = !state->in_single_quote;
+		state->result[state->result_idx++] = state->line[state->i++];
+	}
+	else if (state->line[state->i] == '\"' && !state->in_single_quote)
+	{
+		state->in_double_quote = !state->in_double_quote;
+		state->result[state->result_idx++] = state->line[state->i++];
+	}
+	else
+	{
+		state->result[state->result_idx++] = state->line[state->i++];
+	}
 }
 
 
-void init_parse_state(t_parse_state *state, char *line, t_env *env)
+void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 {
-    // Initialize with a slightly larger default buffer
-    state->result_size = (ft_strlen(line) * 2) + 1;
-    state->result = malloc(state->result_size);
-    
-    if (!state->result)
-    {
-        // Handle allocation failure
-        state->result_size = 0;
-        return;
-    }
-
-    state->in_single_quote = 0;
-    state->in_double_quote = 0;
-    state->result_idx = 0;
-    state->line = line;
-    state->i = 0;
-    state->env = env;
+	state->result_size = (ft_strlen(line) * 2) + 1;
+	state->result = malloc(state->result_size);
+	if (!state->result)
+	{
+		state->result_size = 0;
+		return ;
+	}
+	state->in_single_quote = 0;
+	state->in_double_quote = 0;
+	state->result_idx = 0;
+	state->line = line;
+	state->i = 0;
+	state->env = env;
 }
 
 /* --- Quote Removal --- */
@@ -95,57 +105,43 @@ void process_quotes(t_quote_state *state)
     }
 }
 
-char *remove_quotes(char *str)
+char	*remove_quotes(char *str)
 {
-    char *result;
-    int i = 0, j = 0;
-    int end;
+	char	*result;
+	int		i;
+	int		j;
+	int		len;
+	int		in_single;
+	int		in_double;
 
-    if (!str)
-        return NULL;
+	if (!str)
+		return (NULL);
 
-    end = ft_strlen(str) - 1;
+	len = ft_strlen(str);
+	result = malloc(len + 1);
+	if (!result)
+		return (NULL);
 
-    // Handle empty string case
-    if (end < 0)
-    {
-        result = malloc(1);
-        if (!result)
-            return NULL;
-        result[0] = '\0';  // Return empty string
-        return result;
-    }
+	i = 0;
+	j = 0;
+	in_single = 0;
+	in_double = 0;
 
-    result = malloc(end + 2);  // Allocate memory for the result
-    if (!result)
-        return NULL;
+	while (str[i])
+	{
+		if (str[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (str[i] == '\"' && !in_single)
+			in_double = !in_double;
+		else if (!((str[i] == '\'' && !in_double) || (str[i] == '\"' && !in_single)))
+			result[j++] = str[i];
+		i++;
+	}
 
-    // Skip leading quotes
-    while ((str[i] == '"' || str[i] == '\'') && i <= end)
-        i++;
-
-    // Skip trailing quotes
-    while ((str[end] == '"' || str[end] == '\'') && end >= i)
-        end--;
-
-    // Special case: if the string is entirely quotes (e.g., "")
-    if (i > end)
-    {
-        result[0] = '\0';  // Empty result
-        return result;
-    }
-
-    // Copy characters from str to result, excluding quotes
-    while (i <= end)
-    {
-        result[j] = str[i];
-        i++;
-        j++;
-    }
-
-    result[j] = '\0'; // Null-terminate the result
-    return result;
+	result[j] = '\0';
+	return (result);
 }
+
 
 
 
@@ -178,127 +174,128 @@ void copy_var_value(t_parse_state *state, char *value)
     state->result_idx += value_len;
 }
 
-void handle_regular_var(t_parse_state *state)
+void	handle_regular_var(t_parse_state *state)
 {
-    char var_name[256] = {0};
-    size_t var_idx = 0;
-    char *value = NULL;
+	char	var_name[256];
+	size_t	var_idx;
+	char	*value;
 
-    // Special case for lone $
-    if (!state->line[state->i] || !ft_isalnum(state->line[state->i]))
-    {
-        if (!ensure_buffer_space(state, 1))
-            return;
-        state->result[state->result_idx++] = '$';
-        return;
-    }
+	ft_memset(var_name, 0, sizeof(var_name));
+	var_idx = 0;
+	value = NULL;
 
-    // Collect variable name
-    while (state->line[state->i] && 
-           (ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') && 
-           var_idx < sizeof(var_name) - 1)
-    {
-        var_name[var_idx++] = state->line[state->i++];
-    }
-    var_name[var_idx] = '\0';
+	// Skip if in single quotes
+	if (state->in_single_quote)
+	{
+		if (!ensure_buffer_space(state, 1))
+			return ;
+		state->result[state->result_idx++] = '$';
+		return ;
+	}
 
-    // Handle special variables
-    if (strcmp(var_name, "?") == 0)
-        value = "0";  // Default exit status
-    else
-        value = expand_variable(state->env, var_name);
+	handle_dollar_cases(state);
 
-    // Safely copy variable value
-    if (value)
-    {
-        size_t value_len = ft_strlen(value);
-        if (!ensure_buffer_space(state, value_len))
-            return;
+	// Collect variable name
+	while (state->line[state->i] && 
+		   (ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') &&
+		   var_idx < sizeof(var_name) - 1)
+	{
+		var_name[var_idx++] = state->line[state->i++];
+	}
+	var_name[var_idx] = '\0';
 
-        ft_memcpy(&state->result[state->result_idx], value, value_len);
-        state->result_idx += value_len;
-    }
-}
+	// Expand variable
+	if (strcmp(var_name, "?") == 0)
+		value = "0";
+	else
+		value = expand_variable(state->env, var_name);
 
-void process_char(t_parse_state *state)
-{
-    if (state->i >= ft_strlen(state->line))
-        return;  // Avoid accessing beyond the string length
+	if (value)
+	{
+		size_t	value_len;
 
-    if (state->line[state->i] == '\'' || state->line[state->i] == '\"')
-    {
-        handle_quotes(state);
-    }
-    else if (state->line[state->i] == '$' && !state->in_single_quote)
-    {
-        state->i++;
-        handle_regular_var(state);  // Process regular variables (e.g., $HOME)
-    }
-    else
-    {
-        if (!ensure_buffer_space(state, 1))
-            return;
-        state->result[state->result_idx++] = state->line[state->i++];
-    }
+		value_len = ft_strlen(value);
+		if (!ensure_buffer_space(state, value_len))
+			return ;
+		ft_memcpy(&state->result[state->result_idx], value, value_len);
+		state->result_idx += value_len;
+	}
 }
 
 
-char *expand_variables(t_env *env, char *line)
+void	process_char(t_parse_state *state)
 {
-    t_parse_state state;
-    char *expanded_line;
+	if (state->i >= ft_strlen(state->line))
+		return ;
 
-    // Sanity check for input
-    if (!line)
-        return NULL;
-
-    // Initialize parse state
-    init_parse_state(&state, line, env);
-    if (!state.result)
-        return NULL;
-
-    // Process the entire line
-    while (line[state.i])
-    {
-        // Ensure space before processing
-        if (!ensure_buffer_space(&state, 1))
-        {
-            free(state.result);
-            return NULL;
-        }
-
-        // Process each character
-        process_char(&state);
-    }
-
-    // Null-terminate the result
-    if (!ensure_buffer_space(&state, 1))
-    {
-        free(state.result);
-        return NULL;
-    }
-    state.result[state.result_idx] = '\0';
-
-    // Store expanded line before potential quote removal
-    expanded_line = state.result;
-
-    // Remove quotes after expansion
-    return remove_quotes(expanded_line);
+	if (state->line[state->i] == '\'' || state->line[state->i] == '\"')
+		handle_quotes(state);
+	else if (state->line[state->i] == '$')
+	{
+		state->i++;
+		handle_regular_var(state);
+	}
+	else
+	{
+		if (!ensure_buffer_space(state, 1))
+			return ;
+		state->result[state->result_idx++] = state->line[state->i++];
+	}
 }
+
+
+
+char	*expand_variables(t_env *env, char *line)
+{
+	t_parse_state	state;
+	char			*expanded_line;
+
+	if (!line)
+		return (NULL);
+
+	init_parse_state(&state, line, env);
+	if (!state.result)
+		return (NULL);
+
+	while (line[state.i])
+	{
+		if (!ensure_buffer_space(&state, 1))
+		{
+			free(state.result);
+			return (NULL);
+		}
+		process_char(&state);
+	}
+
+	if (!ensure_buffer_space(&state, 1))
+	{
+		free(state.result);
+		return (NULL);
+	}
+	state.result[state.result_idx] = '\0';
+
+	expanded_line = remove_quotes(state.result);
+	free(state.result);
+
+	return (expanded_line);
+}
+
 
 
 /* --- Argument Processing --- */
 
-int should_merge_with_next(char *current, char *next)
+int	should_merge_with_next(char *current, char *next)
 {
-    if (!next)
-        return (0);
+	size_t	cur_len;
 
-    size_t cur_len = ft_strlen(current);
-    return ((!ft_strchr("'\"", current[0]) && cur_len > 0 &&
-             (current[cur_len - 1] == '\'' || current[cur_len - 1] == '\"')) ||
-            (current[0] != '\'' && current[0] != '\"' &&
-             (next[0] == '\'' || next[0] == '\"')));
+	if (!next)
+		return (0);
+
+	cur_len = ft_strlen(current);
+	return ((!ft_strchr("'\"", current[0]) && cur_len > 0 &&
+			(current[cur_len - 1] == '\'' || current[cur_len - 1] == '\"')) ||
+			(current[0] != '\'' && current[0] != '\"' &&
+			 (next[0] == '\'' || next[0] == '\"')));
 }
 
 char *merge_args(char *arg1, char *arg2)
@@ -319,84 +316,75 @@ char *merge_args(char *arg1, char *arg2)
 
 /* --- Main Expand Function --- */
 
-void expand(t_env *env, t_list **list)
+
+void	expand(t_env *env, t_list **list)
 {
-    t_list *current;
-    t_list *prev = NULL;  // To track the previous node
-    char *expanded_line;
-    char *final_line;
-    char **split_parts;
+	t_list	*current;
+	t_list	*prev;
+	char	*expanded_line;
+	char	*final_line;
+	int		was_modified;
 
-    current = *list;
+	current = *list;
+	prev = NULL;
 
-    while (current)
-    {
-        if (strcmp(current->content, "export") == 0)
-            break;
+	while (current)
+	{
+		// Skip empty strings
+		if (strcmp(current->content, "") == 0)
+		{
+			prev = current;
+			current = current->next;
+			continue ;
+		}
 
-        // Skip empty quote nodes (""), which have no meaningful content
-        if (strcmp(current->content, "") == 0)
-        {
-            t_list *to_free = current;
-            current = current->next;
+		// Track if this node was modified by expansion or quote removal
+		was_modified = 0;
 
-            // Update the list pointers
-            if (prev == NULL)
-                *list = current;
-            else
-                prev->next = current;
+		expanded_line = expand_variables(env, current->content);
 
-            if (current != NULL)
-                current->prev = prev;
+		if (!expanded_line)
+		{
+			free(current->content);
+			current->content = ft_strdup("");
+			was_modified = 1;
+		}
+		else
+		{
+			final_line = remove_quotes(expanded_line);
+			free(expanded_line);
 
-            free(to_free->content);
-            free(to_free);
-            continue;
-        }
+			// Only mark as modified if content actually changed
+			if (strcmp(final_line, current->content) != 0)
+				was_modified = 1;
 
-        // Expand variables in the current node's content
-        expanded_line = expand_variables(env, current->content);
+			free(current->content);
+			current->content = final_line;
+		}
 
-        // Split expanded variables by spaces
-        split_parts = ft_split(expanded_line, ' ');
-        free(expanded_line);
+		// Refined merging logic that only merges based on original parsing
+		if (prev && !was_modified && 
+			strcmp(prev->content, "") != 0 && 
+			strcmp(current->content, "") != 0 && 
+			should_merge_with_next(prev->content, current->content))
+		{
+			char *merged = merge_args(prev->content, current->content);
+			free(prev->content);
+			prev->content = merged;
 
-        if (split_parts && split_parts[1]) // If splitting occurred
-        {
-            // Replace the current node's content with the first part
-            free(current->content);
-            current->content = strdup(split_parts[0]);
+			t_list *to_free = current;
+			prev->next = current->next;
+			if (current->next)
+				current->next->prev = prev;
+			current = current->next;
 
-            // Insert additional parts as new nodes
-            t_list *next = current->next;
-            t_list *new_node;
-            for (int i = 1; split_parts[i]; i++)
-            {
-                new_node = malloc(sizeof(t_list));
-                if (!new_node)
-                    return; // Allocation error
-                new_node->content = strdup(split_parts[i]);
-                new_node->next = next;
-                new_node->prev = current;
-                if (next)
-                    next->prev = new_node;
-                current->next = new_node;
-                current = new_node;
-            }
-        }
-        else if (split_parts) // No splitting occurred
-        {
-            final_line = remove_quotes(split_parts[0]);
-            free(current->content);
-            current->content = final_line;
-        }
-
-        // Free the split parts array
-        free(split_parts);
-
-        // Move to the next node
-        prev = current;
-        current = current->next;
-    }
+			free(to_free->content);
+			free(to_free);
+		}
+		else
+		{
+			prev = current;
+			current = current->next;
+		}
+	}
 }
-

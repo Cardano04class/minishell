@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/28 15:01:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/29 11:25:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char **list_to_array(t_list *list, t_env *env)
     t_list *temp = list;
     char **array;
     char *processed;
-    char *merged;
 
     // First, count how many nodes are not empty strings
     while (temp)
@@ -40,20 +39,21 @@ char **list_to_array(t_list *list, t_env *env)
     {
         if (strcmp(list->content, "") != 0)  // Skip empty nodes
         {
-            if (strchr(list->content, '=') && list->next && list->next->content[0] == '"')
+            // Check for variable assignment with potential expansion
+            if (strchr(list->content, '='))
             {
-                // If the current node is a variable assignment (a=) and the next node is a quoted value ("ls")
-                processed = expand_variables(env, list->next->content);
-                char *value = remove_quotes(processed);
-                free(processed);
-
-                merged = merge_args(list->content, value);
-                free(value);
-
-                array[count++] = merged;  // Add the merged variable to the array
-
-                // Skip the next node (value node)
-                list = list->next;
+                // Direct processing of variable assignment
+                processed = expand_variables(env, list->content);
+                if (processed)
+                {
+                    char *final = remove_quotes(processed);
+                    free(processed);
+                    array[count++] = final;
+                }
+                else
+                {
+                    array[count++] = strdup(list->content);
+                }
             }
             else
             {
@@ -63,11 +63,11 @@ char **list_to_array(t_list *list, t_env *env)
                 {
                     char *final = remove_quotes(processed);
                     free(processed);
-                    array[count++] = final;  // Add the processed content to the array
+                    array[count++] = final;
                 }
                 else
                 {
-                    array[count++] = strdup(list->content);  // Fallback to original content
+                    array[count++] = strdup(list->content);
                 }
             }
         }
@@ -78,11 +78,78 @@ char **list_to_array(t_list *list, t_env *env)
     return (array);
 }
 
+void split_args(char ***array, size_t *count)
+{
+    char **new_array;
+    size_t new_count = 0;
+    size_t i, j;
+    char *token;
 
+    // First, count total potential tokens
+    for (i = 0; (*array)[i]; i++)
+    {
+        token = (*array)[i];
+        for (j = 0; token[j]; j++)
+        {
+            if (token[j] == ' ')
+                new_count++;
+        }
+        new_count++;
+    }
+
+    // Allocate new array
+    new_array = malloc(sizeof(char *) * (new_count + 1));
+    if (!new_array)
+        return;
+
+    new_count = 0;
+    for (i = 0; (*array)[i]; i++)
+    {
+        token = (*array)[i];
+        
+        // If no spaces, just copy the original token
+        if (!strchr(token, ' '))
+        {
+            new_array[new_count++] = strdup(token);
+            continue;
+        }
+
+        // Split by spaces
+        char *start = token;
+        for (j = 0; token[j]; j++)
+        {
+            if (token[j] == ' ')
+            {
+                // Found a space, terminate and add token
+                token[j] = '\0';
+                new_array[new_count++] = strdup(start);
+                
+                // Move to next token start
+                start = &token[j + 1];
+            }
+        }
+
+        // Add last token
+        if (start != token + j)
+            new_array[new_count++] = strdup(start);
+    }
+
+    new_array[new_count] = NULL;
+
+    // Free original array
+    for (i = 0; (*array)[i]; i++)
+        free((*array)[i]);
+    free(*array);
+
+    // Update array and count
+    *array = new_array;
+    *count = new_count;
+}
 
 int run_builtins(t_env **env, t_list *list)
 {
     char **arg;
+    size_t count;
 
     arg = list_to_array(list, *env);
     if (!arg || !arg[0])
@@ -90,6 +157,14 @@ int run_builtins(t_env **env, t_list *list)
         free(arg);
         return (0);
     }
+
+    // Split arguments for expanded variables
+    count = 0;
+    while (arg[count])
+        count++;
+    
+    split_args(&arg, &count);
+
     if (strcmp(arg[0], "export") == 0)
         export(arg, env);
     else if (strncmp("env", arg[0], 4) == 0)
@@ -104,21 +179,15 @@ int run_builtins(t_env **env, t_list *list)
         unset(arg, env);
     else if (strcmp(arg[0], "exit") == 0)
     {
-        free(arg);
+        free_array(arg);
         exit(0);
     }
     else
     {
-        free(arg);
+        free_array(arg);
         return (0);
     }
-	size_t i = 0;
-    while (arg[i])
-	{
-		free(arg[i]);
-		i++;
-	}
-	free(arg);
+
+    free_array(arg);
     return (1);
 }
-

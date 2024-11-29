@@ -2,6 +2,22 @@
 
 t_global	g_mini;
 
+void free_array(char **array)
+{
+    int i;
+
+    if (!array)
+        return;
+
+    i = 0;
+    while (array[i])
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array);
+}
+
 int	empty_prompt(char *rl)
 {
 	int	i;
@@ -49,14 +65,17 @@ void	prompt(char **env)
 			continue ;
 		}
 		lexer(rl, &list);
+		printf("Before exp: \n-----------\n");
+		debug_list(list);
 		expand(env_list, &list);
+		// printf("After exp: \n-----------\n");
+		// debug_list(list);
 		if(!syntax_error(list))
 		{
 			parser(list);
 			if (!run_builtins(&env_list, list))
 				run_cmd(g_mini.command, env_list);
 		}
-		debug_list(list);
 		ft_lstclear(&list);
 		add_history(rl);
 		free(rl);

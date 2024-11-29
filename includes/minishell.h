@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:30:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/28 15:01:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/29 11:25:15 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ typedef struct s_error
 
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
-
+void free_array(char **array);
 int						syntax_error(t_list *list);
 t_error					create_error(t_error_type type, char *token);
 void					print_error(t_error error);
