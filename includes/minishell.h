@@ -93,6 +93,7 @@ typedef struct s_global
 {
 	t_cmd				*command;
 	int					sig_flag;
+	int					heredoc_fd;
 }						t_global;
 
 extern t_global			g_mini;

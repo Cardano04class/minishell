@@ -93,6 +93,7 @@ void    execute(t_cmd *command, t_env *list_env)
 	{
 		while (command->files != NULL)
 		{
+		
 			if (command->files->type == INRED)
 			{
 				fd_in = open(command->files->filename, O_RDONLY);
@@ -144,6 +145,14 @@ void    execute(t_cmd *command, t_env *list_env)
 					exit(1);
 				}
 				close(fd_out);
+			}
+			if (command->heredoc != NULL)
+			{
+				if(dup2(g_mini.heredoc_fd, STDIN_FILENO) == -1)
+				{
+					//perror(command->files->filename);
+					exit(1);
+				}
 			}
 			command->files = command->files->next;
 		}

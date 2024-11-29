@@ -1,9 +1,1 @@
-heredoc.c
-includes
-Makefile
-minishell
-out
-readline.supp
-README.md
-src
-utils
+hello

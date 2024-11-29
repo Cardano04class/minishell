@@ -6,11 +6,14 @@ void run_heredoc(t_cmd	*command)
 	pid_t	child_pid;
 	int		status;
 	int		fd;
+	char *file = "/tmp/heredoc.txt";
 
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		fd = open("/tmp/heredoc.txt", O_CREAT | O_RDWR | O_TRUNC, 777);
+		fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 644);
+		if (fd == -1)
+			exit(1);
 		while (command->heredoc != NULL)
 		{
 			while (1)
@@ -34,4 +37,5 @@ void run_heredoc(t_cmd	*command)
 		exit(0);
 	}
 	waitpid(child_pid, &status, 0);
+	g_mini.heredoc_fd = open(file, O_CREAT | O_RDWR, 644);
 }
