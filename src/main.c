@@ -53,7 +53,7 @@ void	prompt(char **env)
 		if(g_mini.command->heredoc)
 			run_heredoc(g_mini.command);
 		// if (!run_builtins(&env_list)) // also a SEGV here, but i still nedd to check if it from the heredoc.
-			run_cmd(g_mini.command, env_list);
+		run_cmd(g_mini.command, env_list);
 		signal_handler(IN_PARENT);
 		ft_lstclear(&list);
 		add_history(rl);
