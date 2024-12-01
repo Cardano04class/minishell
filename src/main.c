@@ -68,8 +68,8 @@ void	prompt(char **env)
 		printf("Before exp: \n-----------\n");
 		debug_list(list);
 		expand(env_list, &list);
-		// printf("After exp: \n-----------\n");
-		// debug_list(list);
+		printf("After exp: \n-----------\n");
+		debug_list(list);
 		if(!syntax_error(list))
 		{
 			parser(list);

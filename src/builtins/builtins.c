@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/29 11:25:21 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/29 15:02:11 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void split_args(char ***array, size_t *count)
     for (i = 0; (*array)[i]; i++)
     {
         token = (*array)[i];
-        
         // If no spaces, just copy the original token
         if (!strchr(token, ' '))
         {

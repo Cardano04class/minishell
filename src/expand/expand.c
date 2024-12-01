@@ -6,13 +6,67 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/29 11:25:40 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/29 11:44:02 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* --- Helper Functions --- */
+void merge_export_assignment(t_list **list)
+{
+    t_list *current = *list;
+
+    while (current && current->next)
+    {
+        // If the current node is "export" and the next node contains a variable assignment
+        if (strcmp(current->content, "export") == 0 && 
+            current->next && current->next->content &&
+            strchr(current->next->content, '='))  // Ensure the next node contains an '='
+        {
+            // The next node should contain the variable assignment (e.g., a=ls -la)
+            char *var_assignment = current->next->content;
+
+            // Check if the variable assignment has quotes around it
+            if (var_assignment[0] == '"' || var_assignment[0] == '\'')
+            {
+                // Remove the surrounding quotes from the assignment value
+                var_assignment = remove_quotes(var_assignment);
+            }
+
+            // Allocate enough space for "export" + space + variable assignment (e.g., a=ls -la)
+            size_t export_len = strlen(current->content);
+            size_t var_len = strlen(var_assignment);
+
+            char *merged_content = malloc(export_len + var_len + 2); // +2 for space and null terminator
+            if (merged_content)
+            {
+                // Copy "export "
+                memcpy(merged_content, current->content, export_len);
+                merged_content[export_len] = ' '; // Add a space between "export" and the variable assignment
+
+                // Copy the variable assignment
+                memcpy(merged_content + export_len + 1, var_assignment, var_len);
+                merged_content[export_len + var_len + 1] = '\0'; // Null terminate the string
+
+                // Replace the content of the "export" node with the merged content
+                free(current->content);
+                current->content = merged_content;
+
+                // Remove the next node (the variable assignment)
+                t_list *to_free = current->next;
+                current->next = to_free->next;
+                if (to_free->next)
+                    to_free->next->prev = current;
+                free(to_free->content);
+                free(to_free);
+            }
+        }
+        // Move to the next node
+        current = current->next;
+    }
+}
+
 
 int	ensure_buffer_space(t_parse_state *state, size_t needed)
 {
@@ -325,6 +379,9 @@ void	expand(t_env *env, t_list **list)
 	char	*final_line;
 	int		was_modified;
 
+	// First, merge export assignments
+	merge_export_assignment(list);
+
 	current = *list;
 	prev = NULL;
 
@@ -341,6 +398,7 @@ void	expand(t_env *env, t_list **list)
 		// Track if this node was modified by expansion or quote removal
 		was_modified = 0;
 
+		// Handle the expansion of variables in the content
 		expanded_line = expand_variables(env, current->content);
 
 		if (!expanded_line)
@@ -351,10 +409,41 @@ void	expand(t_env *env, t_list **list)
 		}
 		else
 		{
+			// Handle export case: if we are processing an export variable assignment, 
+			// we should keep the quotes around the value for assignment but remove them 
+			// for further expansion (e.g., "ls -la" -> ls -la).
+			if (strncmp(current->content, "export ", 7) == 0)
+			{
+				// Remove the quotes from the value part of the assignment
+				char *eq_pos = strchr(expanded_line, '=');
+				if (eq_pos)
+				{
+					char *value_start = eq_pos + 1;
+					// Check if the value is surrounded by quotes and remove them
+					if ((*value_start == '"' || *value_start == '\'') &&
+						*(value_start + strlen(value_start) - 1) == *value_start)
+					{
+						// Remove the surrounding quotes
+						value_start++;
+						*(value_start + strlen(value_start) - 1) = '\0';
+					}
+
+					// Reconstruct the expanded line
+					char *new_expanded_line = malloc(strlen(current->content) + strlen(value_start) + 2);
+					if (new_expanded_line)
+					{
+						snprintf(new_expanded_line, strlen(current->content) + strlen(value_start) + 2, "%s=%s", current->content + 7, value_start);
+						free(expanded_line);
+						expanded_line = new_expanded_line;
+					}
+				}
+			}
+
+			// Remove quotes in general if necessary
 			final_line = remove_quotes(expanded_line);
 			free(expanded_line);
 
-			// Only mark as modified if content actually changed
+			// Only mark as modified if the content actually changed
 			if (strcmp(final_line, current->content) != 0)
 				was_modified = 1;
 
