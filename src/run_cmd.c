@@ -74,6 +74,7 @@ void    execute(t_cmd *command, t_env *list_env)
 	char	*fullcmd = NULL;
 	int 	fd_in = 0;
 	int		fd_out = 1;
+	t_cmd	*tmp = command;
 	// int 	std_in = dup(STDIN_FILENO);
 	// int 	std_out = dup(STDOUT_FILENO);
 
@@ -97,10 +98,8 @@ void    execute(t_cmd *command, t_env *list_env)
 			if (command->files->type == INRED)
 			{
 				fd_in = open(command->files->filename, O_RDONLY);
-				printf("infile = %d\n", fd_in);
 				if (fd_in == -1)
 				{
-					puts("infile ");
 					perror(command->files->filename);
 					exit(1);
 				}
@@ -113,12 +112,9 @@ void    execute(t_cmd *command, t_env *list_env)
 			}
 			if (command->files->type == OUTRED)
 			{
-				printf("out\n");
 				fd_out = open(command->files->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				printf("outfile = %d\n", fd_out);
 				if (fd_out == -1)
 				{
-					puts("outfile ");
 					perror(command->files->filename);
 					exit(1);
 				}
@@ -131,11 +127,9 @@ void    execute(t_cmd *command, t_env *list_env)
 			}
 			if (command->files->type == APPEND)
 			{
-				printf("append\n");
 				fd_out = open(command->files->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 				if (fd_out == -1)
 				{
-					puts("append ");
 					perror(command->files->filename);
 					exit(1);
 				}
@@ -146,13 +140,15 @@ void    execute(t_cmd *command, t_env *list_env)
 				}
 				close(fd_out);
 			}
-			if (command->heredoc != NULL)
+			if (command->files->type == HEREDOC)
 			{
-				if(dup2(g_mini.heredoc_fd, STDIN_FILENO) == -1)
+				fd_in = open(command->files->filename, O_RDONLY);
+				if(dup2(fd_in, STDIN_FILENO) == -1)
 				{
 					//perror(command->files->filename);
 					exit(1);
 				}
+				close(fd_in);
 			}
 			command->files = command->files->next;
 		}
@@ -162,7 +158,15 @@ void    execute(t_cmd *command, t_env *list_env)
 			exit(127);
 		}
 	}
-	waitpid(child_pid, &status, 0);
+	else {
+		waitpid(child_pid, &status, 0);
+	}
+	while (tmp->files != NULL)
+	{
+		if (tmp->files->type == HEREDOC && tmp->files->delimiter != NULL)
+			unlink(tmp->files->filename);
+		tmp->files = tmp->files->next;
+	}
 	signal_handler(IN_CHILD);
 
 }
@@ -203,15 +207,19 @@ void	handle_pipe(t_cmd *command, t_env *env)
 }
 
 void    run_cmd(t_cmd *command, t_env *env)
-{
-    
+{ 
 	if (command->next == NULL)
         execute(command, env);
 	else
 	{
 		handle_pipe(command, env);
 	}
-	//if the heredoc is 
+	while (command->files != NULL)
+	{
+		if (command->files->type == HEREDOC && command->files->delimiter != NULL)
+			unlink(command->files->filename);
+		command->files = command->files->next;
+	}
 }
 
 

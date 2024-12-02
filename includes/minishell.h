@@ -71,15 +71,10 @@ typedef struct s_env
 typedef struct s_file
 {
 	char				*filename;
+	char				*delimiter;
 	t_token				type;
 	struct s_file		*next;
 }						t_file;
-
-typedef struct s_heredoc
-{
-	char				*delimiter;
-	struct s_heredoc	*next;
-}						t_heredoc;
 
 typedef struct s_cmd
 {
@@ -174,7 +169,7 @@ char	*remove_quotes(char *str);
 t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);
 t_cmd					*ft_cmd_new(char **content);
-t_file					*ft_file_new(char *filename, t_token type);
+t_file					*ft_file_new(char *filename, t_token type, char *delimiter);
 t_heredoc				*ft_heredoc_new(char *delimiter);
 void					ft_env_clear(t_env **lst);
 t_list					*ft_lstmax(t_list *stack_a);
@@ -198,6 +193,6 @@ char					*get_env(t_env *env, const char *name);
 void    				run_cmd(t_cmd *command, t_env *env);
 void 					run_heredoc(t_cmd	*command);
 void 					signal_handler(int sig);
-void						handle_sigint(int signum);
-
+void					handle_sigint(int signum);
+char					*heredoc_filename(void);
 # endif

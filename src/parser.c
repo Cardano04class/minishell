@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/26 21:53:48 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/01 16:06:34 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ void	parser(t_list *lst)
 	{
 		if (lst->type == WORD && index_count <= cmd_arg_size)
 		{
-			if (state == STATE_HEREDOC)
+			if (state == STATE_REDIRECTION)
 			{
-				ft_heredoc_addback(ft_heredoc_new(ft_strdup(lst->content)));
-				state = STATE_DEFAULT;
-			}
-			else if (state == STATE_REDIRECTION)
-			{
-				ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type));
+				if (lst->prev->type == HEREDOC)
+				{
+					char *name = heredoc_filename();
+					name = ft_strjoin("/tmp/", name);
+					ft_file_addback(ft_file_new(name, lst->prev->type, ft_strdup(lst->content)));
+				}
+				else
+					ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type, NULL));
 				state = STATE_DEFAULT;
 			}
 			else
@@ -60,10 +62,8 @@ void	parser(t_list *lst)
 				index_count++;
 			}
 		}
-		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND)
+		else if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND || lst->type == HEREDOC)
 			state = STATE_REDIRECTION;
-		else if (lst->type == HEREDOC)
-			state = STATE_HEREDOC;
 		else if (lst->type == PIPE)
 		{
 			ft_cmd_addback(&tmp_cmd, ft_cmd_new(NULL));
