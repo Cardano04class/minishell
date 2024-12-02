@@ -76,10 +76,17 @@ typedef struct s_file
 	struct s_file		*next;
 }						t_file;
 
+/*typedef struct s_heredoc
+{
+	char				*delimiter;
+	struct s_heredoc	*next;
+}					t_heredoc;*/
+
 typedef struct s_cmd
 {
 	char				**cmd;
 	t_file				*files;
+	//t_heredoc			*heredoc;
 	struct s_cmd		*next;
 }						t_cmd;
 
@@ -169,7 +176,7 @@ t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);
 t_cmd					*ft_cmd_new(char **content);
 t_file					*ft_file_new(char *filename, t_token type, char *delimiter);
-t_heredoc				*ft_heredoc_new(char *delimiter);
+//t_heredoc				*ft_heredoc_new(char *delimiter);
 void					ft_env_clear(t_env **lst);
 t_list					*ft_lstmax(t_list *stack_a);
 t_list					*ft_lstmin(t_list *stack_a);
@@ -178,7 +185,7 @@ void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
-void					ft_heredoc_addback(t_heredoc *new);
+//void					ft_heredoc_addback(t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);

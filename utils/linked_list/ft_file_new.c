@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 14:43:34 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/01 15:39:46 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:26:02 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_file	*ft_file_new(char *filename, t_token type, char *delimiter)
 {
 	t_file	*new;
 
-	new = malloc(sizeof(t_cmd));
+	new = malloc(sizeof(t_file));
 	new->filename = filename;
 	new->delimiter = delimiter;
 	new->type = type;
