@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/02 00:13:42 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/02 13:25:57 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,32 @@ void merge_export_assignment(t_list **list)
             t_list *var_node = current->next;
             t_list *val_node = var_node->next;
 
-            // Check if var_node has '=' and val_node exists
-            if (val_node && val_node->content && strchr(var_node->content, '=') != NULL)
+            // Check for export assignment with a separate value node
+            if (val_node && strchr(var_node->content, '=') != NULL)
             {
                 char *merged_content;
-                size_t var_len = strlen(var_node->content);
-                size_t val_len = strlen(val_node->content);
-
-                // Remove surrounding quotes from val_node content
-                char *clean_value = remove_quotes(val_node->content);
+                size_t len_var = strlen(var_node->content);
+                size_t len_val = strlen(val_node->content);
 
                 // Allocate space for the merged string
-                merged_content = malloc(var_len + val_len + 1);
+                merged_content = malloc(len_var + len_val + 1);
                 if (!merged_content)
                     return;
 
-                // Combine variable name and clean value
+                // Merge the variable name and value
                 strcpy(merged_content, var_node->content);
-                strcat(merged_content, clean_value);
+                strcat(merged_content, val_node->content);
 
                 // Update var_node with the merged content
                 free(var_node->content);
                 var_node->content = merged_content;
 
-                // Free the clean value and val_node
-                free(clean_value);
-                t_list *to_free = val_node;
+                // Remove the value node
                 var_node->next = val_node->next;
                 if (val_node->next)
                     val_node->next->prev = var_node;
-                free(to_free->content);
-                free(to_free);
+                free(val_node->content);
+                free(val_node);
 
                 continue; // Recheck current node after merge
             }
@@ -62,7 +57,6 @@ void merge_export_assignment(t_list **list)
         current = current->next;
     }
 }
-
 
 
 
@@ -83,6 +77,7 @@ int	ensure_buffer_space(t_parse_state *state, size_t needed)
 	state->result_size = new_size;
 	return (1);
 }
+
 void	handle_dollar_cases(t_parse_state *state)
 {
 	// Special case: lone $
@@ -119,7 +114,6 @@ void	handle_quotes(t_parse_state *state)
 		state->result[state->result_idx++] = state->line[state->i++];
 	}
 }
-
 
 void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 {
@@ -189,11 +183,6 @@ char *remove_quotes(char *str)
     return (result);
 }
 
-
-
-
-
-/* --- Variable Expansion --- */
 
 char *expand_variable(t_env *env, const char *var_name)
 {
@@ -300,6 +289,14 @@ char *expand_variables(t_env *env, char *line)
     if (!line)
         return (NULL);
 
+    // Special case: if line is a pure variable reference
+    if (line[0] == '$')
+    {
+        char *var_name = line + 1;
+        expanded_line = expand_variable(env, var_name);
+        return expanded_line ? strdup(expanded_line) : NULL;
+    }
+
     init_parse_state(&state, line, env);
     if (!state.result)
         return (NULL);
@@ -321,7 +318,7 @@ char *expand_variables(t_env *env, char *line)
     }
     state.result[state.result_idx] = '\0';
 
-    expanded_line = remove_quotes(state.result);
+    expanded_line = strdup(state.result);
     free(state.result);
 
     return (expanded_line);

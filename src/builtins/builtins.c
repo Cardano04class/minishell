@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/29 15:02:11 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/02 13:26:06 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,20 @@ char **list_to_array(t_list *list, t_env *env)
     size_t count = 0;
     t_list *temp = list;
     char **array;
-    char *processed;
 
-    // First, count how many nodes are not empty strings
+    // First, expand variables in the list
     while (temp)
     {
-        if (strcmp(temp->content, "") != 0)  // Only count non-empty strings
-            count++;
+        if (temp->content && temp->content[0] == '$')
+        {
+            char *expanded = expand_variables(env, temp->content);
+            if (expanded)
+            {
+                free(temp->content);
+                temp->content = expanded;
+            }
+        }
+        count++;
         temp = temp->next;
     }
 
@@ -32,51 +39,16 @@ char **list_to_array(t_list *list, t_env *env)
     if (!array)
         return (NULL);
 
-    count = 0;  // Reset count to reuse it for array filling
-
-    // Now fill the array with processed content
+    count = 0;
     while (list)
     {
-        if (strcmp(list->content, "") != 0)  // Skip empty nodes
-        {
-            // Check for variable assignment with potential expansion
-            if (strchr(list->content, '='))
-            {
-                // Direct processing of variable assignment
-                processed = expand_variables(env, list->content);
-                if (processed)
-                {
-                    char *final = remove_quotes(processed);
-                    free(processed);
-                    array[count++] = final;
-                }
-                else
-                {
-                    array[count++] = strdup(list->content);
-                }
-            }
-            else
-            {
-                // Regular node processing
-                processed = expand_variables(env, list->content);
-                if (processed)
-                {
-                    char *final = remove_quotes(processed);
-                    free(processed);
-                    array[count++] = final;
-                }
-                else
-                {
-                    array[count++] = strdup(list->content);
-                }
-            }
-        }
+        array[count++] = strdup(list->content);
         list = list->next;
     }
-
-    array[count] = NULL;  // Null-terminate the array
+    array[count] = NULL; // Null-terminate the array
     return (array);
 }
+
 
 void split_args(char ***array, size_t *count)
 {
