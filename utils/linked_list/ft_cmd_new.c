@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:46:08 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/29 17:34:43 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:00:36 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@ t_cmd	*ft_cmd_new(char **content)
 	new->cmd = content;
 	new->files = NULL;
 	new->next = NULL;
-	new->heredoc = NULL;
 	return (new);
 }

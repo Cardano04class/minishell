@@ -29,7 +29,6 @@ void	prompt(char **env)
 		g_mini.command = malloc(sizeof(t_cmd));
 		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
-		g_mini.command->heredoc = NULL;
 		g_mini.command->next = NULL;
 		
 		signal_handler(IN_PROMPT);

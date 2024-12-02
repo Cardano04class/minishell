@@ -80,7 +80,6 @@ typedef struct s_cmd
 {
 	char				**cmd;
 	t_file				*files;
-	t_heredoc			*heredoc;
 	struct s_cmd		*next;
 }						t_cmd;
 
