@@ -24,6 +24,9 @@ char	*find_path(char *cmd, t_env *env)
 	path = ft_getenv("PATH", env);
 	if (path == NULL)
 		return (cmd);
+	if (cmd == NULL)
+		return (NULL);
+	//printf("cmd : %s\n", cmd);
 	cmd = ft_strjoin("/", cmd);
 	paths = ft_split(path, ':');
 	if (paths == NULL)
@@ -36,6 +39,7 @@ char	*find_path(char *cmd, t_env *env)
 			return (fullcmd);
 		j++;
 	}
+	free (cmd);
 	return (NULL);
 }
 
@@ -68,34 +72,104 @@ void	execute(t_cmd *command, t_env *list_env)
 	char	**env;
 	pid_t	child_pid;
 	int		status;
-	char	*fullcmd;
-	int		i;
+	char	*fullcmd = NULL;
+	int 	fd_in = 0;
+	int		fd_out = 1;
+	t_cmd	*tmp = command;
+	// int 	std_in = dup(STDIN_FILENO);
+	// int 	std_out = dup(STDOUT_FILENO);
 
+    if (command->cmd[0] == NULL)
+	 return ;
 	fullcmd = find_path(command->cmd[0], list_env);
+	//printf("command->cmd[0] :%s\n", command->cmd[0]);
 	if (fullcmd == NULL)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
-		write(2, ": command not found\n", 20);
+		write(2, ": command not found\n", 21);
 		return ;
 	}
 	env = convert_env(list_env);
 	child_pid = fork();
 	if (child_pid == 0)
 	{
+		while (command->files != NULL)
+		{
+		
+			if (command->files->type == INRED)
+			{
+				fd_in = open(command->files->filename, O_RDONLY);
+				if (fd_in == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				if(dup2(fd_in, STDIN_FILENO) == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_in);
+			}
+			if (command->files->type == OUTRED)
+			{
+				fd_out = open(command->files->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (fd_out == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				if(dup2(fd_out, STDOUT_FILENO) == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_out);
+			}
+			if (command->files->type == APPEND)
+			{
+				fd_out = open(command->files->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if (fd_out == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				if(dup2(fd_out, STDOUT_FILENO) == -1)
+				{
+					perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_out);
+			}
+			if (command->files->type == HEREDOC)
+			{
+				fd_in = open(command->files->filename, O_RDONLY);
+				if(dup2(fd_in, STDIN_FILENO) == -1)
+				{
+					//perror(command->files->filename);
+					exit(1);
+				}
+				close(fd_in);
+			}
+			command->files = command->files->next;
+		}
 		if (execve(fullcmd, command->cmd, env) == -1)
 		{
-			dprintf(2, "fullcmd  : %s\n", fullcmd);
-			i = 0;
-			while (command->cmd[i])
-			{
-				dprintf(2, ">> %s\n", command->cmd[i]);
-				i++;
-			}
 			perror(command->cmd[0]);
 			exit(127);
 		}
 	}
-	waitpid(child_pid, &status, 0);
+	else {
+		waitpid(child_pid, &status, 0);
+	}
+	while (tmp->files != NULL)
+	{
+		if (tmp->files->type == HEREDOC && tmp->files->delimiter != NULL)
+			unlink(tmp->files->filename);
+		tmp->files = tmp->files->next;
+	}
+	signal_handler(IN_CHILD);
+
 }
 
 void	handle_pipe(t_cmd *command, t_env *env)
@@ -133,12 +207,20 @@ void	handle_pipe(t_cmd *command, t_env *env)
 	waitpid(child_pid2, &status[1], 0);
 }
 
-void	run_cmd(t_cmd *command, t_env *env)
-{
+void    run_cmd(t_cmd *command, t_env *env)
+{ 
 	if (command->next == NULL)
-		execute(command, env);
+        execute(command, env);
 	else
 	{
 		handle_pipe(command, env);
 	}
+	while (command->files != NULL)
+	{
+		if (command->files->type == HEREDOC && command->files->delimiter != NULL)
+			unlink(command->files->filename);
+		command->files = command->files->next;
+	}
 }
+
+

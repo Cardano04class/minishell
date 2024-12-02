@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/17 15:30:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/29 11:25:15 by mamir            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef MINISHELL_H
+# ifndef MINISHELL_H
 # define MINISHELL_H
 
 # define BUFFER_SIZE 1024
@@ -31,6 +19,9 @@
 # include <sys/wait.h>
 # include <sysexits.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 
 typedef enum e_token
 {
@@ -42,6 +33,14 @@ typedef enum e_token
 	PIPE
 }						t_token;
 
+typedef enum e_sig
+{
+	IN_CHILD,
+	IN_HEREDOC,
+	IN_PARENT,
+	IN_PROMPT
+}						t_sig;
+
 typedef enum e_state
 {
 	INITIAL,
@@ -51,6 +50,7 @@ typedef enum e_state
 	IN_WHITESPACE,
 	STATE_DEFAULT,
 	STATE_REDIRECTION,
+	STATE_HEREDOC,
 	STATE_PIPE
 }						t_state;
 
@@ -72,29 +72,30 @@ typedef struct s_env
 typedef struct s_file
 {
 	char				*filename;
+	char				*delimiter;
 	t_token				type;
 	struct s_file		*next;
 }						t_file;
 
-typedef struct s_heredoc
+/*typedef struct s_heredoc
 {
 	char				*delimiter;
-	char				**content;
 	struct s_heredoc	*next;
-
-}						t_heredoc;
+}					t_heredoc;*/
 
 typedef struct s_cmd
 {
 	char				**cmd;
 	t_file				*files;
-	t_heredoc			*heredoc;
+	//t_heredoc			*heredoc;
 	struct s_cmd		*next;
 }						t_cmd;
 
 typedef struct s_global
 {
 	t_cmd				*command;
+	int					sig_flag;
+	int					heredoc_fd;
 }						t_global;
 
 extern t_global			g_mini;
@@ -188,8 +189,8 @@ char					*merge_args(char *arg1, char *arg2);
 t_list					*ft_lstnew(char *content, t_token type);
 t_env					*ft_env_new(char *key, char *value);
 t_cmd					*ft_cmd_new(char **content);
-t_file					*ft_file_new(char *filename, t_token type);
-t_heredoc				*ft_heredoc_new(char *delimiter);
+t_file					*ft_file_new(char *filename, t_token type, char *delimiter);
+//t_heredoc				*ft_heredoc_new(char *delimiter);
 void					ft_env_clear(t_env **lst);
 t_list					*ft_lstmax(t_list *stack_a);
 t_list					*ft_lstmin(t_list *stack_a);
@@ -198,7 +199,7 @@ void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
-void					ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new);
+//void					ft_heredoc_addback(t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
@@ -209,6 +210,9 @@ t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
-void					run_cmd(t_cmd *command, t_env *env);
-
-#endif
+void    				run_cmd(t_cmd *command, t_env *env);
+void 					run_heredoc(t_cmd	*command);
+void 					signal_handler(int sig);
+void					handle_sigint(int signum);
+char					*heredoc_filename(void);
+# endif

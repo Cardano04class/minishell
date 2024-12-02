@@ -17,7 +17,8 @@ SRC = ./src/main.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
 		./src/run_cmd.c \
-		./utils/linked_list/ft_lstnew.c \
+		./src/run_heredoc.c \
+		./src/signal_handler.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
@@ -29,8 +30,9 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_lstmin.c \
 		./utils/linked_list/ft_lstdisplay.c \
 		./utils/linked_list/ft_lstclear.c \
-		./utils/linked_list/ft_env_new.c \
 		./utils/linked_list/ft_env_clear.c \
+		./utils/linked_list/ft_lstnew.c \
+		./utils/linked_list/ft_env_new.c \
 		./utils/linked_list/ft_cmd_new.c \
 		./utils/linked_list/ft_file_new.c \
 		./utils/libft/ft_strdup.c \
@@ -38,6 +40,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strlcpy.c \
 		./utils/libft/ft_split.c \
 		./utils/libft/ft_strncmp.c \
+		./utils/libft/ft_strnstr.c \
 		./utils/libft/ft_substr.c \
 		./utils/libft/ft_isspace.c \
 		./utils/libft/ft_strlen.c \
@@ -54,6 +57,7 @@ SRC = ./src/main.c \
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
@@ -61,7 +65,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline
-	
+
 .o:.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -73,4 +77,8 @@ fclean : clean
 
 re : fclean all
 
-.SECONDARY: $(OBJ) 
+sup:
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
+
+
+.SECONDARY: $(OBJ)
