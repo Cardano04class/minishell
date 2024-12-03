@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/02 17:37:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/03 12:58:23 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,35 @@ void merge_export_assignment(t_list **list)
             t_list *var_node = current->next;
             t_list *val_node = var_node->next;
 
-            // Check for export assignment with a separate value node
+            // Check if var_node contains '=' and val_node exists
             if (val_node && strchr(var_node->content, '=') != NULL)
             {
                 char *merged_content;
-                size_t len_var = strlen(var_node->content);
-                size_t len_val = strlen(val_node->content);
+                char *clean_value;
+                size_t len_var, len_val;
+
+                clean_value = remove_quotes(val_node->content); // Remove quotes from value
+                len_var = strlen(var_node->content);
+                len_val = strlen(clean_value);
 
                 // Allocate space for the merged string
-                merged_content = malloc(len_var + len_val + 1);
+                merged_content = malloc(len_var + len_val + 1); // +1 for null terminator
                 if (!merged_content)
+                {
+                    free(clean_value);
                     return;
+                }
 
-                // Merge the variable name and value
+                // Merge variable name and value
                 strcpy(merged_content, var_node->content);
-                strcat(merged_content, val_node->content);
+                strcat(merged_content, clean_value);
 
-                // Update var_node with the merged content
+                // Update var_node with merged content
                 free(var_node->content);
                 var_node->content = merged_content;
+                free(clean_value);
 
-                // Remove the value node
+                // Remove val_node from the list
                 var_node->next = val_node->next;
                 if (val_node->next)
                     val_node->next->prev = var_node;
@@ -57,8 +65,6 @@ void merge_export_assignment(t_list **list)
         current = current->next;
     }
 }
-
-
 
 int	ensure_buffer_space(t_parse_state *state, size_t needed)
 {
@@ -217,8 +223,8 @@ void handle_regular_var(t_parse_state *state)
     size_t var_idx = 0;
     char *value = NULL;
 
-    // Skip if in single quotes
-    if (state->in_single_quote)
+    // Special case: handle lone `$`
+    if (!state->line[state->i] || !(ft_isalnum(state->line[state->i]) || state->line[state->i] == '_'))
     {
         if (!ensure_buffer_space(state, 1))
             return;
@@ -226,10 +232,8 @@ void handle_regular_var(t_parse_state *state)
         return;
     }
 
-    handle_dollar_cases(state);
-
     // Collect variable name
-    while (state->line[state->i] && 
+    while (state->line[state->i] &&
            (ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') &&
            var_idx < sizeof(var_name) - 1)
     {
@@ -239,26 +243,22 @@ void handle_regular_var(t_parse_state *state)
 
     // Expand variable
     if (strcmp(var_name, "?") == 0)
-        value = "0";
+        value = "0"; // Replace with last exit status
     else
         value = expand_variable(state->env, var_name);
 
+    // Append variable value to result buffer
     if (value)
     {
         size_t value_len = ft_strlen(value);
-        if (!ensure_buffer_space(state, value_len))
-            return;
-        ft_memcpy(&state->result[state->result_idx], value, value_len);
-        state->result_idx += value_len;
-    }
-    else
-    {
-        // If variable is not found, replace with empty string
-        if (!ensure_buffer_space(state, 1))
-            return;
-        state->result[state->result_idx] = '\0';
+        if (ensure_buffer_space(state, value_len))
+        {
+            ft_memcpy(&state->result[state->result_idx], value, value_len);
+            state->result_idx += value_len;
+        }
     }
 }
+
 
 
 void	process_char(t_parse_state *state)
@@ -289,25 +289,12 @@ char *expand_variables(t_env *env, char *line)
     if (!line)
         return (NULL);
 
-    // Special case: if line is a pure variable reference
-    if (line[0] == '$')
-    {
-        char *var_name = line + 1;
-        expanded_line = expand_variable(env, var_name);
-        return expanded_line ? strdup(expanded_line) : NULL;
-    }
-
     init_parse_state(&state, line, env);
     if (!state.result)
         return (NULL);
 
     while (line[state.i])
     {
-        if (!ensure_buffer_space(&state, 1))
-        {
-            free(state.result);
-            return (NULL);
-        }
         process_char(&state);
     }
 
@@ -316,12 +303,13 @@ char *expand_variables(t_env *env, char *line)
         free(state.result);
         return (NULL);
     }
+
     state.result[state.result_idx] = '\0';
 
-    expanded_line = strdup(state.result);
+    expanded_line = remove_quotes(state.result);
     free(state.result);
 
-    return (expanded_line);
+    return expanded_line;
 }
 
 
@@ -355,97 +343,24 @@ char *merge_args(char *arg1, char *arg2)
     return merged;
 }
 
-void	expand(t_env *env, t_list **list)
+void expand(t_env *env, t_list **list)
 {
-	t_list	*current;
-	t_list	*prev;
-	char	*expanded_line;
-	// char	*final_line;
-	int		was_modified;
+    t_list *current;
+    char *expanded_line;
 
-	// First, merge export assignments
-	merge_export_assignment(list);
+    current = *list;
 
-	current = *list;
-	prev = NULL;
-
-	while (current)
-	{
-		// Skip empty strings
-		if (strcmp(current->content, "") == 0)
-		{
-			prev = current;
-			current = current->next;
-			continue ;
-		}
-
-		// Track if this node was modified by expansion or quote removal
-		was_modified = 0;
-
-		// Handle the expansion of variables in the content
-		expanded_line = expand_variables(env, current->content);
-
-		if (!expanded_line)
-		{
-			free(current->content);
-			current->content = ft_strdup("");
-			was_modified = 1;
-		}
-		else
-		{
-			if (strncmp(current->content, "export ", 7) == 0)
-			{
-			    // Remove the quotes from the value part of the assignment
-			    char *eq_pos = strchr(expanded_line, '=');
-			    if (eq_pos)
-			    {
-			        char *value_start = eq_pos + 1;
-			        size_t value_len = strlen(value_start);
-			
-			        // Check if the value is surrounded by matching quotes and remove them
-			        if (value_len >= 2 && 
-			            ((value_start[0] == '"' && value_start[value_len - 1] == '"') ||
-			             (value_start[0] == '\'' && value_start[value_len - 1] == '\'')))
-			        {
-			            // Remove the surrounding quotes
-			            value_start[value_len - 1] = '\0';
-			            memmove(value_start, value_start + 1, strlen(value_start + 1) + 1);
-			        }
-			
-			        // Reconstruct the expanded line
-			        char *new_expanded_line = malloc(strlen(current->content) + strlen(value_start) + 2);
-			        if (new_expanded_line)
-			        {
-			            snprintf(new_expanded_line, strlen(current->content) + strlen(value_start) + 2, 
-			                     "%s=%s", current->content + 7, value_start);
-			            free(expanded_line);
-			            expanded_line = new_expanded_line;
-			        }
-			    }
-			}
-		}
-		if (prev && !was_modified && 
-			strcmp(prev->content, "") != 0 && 
-			strcmp(current->content, "") != 0 && 
-			should_merge_with_next(prev->content, current->content))
-		{
-			char *merged = merge_args(prev->content, current->content);
-			free(prev->content);
-			prev->content = merged;
-
-			t_list *to_free = current;
-			prev->next = current->next;
-			if (current->next)
-				current->next->prev = prev;
-			current = current->next;
-
-			free(to_free->content);
-			free(to_free);
-		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
-	}
+    while (current)
+    {
+        if (current->content && current->content[0] != '\0') // Skip empty nodes
+        {
+            expanded_line = expand_variables(env, current->content);
+            if (expanded_line)
+            {
+                free(current->content);
+                current->content = expanded_line;
+            }
+        }
+        current = current->next;
+    }
 }

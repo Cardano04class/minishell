@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/02 17:37:22 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/03 12:34:38 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char **list_to_array(t_list *list, t_env *env)
     array[count] = NULL; // Null-terminate the array
     return (array);
 }
+
 
 
 void split_args(char ***array, size_t *count)
@@ -132,10 +133,10 @@ int run_builtins(t_env **env, t_list *list)
     // Split arguments for expanded variables
     count = 0;
     while (arg[count])
-        count++;
-    
+        count++; 
     split_args(&arg, &count);
-
+    // if (strcmp(arg[0], "exit") == 0)
+    //     exit_shell();
     if (strcmp(arg[0], "export") == 0)
         export(arg, env);
     else if (strncmp("env", arg[0], 4) == 0)
