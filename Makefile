@@ -21,6 +21,7 @@ SRC = ./src/main.c \
 		./src/run_cmd.c \
 		./src/run_heredoc.c \
 		./src/signal_handler.c \
+		./src/exit_handler.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \

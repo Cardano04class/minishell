@@ -76,17 +76,10 @@ typedef struct s_file
 	struct s_file		*next;
 }						t_file;
 
-/*typedef struct s_heredoc
-{
-	char				*delimiter;
-	struct s_heredoc	*next;
-}					t_heredoc;*/
-
 typedef struct s_cmd
 {
 	char				**cmd;
 	t_file				*files;
-	//t_heredoc			*heredoc;
 	struct s_cmd		*next;
 }						t_cmd;
 
@@ -94,7 +87,7 @@ typedef struct s_global
 {
 	t_cmd				*command;
 	int					sig_flag;
-	int					heredoc_fd;
+	int					last_exit_state;
 }						t_global;
 
 extern t_global			g_mini;
