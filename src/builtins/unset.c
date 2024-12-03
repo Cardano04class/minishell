@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/03 18:35:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/25 14:58:00 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,11 @@ int	unset(char **args, t_env **env_list)
 	{
 		var_name = args[i];
 		if (!env_exist(env_list, var_name))
-		{
-			printf("unset: %s variable not found\n", var_name);
-			return (1);
-		}
+			return 1;
 		if (!valid_name(var_name, env_list))
 			continue ;
 		if (!remove_variable(var_name, env_list))
-			printf("unset: %s variable not found\n", var_name);
+			return 1;
 		i++;
 	}
 	return (0);

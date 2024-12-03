@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_heredoc_addback.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 11:50:10 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/17 15:34:00 by mamir            ###   ########.fr       */
+/*   Created: 2024/10/02 15:33:30 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/12/02 17:38:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*ft_lstnew(char *content, t_token type)
+void	ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new)
 {
-	t_list	*new;
+	t_heredoc	*tmp;
 
-	new = malloc(sizeof(t_list));
-	new->content = content;
-	new->type = type;
-	new->next = NULL;
-	new->prev = NULL;
-	return (new);
+	if (!heredoc)
+		return ;
+	if (!*heredoc)
+	{
+		(*heredoc) = new;
+		return ;
+	}
+	tmp = *heredoc;
+	while (tmp->next != NULL)
+	{
+		tmp = tmp->next;
+	}
+	tmp->next = new;
 }
+

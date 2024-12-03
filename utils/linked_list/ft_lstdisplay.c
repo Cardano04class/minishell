@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:18:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/10/07 23:48:35 by mamir            ###   ########.fr       */
+/*   Updated: 2024/11/17 15:34:43 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_lstdisplay(t_list *stack)
 {
-	printf("lst size : %d\n\n", ft_lstsize(stack));
+	printf ("lst size : %d\n\n", ft_lstsize(stack));
 	while (stack != NULL)
 	{
-		printf("content : %s\n",stack->content);
+		printf ("content : %s\n", stack->content);
 		if (stack->prev != NULL)
-			printf("prev content : %s\n",stack->prev->content);
+			printf("prev content : %s\n", stack->prev->content);
 		if (stack->type == 0)
 			printf("type : WORD\n");
 		if (stack->type == 1)
@@ -36,4 +36,3 @@ void	ft_lstdisplay(t_list *stack)
 		puts("");
 	}
 }
-

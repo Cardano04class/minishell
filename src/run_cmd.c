@@ -5,7 +5,7 @@
 
 char	*ft_getenv(char *name, t_env *env)
 {
-	while(env != NULL)
+	while (env != NULL)
 	{
 		if (ft_strncmp(env->key, name, ft_strlen(env->key) + 1) == 0)
 			return (env->value);
@@ -19,7 +19,7 @@ char	*find_path(char *cmd, t_env *env)
 	char	*path;
 	char	**paths;
 	int		j;
-	char 	*fullcmd;
+	char	*fullcmd;
 
 	path = ft_getenv("PATH", env);
 	if (path == NULL)
@@ -47,9 +47,10 @@ char	**convert_env(t_env *list_env)
 {
 	char	**env;
 	int		env_size;
-	int		j = 0;
-	char 	*full_var;
-	
+	int		j;
+	char	*full_var;
+
+	j = 0;
 	env_size = ft_envsize(list_env);
 	env = malloc(sizeof(char *) * (env_size + 1));
 	if (env == NULL)
@@ -66,7 +67,7 @@ char	**convert_env(t_env *list_env)
 	return (env);
 }
 
-void    execute(t_cmd *command, t_env *list_env)
+void	execute(t_cmd *command, t_env *list_env)
 {
 	char	**env;
 	pid_t	child_pid;
@@ -174,14 +175,14 @@ void    execute(t_cmd *command, t_env *list_env)
 void	handle_pipe(t_cmd *command, t_env *env)
 {
 	int		fd[2];
-	pid_t 	child_pid1;
+	pid_t	child_pid1;
 	pid_t	child_pid2;
-	int 	status[2];
-	
+	int		status[2];
+
 	if (pipe(fd) == -1)
 		exit(1);
-	//fd[READ] = fd --> READ mn lpipe
-	//fd[WRITE] = fd --> WRITE mn lpipe
+	// fd[READ] = fd --> READ mn lpipe
+	// fd[WRITE] = fd --> WRITE mn lpipe
 	child_pid1 = fork();
 	if (child_pid1 == 0)
 	{

@@ -1,25 +1,50 @@
 #include "minishell.h"
 
-t_global g_mini;
+t_global	g_mini;
 
-int empty_prompt(char *rl)
+
+void free_array(char **array)
 {
-	int i;
+    int i;
+
+    if (!array)
+        return;
+
+    i = 0;
+    while (array[i])
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array);
+}
+
+int	empty_prompt(char *rl)
+{
+	int	i;
 
 	i = 0;
 	while (rl[i] && (rl[i] != ' ' && rl[i] != '\t'))
 	{
 		i++;
 	}
-	return i;
+	return (i);
+}
+void debug_list(t_list *list)
+{
+    while (list)
+    {
+        printf("Node content: %s\n", list->content);
+        list = list->next;
+    }
 }
 
 void	prompt(char **env)
 {
 	char	*rl;
 	t_list	*list;
-	t_env *env_list;
-	
+	t_env	*env_list;
+
 	env_list = NULL;
 	list = NULL;
 	ft_env(env, &env_list);
@@ -31,10 +56,9 @@ void	prompt(char **env)
 		g_mini.command->files = NULL;
 		//g_mini.command->heredoc = NULL;
 		g_mini.command->next = NULL;
-		
 		signal_handler(IN_PROMPT);
 		rl = readline("minishell$ ");
-		if (rl == NULL || !ft_strncmp(rl,"exit",5))
+		if (rl == NULL || !ft_strncmp(ft_strtrim(rl, " "),"exit",5))
 		{
 			printf("exit\n");
 			exit(0);
@@ -43,16 +67,22 @@ void	prompt(char **env)
 		if (empty_prompt(rl) == 0)
 		{
 			free(rl);
-			continue;
+			continue ;
 		}
 		lexer(rl, &list);
-		syntax_error(list);
-		//ft_lstdisplay(list);
-		parser(list);
-		//TODO: expand(env_list); // SEGV in the expand(should be fixed piw) :p.
+		if(!syntax_error(list))
+		{
+			printf("Before Expand: \n");
+			debug_list(list);
+			expand(env_list, &list);
+			printf("************\n");
+			printf("After Expand: \n");
+			debug_list(list);
+			parser(list);
 			run_heredoc(g_mini.command);
-		//TODO: if (!run_builtins(&env_list)) // also a SEGV here, but i still nedd to check if it from the heredoc.
-		run_cmd(g_mini.command, env_list);
+			if (!run_builtins(&env_list, list)) 
+				run_cmd(g_mini.command, env_list);
+		}
 		signal_handler(IN_PARENT);
 		ft_lstclear(&list);
 		add_history(rl);

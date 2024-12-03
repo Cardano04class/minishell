@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:55:22 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 09:21:05 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:33:11 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ int	ft_lstsize(t_list *lst)
 	}
 	return (count);
 }
-

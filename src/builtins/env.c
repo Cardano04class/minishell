@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/10/24 15:02:30 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/03 12:45:58 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	print_export(t_env *env)
 {
 	while (env)
 	{
+		
 		if (env->value == NULL)
 			printf("declare -x %s\n", env->key);
 		else if (ft_strlen(env->value) == 0)

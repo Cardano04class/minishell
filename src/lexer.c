@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:28:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/26 11:58:42 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:37:39 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int is_special_char(char c)
+static int	is_special_char(char c)
 {
-    return (c == '|' || c == '>' || c == '<');
+	return (c == '|' || c == '>' || c == '<');
 }
 
-static char *create_token(char *str, int start, int end)
+static char	*create_token(char *str, int start, int end)
 {
-    return ft_substr(str, start, end - start);
+	return (ft_substr(str, start, end - start));
 }
 
-void lexer(char *str, t_list **lst)
+void	lexer(char *str, t_list **lst)
 {
-    int i;
-    int start;
-    t_state state;
-    char quote_char;
+	int i;
+	int start;
+	t_state state;
+	char quote_char;
 
     i = 0;
     start = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/01 16:06:34 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:37:30 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	cmd_argument_size(t_list *lst)
 
 void	parser(t_list *lst)
 {
-	int			cmd_arg_size;
-	int 		index_count;
-	t_state		state;
-	t_cmd		*tmp_cmd;
-	
+	int		cmd_arg_size;
+	int		index_count;
+	t_state	state;
+	t_cmd	*tmp_cmd;
+
 	index_count = 0;
 	state = STATE_DEFAULT;
 	cmd_arg_size = cmd_argument_size(lst);
@@ -110,7 +110,7 @@ void	parser(t_list *lst)
 // 	while (lst != NULL)
 // 	{
 // 		if (lst->type == WORD)
-// 		{	
+// 		{
 // 			if (flag == 1)
 // 			{
 // 				str = ft_ssplit(lst->content);
@@ -121,7 +121,7 @@ void	parser(t_list *lst)
 // 			}
 // 			else
 // 				g_mini.command->cmd = ft_ssplit(lst->content);
-				
+
 // 			j = 0;
 // 			while (g_mini.command->cmd[j] != NULL)
 // 			{
@@ -132,23 +132,23 @@ void	parser(t_list *lst)
 // 		else if (lst->type == INRED)
 // 		{
 // 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), INRED));
-// 			flag = 1;		
+// 			flag = 1;
 // 		}
 // 		else if (lst->type == OUTRED)
 // 		{
 // 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), OUTRED));
-// 			flag = 1;		
+// 			flag = 1;
 // 		}
 // 		else if (lst->type == APPEND)
 // 		{
-// 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), APPEND));			
+// 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), APPEND));
 // 			flag = 1;
 // 		}
 // 		else if (lst->type == HEREDOC)
-// 		{	
+// 		{
 // 		}
 // 		else if (lst->type == PIPE)
-// 		{	
+// 		{
 // 			ft_cmd_addback(&g_mini.command, ft_cmd_new(NULL));
 // 			g_mini.command= g_mini.command->next;
 // 		}
