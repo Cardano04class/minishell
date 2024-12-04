@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/02 17:37:30 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/04 17:57:15 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,79 +79,3 @@ void	parser(t_list *lst)
 			lst = lst->next;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 	while (lst != NULL)
-// 	{
-// 		if (lst->type == WORD)
-// 		{
-// 			if (flag == 1)
-// 			{
-// 				str = ft_ssplit(lst->content);
-// 				free(lst->content);
-// 				lst->content = str[0];
-// 				remove_first_element(str);
-// 				g_mini.command->cmd = str;
-// 			}
-// 			else
-// 				g_mini.command->cmd = ft_ssplit(lst->content);
-
-// 			j = 0;
-// 			while (g_mini.command->cmd[j] != NULL)
-// 			{
-// 				printf("%s\n", g_mini.command->cmd[j]);
-// 				j++;
-// 			}
-// 		}
-// 		else if (lst->type == INRED)
-// 		{
-// 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), INRED));
-// 			flag = 1;
-// 		}
-// 		else if (lst->type == OUTRED)
-// 		{
-// 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), OUTRED));
-// 			flag = 1;
-// 		}
-// 		else if (lst->type == APPEND)
-// 		{
-// 			ft_file_addback(ft_file_new(ft_strdup(lst->next->content), APPEND));
-// 			flag = 1;
-// 		}
-// 		else if (lst->type == HEREDOC)
-// 		{
-// 		}
-// 		else if (lst->type == PIPE)
-// 		{
-// 			ft_cmd_addback(&g_mini.command, ft_cmd_new(NULL));
-// 			g_mini.command= g_mini.command->next;
-// 		}
-// 		lst = lst->next;
-// 	}
-// }
