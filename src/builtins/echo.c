@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 18:19:34 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/05 20:44:49 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int echo(char **args)
     n_option = false;
     while (args[i])
     {
-        printf("args[i]: %s\n", args[i]);
         while (args[i] && is_n_option(args[i]))
         {
             n_option = true;

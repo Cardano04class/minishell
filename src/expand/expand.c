@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/04 18:31:41 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/05 20:46:04 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void merge_export_assignment(t_list **list)
             if (val_node && strchr(var_node->content, '=') != NULL)
             {
                 char *merged_content;
-                size_t len_var = strlen(var_node->content);
-                size_t len_val = strlen(val_node->content);
+                size_t len_var = ft_strlen(var_node->content);
+                size_t len_val = ft_strlen(val_node->content);
 
                 // Allocate space for merged string (variable + value)
                 merged_content = malloc(len_var + len_val + 1);
@@ -58,9 +58,6 @@ void merge_export_assignment(t_list **list)
         current = current->next;
     }
 }
-
-
-
 
 int	ensure_buffer_space(t_parse_state *state, size_t needed)
 {
@@ -183,7 +180,6 @@ char *remove_quotes(char *str)
     return (result);
 }
 
-
 char *expand_variable(t_env *env, const char *var_name)
 {
     t_env *current = env;
@@ -199,8 +195,6 @@ char *expand_variable(t_env *env, const char *var_name)
     // If the variable doesn't exist, return NULL (or empty string "")
     return NULL;  // or return "" if you prefer empty string
 }
-
-
 
 void copy_var_value(t_parse_state *state, char *value)
 {

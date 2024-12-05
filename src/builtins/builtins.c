@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 18:33:59 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/05 20:56:18 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,5 @@ int run_builtins(t_env **env)
         print_env(*env);
     else if (strcmp("unset",tmp->cmd[0]) == 0)
         unset(tmp->cmd, env);
-    else
-        run_cmd(g_mini.command, &env);
+    return 1;
 }
