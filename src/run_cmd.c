@@ -222,5 +222,3 @@ void    run_cmd(t_cmd *command, t_env *env)
 		command->files = command->files->next;
 	}
 }
-
-

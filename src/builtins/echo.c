@@ -6,24 +6,24 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/27 13:01:43 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/05 18:19:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	is_n_option(char *str)
+bool is_n_option(char *str)
 {
-	int	j;
+    int j;
 
-	if (str[0] != '-' || str[1] != 'n')
-		return (false);
-	j = 2;
-	while (str[j] == 'n')
-		j++;
-	if (str[j] == '\0')
-		return (true);
-	return (false);
+    if (str[0] != '-' || str[1] != 'n')
+        return (false);
+    j = 2;
+    while (str[j] == 'n')
+        j++;
+    if (str[j] == '\0')
+        return (true);
+    return (false);
 }
 
 int print_arguments(char **str, int i)
@@ -46,34 +46,25 @@ int print_arguments(char **str, int i)
     return (i);
 }
 
-
-int echo(char **str)
+int echo(char **args)
 {
     int i;
     bool n_option;
 
     i = 1;
     n_option = false;
-
-    if (str[1] == NULL)
+    while (args[i])
     {
-        write(1, "\n", 1);
-        return (0);
-    }
-
-    // Check for the -n option (which prevents printing a newline)
-    while (str[i] && is_n_option(str[i]))
-    {
-        n_option = true;
+        printf("args[i]: %s\n", args[i]);
+        while (args[i] && is_n_option(args[i]))
+        {
+            n_option = true;
+            i++;
+        }
+        print_arguments(args, i);
+        if (!n_option)
+            write(1, "\n", 1);
         i++;
     }
-
-    // Print the arguments
-    print_arguments(str, i);
-
-    // If -n option is not set, print a newline
-    if (!n_option)
-        write(1, "\n", 1);
-
     return (0);
 }

@@ -72,19 +72,16 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		if(!syntax_error(list))
 		{
-			printf("Before Expand: \n");
-			debug_list(list);
+			// printf("Before Expand: \n");
+			// debug_list(list);
 			expand(env_list, &list);
-			printf("************\n");
-			printf("After Expand: \n");
-			debug_list(list);
+			// printf("************\n");
+			// printf("After Expand: \n");
+			// debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);
-			if (!run_builtins(&env_list, list))
-			{
-				if (list->content[0])
-					run_cmd(g_mini.command, env_list);
-			}
+			run_builtins(&env_list);
+			// run_cmd(g_mini.command, env_list);
 		}
 		signal_handler(IN_PARENT);
 		ft_lstclear(&list);
@@ -101,5 +98,4 @@ int	main(int ac, char **av, char **env)
 		prompt(env);
 	else
 		return (1);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/03 12:45:58 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/05 15:05:13 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_export(t_env *env)
 	}
 }
 
-void	print_env(t_env *env)
+int	print_env(t_env *env)
 {
 	while (env)
 	{
@@ -46,6 +46,7 @@ void	print_env(t_env *env)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
+	return 0;
 }
 
 void	ft_env(char **env, t_env **env_lst)
