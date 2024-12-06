@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 20:44:49 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/06 12:13:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,44 +26,71 @@ bool is_n_option(char *str)
     return (false);
 }
 
-int print_arguments(char **str, int i)
+int print_argument(char *arg)
 {
-    int j;
+    int j = 0;
 
-    while (str[i])
+    if (arg[0] == '\0')  // Skip empty arguments
+        return (0);
+
+    while (arg[j])
     {
-        j = 0;
-        while (str[i][j])
-        {
-            write(1, &str[i][j], 1);  // Print each character of the current argument
-            j++;
-        }
-        // Only print a space if there is another argument
-        if (str[i + 1])
-            write(1, " ", 1);
-        i++;
+        write(1, &arg[j], 1);  // Print each character of the current argument
+        j++;
     }
-    return (i);
+    return (1);
+}
+
+void print_arguments_one_at_a_time(char **args, int i)
+{
+    // Print only the current argument reached in the loop
+    if (args[i])
+    {
+        print_argument(args[i]);
+        // Move to the next argument without printing the rest
+    }
 }
 
 int echo(char **args)
 {
     int i;
     bool n_option;
+    int last_arg;
 
     i = 1;
     n_option = false;
+    last_arg = 0;
+    
+    if (!args[1])
+    {
+        write(1, "\n", 1);
+        return (0);
+    }
+
+    while (args[last_arg])
+        last_arg++;  // Find the last argument
+
     while (args[i])
     {
-        while (args[i] && is_n_option(args[i]))
+        if (is_n_option(args[i]))
         {
             n_option = true;
             i++;
+            continue;
         }
-        print_arguments(args, i);
-        if (!n_option)
-            write(1, "\n", 1);
+
+        print_argument(args[i]);
+        
+        // Don't print newline unless it's the last argument or -n is not set
+        if (i < last_arg - 1 && !n_option)
+            write(1, " ", 1);  // Print space between arguments
+
         i++;
     }
+
+    if (!n_option)
+        write(1, "\n", 1);  // Print newline at the end, unless -n was used
+
     return (0);
 }
+

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 20:46:04 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/06 12:08:27 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@ void merge_export_assignment(t_list **list)
                 // Merge variable name and value
                 strcpy(merged_content, var_node->content);
                 strcat(merged_content, val_node->content);
-
                 // Update var_node with merged content
                 free(var_node->content);
                 var_node->content = merged_content;
-
                 // Remove val_node
                 var_node->next = val_node->next;
                 if (val_node->next)
@@ -180,84 +178,122 @@ char *remove_quotes(char *str)
     return (result);
 }
 
-char *expand_variable(t_env *env, const char *var_name)
+char	*expand_variable(t_env *env, const char *var_name)
 {
-    t_env *current = env;
+	t_env	*current;
 
-    // Traverse the environment linked list to find the variable
-    while (current)
-    {
-        if (strcmp(current->key, var_name) == 0)
-            return current->value;  // Return the value of the variable
-        current = current->next;
-    }
-
-    // If the variable doesn't exist, return NULL (or empty string "")
-    return NULL;  // or return "" if you prefer empty string
+	current = env;
+	while (current)
+	{
+		if (strcmp(current->key, var_name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
 }
 
-void copy_var_value(t_parse_state *state, char *value)
+void	copy_var_value(t_parse_state *state, char *value)
 {
-    size_t value_len;
+	size_t	value_len;
 
-    if (!value)
-        return;
-
-    value_len = ft_strlen(value);
-    if (!ensure_buffer_space(state, value_len))
-        return;
-
-    ft_memcpy(&state->result[state->result_idx], value, value_len);
-    state->result_idx += value_len;
+	if (!value)
+		return ;
+	value_len = ft_strlen(value);
+	if (!ensure_buffer_space(state, value_len))
+		return ;
+	ft_memcpy(&state->result[state->result_idx], value, value_len);
+	state->result_idx += value_len;
 }
 
-void handle_regular_var(t_parse_state *state)
+void split_and_expand_variable(t_env *env, t_list **node)
 {
-    char var_name[256];
-    size_t var_idx = 0;
-    char *value = NULL;
+    char *value;
+    char **tokens;
+    t_list *current_node = *node;
 
-    // Special case: handle lone `$`
-    if (!state->line[state->i] || !(ft_isalnum(state->line[state->i]) || state->line[state->i] == '_'))
+    // Expand the variable (skip the '$' symbol)
+    value = expand_variable(env, current_node->content + 1);
+
+    // If the variable doesn't exist, remove the current node
+    if (!value || value[0] == '\0')
     {
-        if (!ensure_buffer_space(state, 1))
-            return;
-        state->result[state->result_idx++] = '$';
+        if (current_node->prev)
+            current_node->prev->next = current_node->next;
+        if (current_node->next)
+            current_node->next->prev = current_node->prev;
+
+        *node = current_node->next; // Update the node pointer to the next node
+        free(current_node->content);
+        free(current_node);
         return;
     }
 
-    // Collect variable name
-    while (state->line[state->i] &&
-           (ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') &&
-           var_idx < sizeof(var_name) - 1)
-    {
-        var_name[var_idx++] = state->line[state->i++];
-    }
-    var_name[var_idx] = '\0';
+    // Split the value into tokens by spaces
+    tokens = ft_split(value, ' ');
+    if (!tokens)
+        return;
 
-    // Expand variable
-    if (strcmp(var_name, "?") == 0)
-        value = "0"; // Replace with last exit status
-    else
-        value = expand_variable(state->env, var_name);
+    // Update the current node with the first token
+    free(current_node->content);
+    current_node->content = strdup(tokens[0]);
+    current_node->type = WORD; // Assign the type
 
-    // Append variable value to result buffer
-    if (value)
+    int i = 1;
+    while (tokens[i])
     {
-        size_t value_len = ft_strlen(value);
-        if (ensure_buffer_space(state, value_len))
-        {
-            ft_memcpy(&state->result[state->result_idx], value, value_len);
-            state->result_idx += value_len;
-        }
+        t_list *new_node = ft_lstnew(strdup(tokens[i]), WORD);
+        if (!new_node)
+            break;
+
+        // Insert the new node after the current node
+        new_node->next = current_node->next;
+        if (current_node->next)
+            current_node->next->prev = new_node;
+        current_node->next = new_node;
+        new_node->prev = current_node;
+
+        current_node = new_node;
+        i++;
     }
+
+    // Free the tokens array
+    i = 0;
+    while (tokens[i])
+        free(tokens[i++]);
+    free(tokens);
+}
+
+void	handle_regular_var(t_parse_state *state)
+{
+	char	var_name[256];
+	size_t	var_idx;
+	char	*value;
+
+	var_idx = 0;
+	while (state->line[state->i] &&
+		(ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') &&
+		var_idx < sizeof(var_name) - 1)
+	{
+		var_name[var_idx++] = state->line[state->i++];
+	}
+	var_name[var_idx] = '\0';
+	if (strcmp(var_name, "?") == 0)
+		value = "0";
+	else
+		value = expand_variable(state->env, var_name);
+	if (value)
+		copy_var_value(state, value);
+	else
+	{
+		// Remove the variable node completely if it doesn't exist
+		state->result[state->result_idx++] = '\0';  // Add nothing if the variable doesn't exist
+	}
 }
 
 void	process_char(t_parse_state *state)
 {
 	if (state->i >= ft_strlen(state->line))
 		return ;
-
 	if (state->line[state->i] == '\'' || state->line[state->i] == '\"')
 		handle_quotes(state);
 	else if (state->line[state->i] == '$')
@@ -273,35 +309,27 @@ void	process_char(t_parse_state *state)
 	}
 }
 
-char *expand_variables(t_env *env, char *line)
+char	*expand_variables(t_env *env, char *line)
 {
-    t_parse_state state;
-    char *expanded_line;
+	t_parse_state	state;
+	char			*expanded_line;
 
-    if (!line)
-        return (NULL);
-
-    init_parse_state(&state, line, env);
-    if (!state.result)
-        return (NULL);
-
-    while (line[state.i])
-    {
-        process_char(&state);
-    }
-
-    if (!ensure_buffer_space(&state, 1))
-    {
-        free(state.result);
-        return (NULL);
-    }
-
-    state.result[state.result_idx] = '\0';
-
-    expanded_line = remove_quotes(state.result);
-    free(state.result);
-
-    return expanded_line;
+	if (!line)
+		return (NULL);
+	init_parse_state(&state, line, env);
+	if (!state.result)
+		return (NULL);
+	while (line[state.i])
+		process_char(&state);
+	if (!ensure_buffer_space(&state, 1))
+	{
+		free(state.result);
+		return (NULL);
+	}
+	state.result[state.result_idx] = '\0';
+	expanded_line = remove_quotes(state.result);
+	free(state.result);
+	return (expanded_line);
 }
 
 
@@ -335,30 +363,45 @@ char *merge_args(char *arg1, char *arg2)
     return merged;
 }
 
-void expand(t_env *env, t_list **list)
+void	expand(t_env *env, t_list **list)
 {
-    t_list *current;
-    char *expanded_line;
+	t_list	*current;
+	char	*expanded_line;
 
-    // First, merge export assignments before expanding variables
-    merge_export_assignment(list);
-
-    current = *list;
-
-    // Traverse through the linked list to expand the variables
-    while (current)
-    {
-        if (current->content && current->content[0] != '\0') // Skip empty nodes
-        {
-            expanded_line = expand_variables(env, current->content);
-
-            // If the expanded line contains a value, update the node content
-            if (expanded_line)
-            {
-                free(current->content);
-                current->content = expanded_line;
-            }
-        }
-        current = current->next;
-    }
+	merge_export_assignment(list);
+	current = *list;
+	while (current)
+	{
+		if (current->content && current->content[0] == '$')
+		{
+			expanded_line = expand_variables(env, current->content);
+			if (expanded_line && expanded_line[0] != '\0')
+			{
+				free(current->content);
+				current->content = expanded_line;
+			}
+			else
+			{
+				// Remove the node if the variable doesn't exist or expands to nothing
+				if (current->prev)
+					current->prev->next = current->next;
+				if (current->next)
+					current->next->prev = current->prev;
+				if (*list == current)
+					*list = current->next;
+				free(current->content);
+				free(current);
+			}
+		}
+		else
+		{
+			expanded_line = expand_variables(env, current->content);
+			if (expanded_line)
+			{
+				free(current->content);
+				current->content = expanded_line;
+			}
+		}
+		current = current->next;
+	}
 }
