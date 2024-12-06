@@ -132,21 +132,22 @@ typedef struct s_global
 extern t_global			g_mini;
 
 /*--------shell---------*/
+void 					debug_list(t_list *list);
 void					lexer(char *str, t_list **lst);
-void free_array(char **array);
+void 					free_array(char **array);
 int						syntax_error(t_list *list);
 t_error					create_error(t_error_type type, char *token);
 void					print_error(t_error error);
-
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
-int 					run_builtins(t_env **env, t_list *list);
-void					ft_env(char **env, t_env **env_lst);
+int 					run_builtins(t_env **env, t_cmd *command);
 int						echo(char **args);
-void					cd(t_env **env, char **args);
+void					cd(t_env **env,char **args);
 void					pwd(t_env **env);
-int						export(char **args, t_env **lstvoid);
+int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
+void					ft_env(char **env, t_env **env_lst);
+int 					exit_shell(t_cmd *arg);
 /*-------------CD_functions----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
@@ -198,13 +199,14 @@ int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
-void					print_env(t_env *env_lst);
+int					print_env(t_env *env_lst);
 t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
-void    				run_cmd(t_cmd *command, t_env *env);
+void    				run_cmd(t_cmd *command, t_env *env, t_env *env_list);
 void 					run_heredoc(t_cmd	*command);
+void					execute(t_cmd *command, t_env *list_env, t_env *env_list);
 void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/03 12:58:23 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/05 20:46:04 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void merge_export_assignment(t_list **list)
 {
-    t_list *current;
+    t_list *current = *list;
 
-    current = *list;
     while (current && current->next)
     {
         if (strcmp(current->content, "export") == 0 && current->next)
@@ -28,38 +27,32 @@ void merge_export_assignment(t_list **list)
             if (val_node && strchr(var_node->content, '=') != NULL)
             {
                 char *merged_content;
-                char *clean_value;
-                size_t len_var, len_val;
+                size_t len_var = ft_strlen(var_node->content);
+                size_t len_val = ft_strlen(val_node->content);
 
-                clean_value = remove_quotes(val_node->content); // Remove quotes from value
-                len_var = strlen(var_node->content);
-                len_val = strlen(clean_value);
-
-                // Allocate space for the merged string
-                merged_content = malloc(len_var + len_val + 1); // +1 for null terminator
+                // Allocate space for merged string (variable + value)
+                merged_content = malloc(len_var + len_val + 1);
                 if (!merged_content)
-                {
-                    free(clean_value);
                     return;
-                }
 
                 // Merge variable name and value
                 strcpy(merged_content, var_node->content);
-                strcat(merged_content, clean_value);
+                strcat(merged_content, val_node->content);
 
                 // Update var_node with merged content
                 free(var_node->content);
                 var_node->content = merged_content;
-                free(clean_value);
 
-                // Remove val_node from the list
+                // Remove val_node
                 var_node->next = val_node->next;
                 if (val_node->next)
                     val_node->next->prev = var_node;
                 free(val_node->content);
                 free(val_node);
 
-                continue; // Recheck current node after merge
+                // Skip to next node
+                current = var_node;
+                continue;
             }
         }
         current = current->next;
@@ -138,8 +131,6 @@ void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 	state->env = env;
 }
 
-/* --- Quote Removal --- */
-
 void process_quotes(t_quote_state *state)
 {
     if ((state->str[state->i] == '\'' && !state->in_double) ||
@@ -189,17 +180,20 @@ char *remove_quotes(char *str)
     return (result);
 }
 
-
 char *expand_variable(t_env *env, const char *var_name)
 {
     t_env *current = env;
+
+    // Traverse the environment linked list to find the variable
     while (current)
     {
         if (strcmp(current->key, var_name) == 0)
-            return current->value;
+            return current->value;  // Return the value of the variable
         current = current->next;
     }
-    return NULL;
+
+    // If the variable doesn't exist, return NULL (or empty string "")
+    return NULL;  // or return "" if you prefer empty string
 }
 
 void copy_var_value(t_parse_state *state, char *value)
@@ -258,8 +252,6 @@ void handle_regular_var(t_parse_state *state)
         }
     }
 }
-
-
 
 void	process_char(t_parse_state *state)
 {
@@ -348,13 +340,19 @@ void expand(t_env *env, t_list **list)
     t_list *current;
     char *expanded_line;
 
+    // First, merge export assignments before expanding variables
+    merge_export_assignment(list);
+
     current = *list;
 
+    // Traverse through the linked list to expand the variables
     while (current)
     {
         if (current->content && current->content[0] != '\0') // Skip empty nodes
         {
             expanded_line = expand_variables(env, current->content);
+
+            // If the expanded line contains a value, update the node content
             if (expanded_line)
             {
                 free(current->content);

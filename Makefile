@@ -10,10 +10,8 @@ SRC = ./src/main.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \
 		./src/builtins/cd_functions.c \
+		./src/builtins/exit.c \
 		./src/builtins/export/export.c \
-		./src/builtins/export/export_helpers.c \
-		./src/builtins/export/export_helpers_2.c \
-		./src/builtins/export/export_helpers_3.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
 		./src/run_cmd.c \
@@ -54,6 +52,8 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isalpha.c \
 		./utils/libft/ft_strjoin.c \
 		./utils/libft/ft_memcpy.c \
+		./utils/libft/ft_calloc.c \
+		./utils/libft/ft_bzero.c \
 		./utils/libft/ft_memmove.c \
 		./utils/libft/ft_memset.c \
 		./utils/libft/ft_atoi.c \

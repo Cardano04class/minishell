@@ -57,7 +57,7 @@ void	prompt(char **env)
 		g_mini.command->next = NULL;
 		signal_handler(IN_PROMPT);
 		rl = readline("minishell$ ");
-		if (rl == NULL || !ft_strncmp(ft_strtrim(rl, " "),"exit",5))
+		if (rl == NULL)
 		{
 			printf("exit\n");
 			exit(0);
@@ -71,17 +71,10 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		if(!syntax_error(list))
 		{
-			//printf("Before Expand: \n");
-			debug_list(list);
 			expand(env_list, &list);
-			//printf("************\n");
-			//printf("After Expand: \n");
-			debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);
-			if (!run_builtins(&env_list, list)) 
-				run_cmd(g_mini.command, env_list);
-			
+			run_cmd(g_mini.command, env_list, env_list);
 		}
 		signal_handler(IN_PARENT);
 		ft_lstclear(&list);
@@ -98,5 +91,4 @@ int	main(int ac, char **av, char **env)
 		prompt(env);
 	else
 		return (1);
-	return (0);
 }
