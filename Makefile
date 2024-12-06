@@ -56,6 +56,8 @@ SRC = ./src/main.c \
 		./utils/libft/ft_memcpy.c \
 		./utils/libft/ft_memmove.c \
 		./utils/libft/ft_memset.c \
+		./utils/libft/ft_atoi.c \
+		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address

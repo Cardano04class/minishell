@@ -75,18 +75,17 @@ void	execute(t_cmd *command, t_env *list_env)
 	char	*fullcmd = NULL;
 	int 	fd_in = 0;
 	int		fd_out = 1;
-	t_cmd	*tmp = command;
 	// int 	std_in = dup(STDIN_FILENO);
 	// int 	std_out = dup(STDOUT_FILENO);
 
     if (command->cmd[0] == NULL)
 	 return ;
 	fullcmd = find_path(command->cmd[0], list_env);
-	//printf("command->cmd[0] :%s\n", command->cmd[0]);
 	if (fullcmd == NULL)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
-		write(2, ": command not found\n", 21);
+		write(2, ": command not found\n", 20);
+		g_mini.exit_status = 127;
 		return ;
 	}
 	env = convert_env(list_env);
@@ -159,14 +158,11 @@ void	execute(t_cmd *command, t_env *list_env)
 			exit(127);
 		}
 	}
-	else {
-		waitpid(child_pid, &status, 0);
-	}
-	while (tmp->files != NULL)
+	else 
 	{
-		if (tmp->files->type == HEREDOC && tmp->files->delimiter != NULL)
-			unlink(tmp->files->filename);
-		tmp->files = tmp->files->next;
+		waitpid(child_pid, &status, 0);
+
+		g_mini.exit_status = capture_exit_status(status);
 	}
 	signal_handler(IN_CHILD);
 

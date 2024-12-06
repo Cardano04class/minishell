@@ -84,14 +84,6 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 }						t_cmd;
 
-typedef struct s_global
-{
-	t_cmd				*command;
-	int					sig_flag;
-	int					last_exit_state;
-}						t_global;
-
-extern t_global			g_mini;
 
 typedef struct s_parse_state
 {
@@ -130,6 +122,14 @@ typedef struct s_error
 	t_error_type		type;
 	char				*token;
 }						t_error;
+typedef struct s_global
+{
+	t_cmd				*command;
+	int					sig_flag;
+	int					exit_status;
+}						t_global;
+
+extern t_global			g_mini;
 
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
@@ -208,4 +208,8 @@ void 					run_heredoc(t_cmd	*command);
 void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);
+
+int						capture_exit_status(int status);
+void 					handle_exit_builtin(t_cmd *command);
+void 					handle_echo(t_cmd *command);
 # endif
