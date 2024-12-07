@@ -17,6 +17,7 @@ SRC = ./src/main.c \
 		./src/run_cmd.c \
 		./src/run_heredoc.c \
 		./src/signal_handler.c \
+		./src/exit_handler.c \
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
@@ -55,6 +56,8 @@ SRC = ./src/main.c \
 		./utils/libft/ft_bzero.c \
 		./utils/libft/ft_memmove.c \
 		./utils/libft/ft_memset.c \
+		./utils/libft/ft_atoi.c \
+		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address

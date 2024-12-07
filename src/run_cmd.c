@@ -66,8 +66,26 @@ char	**convert_env(t_env *list_env)
 	env[j] = NULL;
 	return (env);
 }
+int is_builtins(t_cmd *command)
+{
+    if (strcmp("echo", command->cmd[0]) == 0)
+        return (1);
+    else if (strcmp("export", command->cmd[0]) == 0)
+        return (1);
+    else if (strcmp("exit", command->cmd[0]) == 0)
+        return (1);
+    else if (strcmp("cd", command->cmd[0]) == 0)
+        return (1);
+    else if (strcmp("pwd", command->cmd[0]) == 0)
+       return (1);
+    else if (strcmp("env", command->cmd[0]) == 0)
+        return (1);
+    else if (strcmp("unset",command->cmd[0]) == 0)
+        return (1);
+    return (0);
+}
 
-void	execute(t_cmd *command, t_env *list_env)
+void	execute(t_cmd *command, t_env *list_env, t_env *env_list)
 {
 	char	**env;
 	pid_t	child_pid;
@@ -75,18 +93,24 @@ void	execute(t_cmd *command, t_env *list_env)
 	char	*fullcmd = NULL;
 	int 	fd_in = 0;
 	int		fd_out = 1;
-	t_cmd	*tmp = command;
 	// int 	std_in = dup(STDIN_FILENO);
 	// int 	std_out = dup(STDOUT_FILENO);
+	(void)env_list;
 
-    if (command->cmd[0] == NULL)
+
+	if (command->cmd[0] == NULL)
 	 return ;
+	if (is_builtins(command) == 1)
+	{
+		run_builtins(&env_list, command);
+		return ;
+	}
 	fullcmd = find_path(command->cmd[0], list_env);
-	//printf("command->cmd[0] :%s\n", command->cmd[0]);
 	if (fullcmd == NULL)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
-		write(2, ": command not found\n", 21);
+		write(2, ": command not found\n", 20);
+		g_mini.exit_status = 127;
 		return ;
 	}
 	env = convert_env(list_env);
@@ -159,20 +183,17 @@ void	execute(t_cmd *command, t_env *list_env)
 			exit(127);
 		}
 	}
-	else {
-		waitpid(child_pid, &status, 0);
-	}
-	while (tmp->files != NULL)
+	else 
 	{
-		if (tmp->files->type == HEREDOC && tmp->files->delimiter != NULL)
-			unlink(tmp->files->filename);
-		tmp->files = tmp->files->next;
+		waitpid(child_pid, &status, 0);
+
+		g_mini.exit_status = capture_exit_status(status);
 	}
 	signal_handler(IN_CHILD);
 
 }
 
-void	handle_pipe(t_cmd *command, t_env *env)
+void	handle_pipe(t_cmd *command, t_env *env, t_env *env_list)
 {
 	int		fd[2];
 	pid_t	child_pid1;
@@ -189,7 +210,7 @@ void	handle_pipe(t_cmd *command, t_env *env)
 		close(fd[READ]);
 		dup2(fd[WRITE], STDOUT_FILENO);
 		close(fd[WRITE]);
-		execute(command, env);
+		execute(command, env, env_list);
 		exit(1);
 	}
 	child_pid2 = fork();
@@ -198,7 +219,7 @@ void	handle_pipe(t_cmd *command, t_env *env)
 		close(fd[WRITE]);
 		dup2(fd[READ], STDIN_FILENO);
 		close(fd[READ]);
-		run_cmd(command->next, env);
+		run_cmd(command->next, env, env_list);
 		exit(1);
 	}
 	close(fd[READ]);
@@ -207,13 +228,16 @@ void	handle_pipe(t_cmd *command, t_env *env)
 	waitpid(child_pid2, &status[1], 0);
 }
 
-void    run_cmd(t_cmd *command, t_env *env)
-{ 
+
+void    run_cmd(t_cmd *command, t_env *env, t_env *env_list)
+{
+	
+
 	if (command->next == NULL)
-        execute(command, env);
+        execute(command, env, env_list);
 	else
 	{
-		handle_pipe(command, env);
+		handle_pipe(command, env, env_list);
 	}
 	while (command->files != NULL)
 	{

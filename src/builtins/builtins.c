@@ -3,32 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 20:56:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/06 17:31:25 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int run_builtins(t_env **env)
+int run_builtins(t_env **env, t_cmd *command)
 {
-    t_cmd *tmp = g_mini.command;
-
-    if (strcmp("echo", tmp->cmd[0]) == 0)
-        echo(tmp->cmd);
-    else if (strcmp("export", tmp->cmd[0]) == 0)
-        export(env, tmp->cmd);
-    else if (strcmp("exit", tmp->cmd[0]) == 0)
-        exit_shell(tmp);
-    else if (strcmp("cd", tmp->cmd[0]) == 0)
-        cd(env, tmp->cmd);
-    else if (strcmp("pwd", tmp->cmd[0]) == 0)
+    if (strcmp("echo", command->cmd[0]) == 0)
+        echo(command->cmd);
+    else if (strcmp("export", command->cmd[0]) == 0)
+        export(env, command->cmd);
+    else if (strcmp("exit", command->cmd[0]) == 0)
+        exit_shell(g_mini.command);
+    else if (strcmp("cd", command->cmd[0]) == 0)
+        cd(env, command->cmd);
+    else if (strcmp("pwd", command->cmd[0]) == 0)
         pwd(env);
-    else if (strcmp("env", tmp->cmd[0]) == 0)
+    else if (strcmp("env", command->cmd[0]) == 0)
         print_env(*env);
-    else if (strcmp("unset",tmp->cmd[0]) == 0)
-        unset(tmp->cmd, env);
+    else if (strcmp("unset",command->cmd[0]) == 0)
+        unset(command->cmd, env);
     return 1;
 }

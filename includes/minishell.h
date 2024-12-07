@@ -84,14 +84,6 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 }						t_cmd;
 
-typedef struct s_global
-{
-	t_cmd				*command;
-	int					sig_flag;
-	int					heredoc_fd;
-}						t_global;
-
-extern t_global			g_mini;
 
 typedef struct s_parse_state
 {
@@ -130,6 +122,14 @@ typedef struct s_error
 	t_error_type		type;
 	char				*token;
 }						t_error;
+typedef struct s_global
+{
+	t_cmd				*command;
+	int					sig_flag;
+	int					exit_status;
+}						t_global;
+
+extern t_global			g_mini;
 
 /*--------shell---------*/
 void 					debug_list(t_list *list);
@@ -140,7 +140,7 @@ t_error					create_error(t_error_type type, char *token);
 void					print_error(t_error error);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
-int 					run_builtins(t_env **env);
+int 					run_builtins(t_env **env, t_cmd *command);
 int						echo(char **args);
 void					cd(t_env **env,char **args);
 void					pwd(t_env **env);
@@ -204,10 +204,14 @@ t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
-void    				run_cmd(t_cmd *command, t_env *env);
+void    				run_cmd(t_cmd *command, t_env *env, t_env *env_list);
 void 					run_heredoc(t_cmd	*command);
-void					execute(t_cmd *command, t_env *list_env);
+void					execute(t_cmd *command, t_env *list_env, t_env *env_list);
 void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);
+
+int						capture_exit_status(int status);
+void 					handle_exit_builtin(t_cmd *command);
+void 					handle_echo(t_cmd *command);
 # endif
