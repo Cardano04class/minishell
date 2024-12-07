@@ -34,7 +34,7 @@ void debug_list(t_list *list)
 {
     while (list)
     {
-       // printf("Node content: %s\n", list->content);
+       printf("Node content: %s\n", list->content);
         list = list->next;
     }
 }
@@ -75,8 +75,8 @@ void	prompt(char **env)
 			// debug_list(list);
 			expand(env_list, &list);
 			// printf("After:\n****\n");
-			// debug_list(list);
 			parser(list);
+			debug_list(list);
 			run_heredoc(g_mini.command);
 			run_cmd(g_mini.command, env_list, env_list);
 		}

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/06 12:08:27 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/07 11:39:58 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,40 @@ void merge_export_assignment(t_list **list)
             t_list *var_node = current->next;
             t_list *val_node = var_node->next;
 
-            // Check if var_node contains '=' and val_node exists
             if (val_node && strchr(var_node->content, '=') != NULL)
             {
-                char *merged_content;
-                size_t len_var = ft_strlen(var_node->content);
-                size_t len_val = ft_strlen(val_node->content);
+                char *val_content = val_node->content;
+                size_t val_len = ft_strlen(val_content);
 
-                // Allocate space for merged string (variable + value)
-                merged_content = malloc(len_var + len_val + 1);
-                if (!merged_content)
-                    return;
+                // Check if the value is enclosed in quotes
+                if (val_len >= 2 &&
+                    ((val_content[0] == '\'' && val_content[val_len - 1] == '\'') ||
+                     (val_content[0] == '"' && val_content[val_len - 1] == '"')))
+                {
+                    char *merged_content;
+                    size_t len_var = ft_strlen(var_node->content);
+                    size_t len_val = ft_strlen(val_node->content);
 
-                // Merge variable name and value
-                strcpy(merged_content, var_node->content);
-                strcat(merged_content, val_node->content);
-                // Update var_node with merged content
-                free(var_node->content);
-                var_node->content = merged_content;
-                // Remove val_node
-                var_node->next = val_node->next;
-                if (val_node->next)
-                    val_node->next->prev = var_node;
-                free(val_node->content);
-                free(val_node);
+                    merged_content = malloc(len_var + len_val + 1);
+                    if (!merged_content)
+                        return;
 
-                // Skip to next node
-                current = var_node;
-                continue;
+                    strcpy(merged_content, var_node->content);
+                    strcat(merged_content, val_node->content);
+
+                    free(var_node->content);
+                    var_node->content = merged_content;
+
+                    var_node->next = val_node->next;
+                    if (val_node->next)
+                        val_node->next->prev = var_node;
+
+                    free(val_node->content);
+                    free(val_node);
+
+                    current = var_node;
+                    continue;
+                }
             }
         }
         current = current->next;
@@ -210,38 +216,28 @@ void split_and_expand_variable(t_env *env, t_list **node)
     char *value;
     char **tokens;
     t_list *current_node = *node;
+    t_list *new_node;
+    int i;
 
-    // Expand the variable (skip the '$' symbol)
-    value = expand_variable(env, current_node->content + 1);
-
-    // If the variable doesn't exist, remove the current node
-    if (!value || value[0] == '\0')
-    {
-        if (current_node->prev)
-            current_node->prev->next = current_node->next;
-        if (current_node->next)
-            current_node->next->prev = current_node->prev;
-
-        *node = current_node->next; // Update the node pointer to the next node
-        free(current_node->content);
-        free(current_node);
+    // Expand the variable
+    value = expand_variable(env, current_node->content + 1); // Skip the '$'
+    if (!value)
         return;
-    }
 
     // Split the value into tokens by spaces
     tokens = ft_split(value, ' ');
     if (!tokens)
         return;
 
-    // Update the current node with the first token
+    // Replace the current node's content with the first token
     free(current_node->content);
     current_node->content = strdup(tokens[0]);
-    current_node->type = WORD; // Assign the type
 
-    int i = 1;
+    // Add new nodes for subsequent tokens
+    i = 1;
     while (tokens[i])
     {
-        t_list *new_node = ft_lstnew(strdup(tokens[i]), WORD);
+        new_node = ft_lstnew(strdup(tokens[i]), WORD);
         if (!new_node)
             break;
 
@@ -262,6 +258,7 @@ void split_and_expand_variable(t_env *env, t_list **node)
         free(tokens[i++]);
     free(tokens);
 }
+
 
 void	handle_regular_var(t_parse_state *state)
 {
@@ -363,45 +360,28 @@ char *merge_args(char *arg1, char *arg2)
     return merged;
 }
 
-void	expand(t_env *env, t_list **list)
+void expand(t_env *env, t_list **list)
 {
-	t_list	*current;
-	char	*expanded_line;
+    t_list *current;
+    char *expanded_line;
 
-	merge_export_assignment(list);
-	current = *list;
-	while (current)
-	{
-		if (current->content && current->content[0] == '$')
-		{
-			expanded_line = expand_variables(env, current->content);
-			if (expanded_line && expanded_line[0] != '\0')
-			{
-				free(current->content);
-				current->content = expanded_line;
-			}
-			else
-			{
-				// Remove the node if the variable doesn't exist or expands to nothing
-				if (current->prev)
-					current->prev->next = current->next;
-				if (current->next)
-					current->next->prev = current->prev;
-				if (*list == current)
-					*list = current->next;
-				free(current->content);
-				free(current);
-			}
-		}
-		else
-		{
-			expanded_line = expand_variables(env, current->content);
-			if (expanded_line)
-			{
-				free(current->content);
-				current->content = expanded_line;
-			}
-		}
-		current = current->next;
-	}
+    merge_export_assignment(list);
+    current = *list;
+    while (current)
+    {
+        if (current->content && current->content[0] == '$')
+        {
+            split_and_expand_variable(env, &current);
+        }
+        else
+        {
+            expanded_line = expand_variables(env, current->content);
+            if (expanded_line)
+            {
+                free(current->content);
+                current->content = expanded_line;
+            }
+        }
+        current = current->next;
+    }
 }

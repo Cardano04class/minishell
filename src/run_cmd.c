@@ -231,8 +231,6 @@ void	handle_pipe(t_cmd *command, t_env *env, t_env *env_list)
 
 void    run_cmd(t_cmd *command, t_env *env, t_env *env_list)
 {
-	
-
 	if (command->next == NULL)
         execute(command, env, env_list);
 	else
