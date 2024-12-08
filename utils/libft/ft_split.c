@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 09:50:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:17:50 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:32:25 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,6 @@ static size_t	wrdlen(char const *s, char c)
 	return (i);
 }
 
-static char	**ft_free(char **ptr, size_t j)
-{
-	while (j > 0)
-	{
-		free(ptr[j - 1]);
-		j--;
-	}
-	free(ptr);
-	return (NULL);
-}
-
 static char	*help(char const *s, char c)
 {
 	size_t	i;
@@ -92,8 +81,6 @@ char	**ft_split(char const *s, char c)
 		if (*s != '\0')
 		{
 			ptr[i] = help(s, c);
-			if (ptr[i] == NULL)
-				return (ft_free(ptr, i));
 			i++;
 		}
 		while (*s != '\0' && *s != c)

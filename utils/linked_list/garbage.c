@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:02:24 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:15:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:39:38 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_garbage	*new_garbage(void *content)
 {
 	t_garbage	*new;
 
-	new = _malloc(sizeof(t_garbage));
+	new = malloc(sizeof(t_garbage));
     new->ptr = content;
 	new->next = NULL;
 	return (new);
@@ -48,13 +48,13 @@ void	clear_garbage(t_garbage **lst)
 	while (*lst != NULL)
 	{
 		tmp = (*lst)->next;
-		free((*lst)->ptr);
 		free(*lst);
 		*lst = tmp;
 	}
+	free(lst);
 }
 
-void    *__malloc(size_t size, char op)
+void    *_malloc(size_t size, char op)
 {
     void    *ptr;
     static  t_garbage *trash;
@@ -63,9 +63,9 @@ void    *__malloc(size_t size, char op)
     {
         clear_garbage(&trash);
         trash = NULL;
-        return ;
+        return (NULL); 
     }
-    ptr = _malloc(size);
+    ptr = malloc(size);
     if (!ptr)
     {
         clear_garbage(&trash);

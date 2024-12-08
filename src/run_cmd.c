@@ -39,7 +39,6 @@ char	*find_path(char *cmd, t_env *env)
 			return (fullcmd);
 		j++;
 	}
-	free (cmd);
 	return (NULL);
 }
 

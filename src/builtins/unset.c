@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 16:01:12 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:30:31 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ int	remove_variable(char *var_name, t_env **list)
 				*list = current->next;
 			else
 				previous->next = current->next;
-			free(current->key);
-			free(current->value);
-			free(current);
 			return (1);
 		}
 		previous = current;

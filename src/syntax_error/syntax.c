@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 21:37:45 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:31:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ t_error create_error(t_error_type type, char *token)
     else
         error.token = NULL;
     return error;
-}
-
-void free_error(t_error *error)
-{
-    if (error && error->token)
-    {
-        free(error->token);
-        error->token = NULL;
-    }
 }
 
 t_error check_quotes(char *str)
@@ -109,7 +100,6 @@ int syntax_error(t_list *list)
     if (error.type != NO_ERROR)
     {
         print_error(error);
-        free_error(&error);
         return 1;
     }
     return 0;

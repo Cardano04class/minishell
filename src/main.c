@@ -3,21 +3,6 @@
 t_global	g_mini;
 
 
-void free_array(char **array)
-{
-    int i;
-
-    if (!array)
-        return;
-
-    i = 0;
-    while (array[i])
-    {
-        free(array[i]);
-        i++;
-    }
-    free(array);
-}
 
 int	empty_prompt(char *rl)
 {
@@ -65,7 +50,6 @@ void	prompt(char **env)
 		g_mini.sig_flag = 1;
 		if (empty_prompt(rl) == 0)
 		{
-			free(rl);
 			continue ;
 		}
 		lexer(rl, &list);
@@ -83,8 +67,8 @@ void	prompt(char **env)
 		signal_handler(IN_PARENT);
 		ft_lstclear(&list);
 		add_history(rl);
-		free(rl);
 	}
+	_malloc(0, 'f');
 	rl_clear_history();
 }
 

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:17:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:31:42 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ void merge_export_assignment(t_list **list)
 
                     ft_strcpy(merged_content, var_node->content);
                     ft_strcat(merged_content, val_node->content);
-                    free(var_node->content);
+                    
                     var_node->content = merged_content;
 
                     var_node->next = val_node->next;
                     if (val_node->next)
                         val_node->next->prev = var_node;
 
-                    free(val_node->content);
-                    free(val_node);
+        
 
                     current = var_node;
                     continue;
@@ -120,7 +119,7 @@ void	handle_quotes(t_parse_state *state)
 void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 {
 	state->result_size = (ft_strlen(line) * 2) + 1;
-	state->result = (state->result_size);
+	state->result = _malloc(state->result_size, 'm');
 	if (!state->result)
 	{
 		state->result_size = 0;
@@ -227,9 +226,6 @@ void split_and_expand_variable(t_env *env, t_list **node)
     tokens = ft_split(value, ' ');
     if (!tokens)
         return;
-
-    // Replace the current node's content with the first token
-    free(current_node->content);
     current_node->content = strdup(tokens[0]);
 
     // Add new nodes for subsequent tokens
@@ -250,12 +246,6 @@ void split_and_expand_variable(t_env *env, t_list **node)
         current_node = new_node;
         i++;
     }
-
-    // Free the tokens array
-    i = 0;
-    while (tokens[i])
-        free(tokens[i++]);
-    free(tokens);
 }
 
 
@@ -319,12 +309,10 @@ char	*expand_variables(t_env *env, char *line)
 		process_char(&state);
 	if (!ensure_buffer_space(&state, 1))
 	{
-		free(state.result);
 		return (NULL);
 	}
 	state.result[state.result_idx] = '\0';
 	expanded_line = remove_quotes(state.result);
-	free(state.result);
 	return (expanded_line);
 }
 
@@ -377,7 +365,6 @@ void expand(t_env *env, t_list **list)
             expanded_line = expand_variables(env, current->content);
             if (expanded_line)
             {
-                free(current->content);
                 current->content = expanded_line;
             }
         }
