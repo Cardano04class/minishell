@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 16:01:25 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:16:43 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_env	*create_env_node(const t_env *current)
 {
 	t_env	*new_node;
 
-	new_node = (t_env *)malloc(sizeof(t_env));
+	new_node = (t_env *)_malloc(sizeof(t_env), 'm');
 	if (!new_node)
 		return (NULL);
 	new_node->key = ft_strdup(current->key);
@@ -146,7 +146,7 @@ t_env	*init_export_node(char *name)
 {
 	t_env	*new_node;
 
-	new_node = (t_env *)malloc(sizeof(t_env));
+	new_node = (t_env *)_malloc(sizeof(t_env), 'm');
 	if (!new_node)
 	{
 		perror("failed init variable");

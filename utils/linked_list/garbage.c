@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:02:24 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:12:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:15:07 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_garbage	*new_garbage(void *content)
 {
 	t_garbage	*new;
 
-	new = malloc(sizeof(t_garbage));
+	new = _malloc(sizeof(t_garbage));
     new->ptr = content;
 	new->next = NULL;
 	return (new);
@@ -54,7 +54,7 @@ void	clear_garbage(t_garbage **lst)
 	}
 }
 
-void    *_malloc(size_t size, char op)
+void    *__malloc(size_t size, char op)
 {
     void    *ptr;
     static  t_garbage *trash;
@@ -65,7 +65,7 @@ void    *_malloc(size_t size, char op)
         trash = NULL;
         return ;
     }
-    ptr = malloc(size);
+    ptr = _malloc(size);
     if (!ptr)
     {
         clear_garbage(&trash);

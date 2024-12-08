@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 16:12:16 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:17:18 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void merge_export_assignment(t_list **list)
                     size_t len_var = ft_strlen(var_node->content);
                     size_t len_val = ft_strlen(val_node->content);
 
-                    merged_content = malloc(len_var + len_val + 1);
+                    merged_content = _malloc(len_var + len_val + 1, 'm');
                     if (!merged_content)
                         return;
 
@@ -120,7 +120,7 @@ void	handle_quotes(t_parse_state *state)
 void	init_parse_state(t_parse_state *state, char *line, t_env *env)
 {
 	state->result_size = (ft_strlen(line) * 2) + 1;
-	state->result = malloc(state->result_size);
+	state->result = (state->result_size);
 	if (!state->result)
 	{
 		state->result_size = 0;
@@ -160,7 +160,7 @@ char *remove_quotes(char *str)
         return (NULL);
 
     len = ft_strlen(str);
-    result = malloc(len + 1);
+    result = _malloc(len + 1, 'm');
     if (!result)
         return (NULL);
 
@@ -349,7 +349,7 @@ char *merge_args(char *arg1, char *arg2)
     size_t len1 = ft_strlen(arg1);
     size_t len2 = ft_strlen(arg2);
 
-    merged = malloc(len1 + len2 + 1);  // Allocate space for the combined string
+    merged = _malloc(len1 + len2 + 1, 'm');  // Allocate space for the combined string
     if (!merged)
         return NULL;
 

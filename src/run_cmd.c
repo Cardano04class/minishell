@@ -52,7 +52,7 @@ char	**convert_env(t_env *list_env)
 
 	j = 0;
 	env_size = ft_envsize(list_env);
-	env = malloc(sizeof(char *) * (env_size + 1));
+	env = _malloc(sizeof(char *) * (env_size + 1), 'm');
 	if (env == NULL)
 		return (NULL);
 	while (list_env != NULL && j < env_size)

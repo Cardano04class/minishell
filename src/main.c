@@ -51,7 +51,7 @@ void	prompt(char **env)
 	while (1)
 	{
 		g_mini.sig_flag = 0;
-		g_mini.command = malloc(sizeof(t_cmd));
+		g_mini.command = _malloc(sizeof(t_cmd), 'm');
 		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
 		g_mini.command->next = NULL;

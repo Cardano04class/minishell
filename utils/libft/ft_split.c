@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 09:50:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/24 11:19:47 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:17:50 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*help(char const *s, char c)
 	char	*ptr;
 
 	i = 0;
-	ptr = (char *)malloc(wrdlen(s, c) + 1);
+	ptr = (char *)_malloc(wrdlen(s, c) + 1, 'm');
 	if (!ptr)
 		return (NULL);
 	while (s[i] != '\0' && s[i] != c)
@@ -81,7 +81,7 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	ptr = (char **)malloc((wrdcount(s, c) + 1) * sizeof(char *));
+	ptr = (char **)_malloc((wrdcount(s, c) + 1) * sizeof(char *), 'm');
 	if (!ptr)
 		return (NULL);
 	i = 0;

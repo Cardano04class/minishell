@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 09:58:36 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:38:09 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:17:41 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*ft_itoa(int n)
 	{
 		len = ft_nstrlen(nb);
 	}
-	p = malloc(len + 1);
+	p = _malloc(len + 1, 'm');
 	if (!p)
 		return (NULL);
 	p[len] = '\0';

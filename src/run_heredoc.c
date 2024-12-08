@@ -7,7 +7,7 @@ char	*heredoc_filename(void)
 	int		fd;
 	int		c;
 
-	file_name = malloc(sizeof(char) * 12);
+	file_name = _malloc(sizeof(char) * 12, 'm');
 	if (file_name == NULL)
 		return (NULL);
 	fd = open("/dev/random", O_RDONLY);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_file_new.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 14:43:34 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/02 13:26:02 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:18:39 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_file	*ft_file_new(char *filename, t_token type, char *delimiter)
 {
 	t_file	*new;
 
-	new = malloc(sizeof(t_file));
+	new = _malloc(sizeof(t_file), 'm');
 	new->filename = filename;
 	new->delimiter = delimiter;
 	new->type = type;

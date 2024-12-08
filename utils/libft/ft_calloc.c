@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 15:49:12 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:38:28 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:17:29 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ft_calloc(size_t count, size_t size)
 	{
 		return (NULL);
 	}
-	ptr = malloc(count * size);
+	ptr = _malloc(count * size, 'm');
 	if (!ptr)
 	{
 		return (NULL);

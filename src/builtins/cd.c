@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 16:10:26 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:16:27 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,7 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 	}
 	else
 	{
-		new_var = malloc(sizeof(t_env));
-		if (!new_var)
-		{
-			perror("malloc");
-			return ;
-		}
+		new_var = _malloc(sizeof(t_env), 'm');
 		new_var->key = ft_strdup(name);
 		new_var->value = ft_strdup(value);
 		new_var->next = *env;
