@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 18:28:26 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 16:10:26 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 	if (var)
 	{
 		free(var->value);
-		var->value = strdup(value);
+		var->value = ft_strdup(value);
 	}
 	else
 	{
@@ -30,8 +30,8 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 			perror("malloc");
 			return ;
 		}
-		new_var->key = strdup(name);
-		new_var->value = strdup(value);
+		new_var->key = ft_strdup(name);
+		new_var->value = ft_strdup(value);
 		new_var->next = *env;
 		*env = new_var;
 	}
@@ -49,7 +49,7 @@ void	cd_handle_args(t_env **env, char **args)
 		home = NULL;
 	if (args[1] == NULL)
 		cd_home(home);
-	else if (strcmp(args[1], "-") == 0)
+	else if (ft_strcmp(args[1], "-") == 0)
 		cd_oldpwd(oldpwd_env);
 	else
 		cd_path(args[1]);

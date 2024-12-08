@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mamir <mamir@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/26 16:18:47 by mobouifr          #+#    #+#              #
-#    Updated: 2024/09/10 14:19:25 by mobouifr         ###   ########.fr        #
+#    Updated: 2024/12/08 15:57:23 by mamir            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRC = ft_atoi.c \
 	ft_substr.c \
 	ft_split.c \
 	ft_ssplit.c \
-	ft_strtrim.c 
+	ft_strtrim.c \
+	ft_strcmp.c
 	
 	
 OBJ = $(SRC:.c=.o)

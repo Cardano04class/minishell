@@ -76,7 +76,7 @@ void	prompt(char **env)
 			expand(env_list, &list);
 			// printf("After:\n****\n");
 			parser(list);
-			debug_list(list);
+			// debug_list(list);
 			run_heredoc(g_mini.command);
 			run_cmd(g_mini.command, env_list, env_list);
 		}

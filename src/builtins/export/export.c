@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 15:52:28 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 16:01:25 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	validate_and_handle(t_env **lst, char *var_name, char *var_value,
 
 	if (!is_valid_name(var_name))
 	{
-		printf("export: '%s': not a valid identifier\n", var_name);
+		perror("Invalid Name");
 		return (1);
 	}
 	result = handle_existing_node(lst, var_name, var_value, plus_sign);
@@ -110,7 +110,7 @@ t_env	*env_exist(t_env **env_list, const char *name)
 	current = *env_list;
 	while (current)
 	{
-		if (strcmp(current->key, name) == 0)
+		if (ft_strcmp(current->key, name) == 0)
 			return (current);
 		current = current->next;
 	}
@@ -126,13 +126,13 @@ void	update_env(t_env **env_list, char *name, char *value, bool plus_sign)
 	{
 		if (plus_sign == true)
 		{
-			if (strcmp(current->key, name) == 0 && ft_strlen(current->key) != 0)
+			if (ft_strcmp(current->key, name) == 0 && ft_strlen(current->key) != 0)
 			{
 				current->value = ft_strjoin(current->value, value);
 				return ;
 			}
 		}
-		else if (strcmp(current->key, name) == 0)
+		else if (ft_strcmp(current->key, name) == 0)
 		{
 			free(current->value);
 			current->value = ft_strdup(value);
@@ -149,7 +149,7 @@ t_env	*init_export_node(char *name)
 	new_node = (t_env *)malloc(sizeof(t_env));
 	if (!new_node)
 	{
-		perror("Failed to allocate memory for new environment node");
+		perror("failed init variable");
 		return (NULL);
 	}
 	new_node->key = ft_strdup(name);
@@ -177,7 +177,6 @@ int	set_node_value(t_env *new_node, char *value)
 	}
 	return (0);
 }
-
 
 int	is_valid_name(char *str)
 {
@@ -228,9 +227,9 @@ int	already_sorted(t_env *lst)
 {
 	while (lst)
 	{
-		if (strcmp(lst->key, lst->next->key) > 0)
+		if (ft_strcmp(lst->key, lst->next->key) > 0)
 			return (1);
-		if (strcmp(lst->key, lst->next->key) < 0)
+		if (ft_strcmp(lst->key, lst->next->key) < 0)
 			return (1);
 		lst = lst->next;
 	}

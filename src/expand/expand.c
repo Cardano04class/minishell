@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/07 11:39:58 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 16:12:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void merge_export_assignment(t_list **list)
 
     while (current && current->next)
     {
-        if (strcmp(current->content, "export") == 0 && current->next)
+        if (ft_strcmp(current->content, "export") == 0 && current->next)
         {
             t_list *var_node = current->next;
             t_list *val_node = var_node->next;
 
-            if (val_node && strchr(var_node->content, '=') != NULL)
+            if (val_node && ft_strchr(var_node->content, '=') != NULL)
             {
                 char *val_content = val_node->content;
                 size_t val_len = ft_strlen(val_content);
@@ -41,9 +41,8 @@ void merge_export_assignment(t_list **list)
                     if (!merged_content)
                         return;
 
-                    strcpy(merged_content, var_node->content);
-                    strcat(merged_content, val_node->content);
-
+                    ft_strcpy(merged_content, var_node->content);
+                    ft_strcat(merged_content, val_node->content);
                     free(var_node->content);
                     var_node->content = merged_content;
 
@@ -191,7 +190,7 @@ char	*expand_variable(t_env *env, const char *var_name)
 	current = env;
 	while (current)
 	{
-		if (strcmp(current->key, var_name) == 0)
+		if (ft_strcmp(current->key, var_name) == 0)
 			return (current->value);
 		current = current->next;
 	}
@@ -274,7 +273,7 @@ void	handle_regular_var(t_parse_state *state)
 		var_name[var_idx++] = state->line[state->i++];
 	}
 	var_name[var_idx] = '\0';
-	if (strcmp(var_name, "?") == 0)
+	if (ft_strcmp(var_name, "?") == 0)
 		value = "0";
 	else
 		value = expand_variable(state->env, var_name);

@@ -39,6 +39,9 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strlcpy.c \
 		./utils/libft/ft_split.c \
 		./utils/libft/ft_strncmp.c \
+		./utils/libft/ft_strcmp.c \
+		./utils/libft/ft_strcat.c \
+		./utils/libft/ft_strcpy.c \
 		./utils/libft/ft_strnstr.c \
 		./utils/libft/ft_strtrim.c \
 		./utils/libft/ft_substr.c \

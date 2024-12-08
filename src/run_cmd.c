@@ -68,19 +68,19 @@ char	**convert_env(t_env *list_env)
 }
 int is_builtins(t_cmd *command)
 {
-    if (strcmp("echo", command->cmd[0]) == 0)
+    if (ft_strcmp("echo", command->cmd[0]) == 0)
         return (1);
-    else if (strcmp("export", command->cmd[0]) == 0)
+    else if (ft_strcmp("export", command->cmd[0]) == 0)
         return (1);
-    else if (strcmp("exit", command->cmd[0]) == 0)
+    else if (ft_strcmp("exit", command->cmd[0]) == 0)
         return (1);
-    else if (strcmp("cd", command->cmd[0]) == 0)
+    else if (ft_strcmp("cd", command->cmd[0]) == 0)
         return (1);
-    else if (strcmp("pwd", command->cmd[0]) == 0)
+    else if (ft_strcmp("pwd", command->cmd[0]) == 0)
        return (1);
-    else if (strcmp("env", command->cmd[0]) == 0)
+    else if (ft_strcmp("env", command->cmd[0]) == 0)
         return (1);
-    else if (strcmp("unset",command->cmd[0]) == 0)
+    else if (ft_strcmp("unset",command->cmd[0]) == 0)
         return (1);
     return (0);
 }
