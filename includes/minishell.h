@@ -129,6 +129,13 @@ typedef struct s_global
 	int					exit_status;
 }						t_global;
 
+typedef	struct  s_garbage
+{
+	void	*ptr;
+	struct	s_garbage *next;
+}			t_garbage;
+
+
 extern t_global			g_mini;
 
 /*--------shell---------*/
@@ -214,4 +221,6 @@ char					*heredoc_filename(void);
 int						capture_exit_status(int status);
 void 					handle_exit_builtin(t_cmd *command);
 void 					handle_echo(t_cmd *command);
+void    				*_malloc(size_t size, char op);
+
 # endif
