@@ -127,6 +127,7 @@ typedef struct s_global
 	t_cmd				*command;
 	int					sig_flag;
 	int					exit_status;
+	t_env				*env;
 }						t_global;
 
 extern t_global			g_mini;
@@ -199,14 +200,17 @@ int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
-int					print_env(t_env *env_lst);
+int						print_env(t_env *env_lst);
 t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
+int						execution(t_cmd *cmd);
 void    				run_cmd(t_cmd *command, t_env *env, t_env *env_list);
+bool					set_redirections(t_file *file);
 void 					run_heredoc(t_cmd	*command);
-void					execute(t_cmd *command, t_env *list_env, t_env *env_list);
+// void					execute(t_cmd *command, t_env *list_env, t_env *env_list);
+int						execution(t_cmd *cmd);
 void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);

@@ -46,6 +46,11 @@ void run_heredoc(t_cmd	*command)
 				{
 					signal_handler(IN_HEREDOC);
 					line = readline(">");
+					if (line == NULL)
+					{
+						printf("warning : delimited by end-of-file (wanted `%s')\n", command->files->delimiter);
+						break ;
+					}
 					if (!ft_strncmp(command->files->delimiter, line, 
 						ft_strlen(command->files->delimiter)) &&
 						(ft_strlen(command->files->delimiter) == ft_strlen(line)))

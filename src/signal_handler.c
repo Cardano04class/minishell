@@ -26,11 +26,6 @@ void signal_handler(int sig)
         signal(SIGINT, handle_sigint);
         signal(SIGQUIT, SIG_IGN);
     }
-    else if (sig == IN_PARENT)
-    {
-        signal(SIGINT, SIG_IGN);
-        signal(SIGQUIT, SIG_IGN);
-    }
     else if (sig == IN_HEREDOC)
     {
         signal(SIGINT, SIG_DFL);
