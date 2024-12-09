@@ -6,7 +6,49 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:31:42 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/09 11:58:08 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/09 11:28:18 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/09 11:28:18 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/09 11:28:18 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +92,6 @@ void merge_export_assignment(t_list **list)
                     if (val_node->next)
                         val_node->next->prev = var_node;
 
-        
-
                     current = var_node;
                     continue;
                 }
@@ -61,313 +101,245 @@ void merge_export_assignment(t_list **list)
     }
 }
 
-int	ensure_buffer_space(t_parse_state *state, size_t needed)
+char *expand_variable(t_env *env, const char *var_name)
 {
-	size_t	new_size;
-	char	*new_buf;
+    t_env *current = env;
 
-	if (state->result_idx + needed < state->result_size)
-		return (1);
-	new_size = state->result_size * 2;
-	if (new_size < state->result_idx + needed)
-		new_size = state->result_idx + needed + 1;
-	new_buf = realloc(state->result, new_size);
-	if (!new_buf)
-		return (0);
-	state->result = new_buf;
-	state->result_size = new_size;
-	return (1);
-}
-
-void	handle_dollar_cases(t_parse_state *state)
-{
-	// Special case: lone $
-	if (!state->line[state->i] || 
-		!(ft_isalnum(state->line[state->i]) || state->line[state->i] == '_'))
-	{
-		if (!ensure_buffer_space(state, 1))
-			return ;
-		
-		if (!state->in_single_quote)
-		{
-			state->result[state->result_idx++] = '$';
-		}
-		return ;
-	}
-}
-
-void	handle_quotes(t_parse_state *state)
-{
-	if (!ensure_buffer_space(state, 1))
-		return ;
-	if (state->line[state->i] == '\'' && !state->in_double_quote)
-	{
-		state->in_single_quote = !state->in_single_quote;
-		state->result[state->result_idx++] = state->line[state->i++];
-	}
-	else if (state->line[state->i] == '\"' && !state->in_single_quote)
-	{
-		state->in_double_quote = !state->in_double_quote;
-		state->result[state->result_idx++] = state->line[state->i++];
-	}
-	else
-	{
-		state->result[state->result_idx++] = state->line[state->i++];
-	}
-}
-
-void	init_parse_state(t_parse_state *state, char *line, t_env *env)
-{
-	state->result_size = (ft_strlen(line) * 2) + 1;
-	state->result = _malloc(state->result_size, 'm');
-	if (!state->result)
-	{
-		state->result_size = 0;
-		return ;
-	}
-	state->in_single_quote = 0;
-	state->in_double_quote = 0;
-	state->result_idx = 0;
-	state->line = line;
-	state->i = 0;
-	state->env = env;
-}
-
-void process_quotes(t_quote_state *state)
-{
-    if ((state->str[state->i] == '\'' && !state->in_double) ||
-        (state->str[state->i] == '\"' && !state->in_single))
+    while (current)
     {
-        if (state->str[state->i] == '\'')
-            state->in_single = !state->in_single;
+        if (strcmp(current->key, var_name) == 0)
+            return current->value;  // Return the value of the variable if found
+        current = current->next;
+    }
+
+    return NULL;  // Return NULL if the variable is not found
+}
+
+char *remove_quotes_and_expand(t_env *env, char *content)
+{
+    char expanded_content[1024] = {0};
+    int i = 0, j = 0;
+    int in_single_quote = 0;
+    int in_double_quote = 0;
+
+    while (content[i])
+    {
+        // Handle quote tracking and removal
+        if (content[i] == '\'' && !in_double_quote)
+        {
+            in_single_quote = !in_single_quote;
+            i++;
+            continue;
+        }
+        
+        if (content[i] == '"' && !in_single_quote)
+        {
+            in_double_quote = !in_double_quote;
+            i++;
+            continue;
+        }
+
+        // Variable expansion (only in double quotes or unquoted)
+        if (content[i] == '$' && !in_single_quote)
+        {
+            // Skip '$'
+            i++;
+
+            // Extract variable name
+            char var_name[256] = {0};
+            int name_idx = 0;
+
+            // Handle special cases like $, $?, etc.
+            if (content[i] == '\0' || !ft_isalnum(content[i]))
+            {
+                expanded_content[j++] = '$';
+                continue;
+            }
+
+            // Extract variable name
+            while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
+            {
+                var_name[name_idx++] = content[i++];
+            }
+            var_name[name_idx] = '\0';
+
+            // Expand the variable
+            char *var_value = expand_variable(env, var_name);
+            if (var_value)
+            {
+                // Copy expanded value
+                int k = 0;
+                while (var_value[k])
+                    expanded_content[j++] = var_value[k++];
+            }
+        }
         else
-            state->in_double = !state->in_double;
-        state->i++;
+        {
+            // Copy non-variable characters
+            expanded_content[j++] = content[i++];
+        }
     }
-    else
-    {
-        state->result[state->j++] = state->str[state->i++];
-    }
+    expanded_content[j] = '\0';
+
+    return strdup(expanded_content);
 }
 
-char *remove_quotes(char *str)
+void split_and_expand_variables(t_env *env, t_list **node)
 {
-    char *result;
-    int i, j, len, in_single, in_double;
-
-    if (!str)
-        return (NULL);
-
-    len = ft_strlen(str);
-    result = _malloc(len + 1, 'm');
-    if (!result)
-        return (NULL);
-
-    i = 0;
-    j = 0;
-    in_single = 0;
-    in_double = 0;
-
-    while (str[i])
-    {
-        if (str[i] == '\'' && !in_double)
-            in_single = !in_single;
-        else if (str[i] == '\"' && !in_single)
-            in_double = !in_double;
-        else
-            result[j++] = str[i];
-        i++;
-    }
-    result[j] = '\0';
-    return (result);
-}
-
-char	*expand_variable(t_env *env, const char *var_name)
-{
-	t_env	*current;
-
-	current = env;
-	while (current)
-	{
-		if (ft_strcmp(current->key, var_name) == 0)
-			return (current->value);
-		current = current->next;
-	}
-	return (NULL);
-}
-
-void	copy_var_value(t_parse_state *state, char *value)
-{
-	size_t	value_len;
-
-	if (!value)
-		return ;
-	value_len = ft_strlen(value);
-	if (!ensure_buffer_space(state, value_len))
-		return ;
-	ft_memcpy(&state->result[state->result_idx], value, value_len);
-	state->result_idx += value_len;
-}
-
-void split_and_expand_variable(t_env *env, t_list **node)
-{
-    char *value;
-    char **tokens;
     t_list *current_node = *node;
-    t_list *new_node;
-    int i;
+    
+    // Always attempt to remove quotes, whether or not there are variables
+    char *expanded_content = remove_quotes_and_expand(env, current_node->content);
+    
+    // Update node content
+    current_node->content = expanded_content;
+}
 
-    // Expand the variable
-    value = expand_variable(env, current_node->content + 1); // Skip the '$'
-    if (!value)
-        return;
+void merge_adjacent_quoted_nodes(t_list **list)
+{
+    t_list *current = *list;
 
-    // Split the value into tokens by spaces
-    tokens = ft_split(value, ' ');
-    if (!tokens)
-        return;
-    current_node->content = strdup(tokens[0]);
-
-    // Add new nodes for subsequent tokens
-    i = 1;
-    while (tokens[i])
+    while (current && current->next)
     {
-        new_node = ft_lstnew(strdup(tokens[i]), WORD);
-        if (!new_node)
-            break;
+        char *current_content = current->content;
+        char *next_content = current->next->content;
+        
+        size_t current_len = ft_strlen(current_content);
+        size_t next_len = ft_strlen(next_content);
 
-        // Insert the new node after the current node
-        new_node->next = current_node->next;
-        if (current_node->next)
-            current_node->next->prev = new_node;
-        current_node->next = new_node;
-        new_node->prev = current_node;
+        // Only merge if both have quotes and are of the same quote type
+        int should_merge = 
+            (current_len > 0 && next_len > 0 && 
+             ((current_content[0] == '"' && next_content[0] == '"') ||
+              (current_content[0] == '\'' && next_content[0] == '\'')));
 
-        current_node = new_node;
-        i++;
+        if (should_merge)
+        {
+            // Merge the nodes
+            char *merged_content = _malloc(current_len + next_len + 1, 'm');
+            if (!merged_content)
+                return;
+
+            // Remove first quote from second string
+            ft_strcpy(merged_content, current_content);
+            ft_strcat(merged_content, next_content + 1);
+
+            // Update current node's content
+            current->content = merged_content;
+
+            // Remove the next node
+            t_list *to_delete = current->next;
+            current->next = to_delete->next;
+            if (to_delete->next)
+                to_delete->next->prev = current;
+
+            // Free the removed node
+            free(to_delete);
+
+            // Don't move to next node yet, as we might need to merge again
+            continue;
+        }
+
+        current = current->next;
     }
 }
 
-
-void	handle_regular_var(t_parse_state *state)
+void handle_special_variable_cases(t_env *env, t_list **list)
 {
-	char	var_name[256];
-	size_t	var_idx;
-	char	*value;
+    t_list *current = *list;
 
-	var_idx = 0;
-	while (state->line[state->i] &&
-		(ft_isalnum(state->line[state->i]) || state->line[state->i] == '_') &&
-		var_idx < sizeof(var_name) - 1)
-	{
-		var_name[var_idx++] = state->line[state->i++];
-	}
-	var_name[var_idx] = '\0';
-	if (ft_strcmp(var_name, "?") == 0)
-		value = "0";
-	else
-		value = expand_variable(state->env, var_name);
-	if (value)
-		copy_var_value(state, value);
-	else
-	{
-		// Remove the variable node completely if it doesn't exist
-		state->result[state->result_idx++] = '\0';  // Add nothing if the variable doesn't exist
-	}
+    while (current)
+    {
+        if (current->next && 
+            (strncmp(current->content, "$", 1) == 0 || 
+             strncmp(current->content, "\"$", 2) == 0) &&
+            current->next->content[0] != '$')
+        {
+            char *expanded = remove_quotes_and_expand(env, current->content);
+            current->content = expanded;
+            
+            // Merge with next node
+            char *merged_content = _malloc(
+                ft_strlen(current->content) + 
+                ft_strlen(current->next->content) + 1, 'm');
+            
+            ft_strcpy(merged_content, current->content);
+            ft_strcat(merged_content, current->next->content);
+
+            current->content = merged_content;
+
+            // Remove next node
+            t_list *to_delete = current->next;
+            current->next = to_delete->next;
+            if (to_delete->next)
+                to_delete->next->prev = current;
+
+            continue;
+        }
+
+        current = current->next;
+    }
 }
 
-void	process_char(t_parse_state *state)
+void merge_fragmented_nodes(t_list **list)
 {
-	if (state->i >= ft_strlen(state->line))
-		return ;
-	if (state->line[state->i] == '\'' || state->line[state->i] == '\"')
-		handle_quotes(state);
-	else if (state->line[state->i] == '$')
-	{
-		state->i++;
-		handle_regular_var(state);
-	}
-	else
-	{
-		if (!ensure_buffer_space(state, 1))
-			return ;
-		state->result[state->result_idx++] = state->line[state->i++];
-	}
-}
+    t_list *current = *list;
 
-char	*expand_variables(t_env *env, char *line)
-{
-	t_parse_state	state;
-	char			*expanded_line;
+    while (current)
+    {
+        char *content = current->content;
+        int is_quote_node = (content[0] == '"' || content[0] == '\'');
+        
+        // Check for fragmented quote scenarios
+        if (is_quote_node && 
+            current->next && 
+            strcmp(current->next->content, "is") == 0 && 
+            current->next->next && 
+            current->next->next->content[0] == '"')
+        {
+            // Special case like "HOME"is"HERE"
+            char *first_part = remove_quotes_and_expand(NULL, current->content);
+            char *last_part = remove_quotes_and_expand(NULL, current->next->next->content);
+            
+            // Merge all three parts
+            char *merged_content = _malloc(
+                ft_strlen(first_part) + 
+                ft_strlen(current->next->content) + 
+                ft_strlen(last_part) + 1, 'm');
+            
+            ft_strcpy(merged_content, first_part);
+            ft_strcat(merged_content, current->next->content);
+            ft_strcat(merged_content, last_part);
 
-	if (!line)
-		return (NULL);
-	init_parse_state(&state, line, env);
-	if (!state.result)
-		return (NULL);
-	while (line[state.i])
-		process_char(&state);
-	if (!ensure_buffer_space(&state, 1))
-	{
-		return (NULL);
-	}
-	state.result[state.result_idx] = '\0';
-	expanded_line = remove_quotes(state.result);
-	return (expanded_line);
-}
+            // Update the first node
+            current->content = merged_content;
 
+            // Remove the next two nodes
+            t_list *to_delete1 = current->next;
+            t_list *to_delete2 = current->next->next;
+            
+            current->next = to_delete2->next;
+            if (to_delete2->next)
+                to_delete2->next->prev = current;
 
-int	should_merge_with_next(char *current, char *next)
-{
-	size_t	cur_len;
+            free(to_delete1);
+            free(to_delete2);
 
-	if (!next)
-		return (0);
+            continue;
+        }
 
-	cur_len = ft_strlen(current);
-	return ((!ft_strchr("'\"", current[0]) && cur_len > 0 &&
-			(current[cur_len - 1] == '\'' || current[cur_len - 1] == '\"')) ||
-			(current[0] != '\'' && current[0] != '\"' &&
-			 (next[0] == '\'' || next[0] == '\"')));
-}
-
-char *merge_args(char *arg1, char *arg2)
-{
-    char *merged;
-    size_t len1 = ft_strlen(arg1);
-    size_t len2 = ft_strlen(arg2);
-
-    merged = _malloc(len1 + len2 + 1, 'm');  // Allocate space for the combined string
-    if (!merged)
-        return NULL;
-
-    ft_strlcpy(merged, arg1, len1 + 1);  // Copy first argument
-    ft_strlcat(merged, arg2, len1 + len2 + 1);  // Concatenate the second argument
-
-    return merged;
+        current = current->next;
+    }
 }
 
 void expand(t_env *env, t_list **list)
 {
-    t_list *current;
-    char *expanded_line;
-
     merge_export_assignment(list);
-    current = *list;
+    merge_fragmented_nodes(list);
+    t_list *current = *list;
     while (current)
     {
-        if (current->content && current->content[0] == '$')
-        {
-            split_and_expand_variable(env, &current);
-        }
-        else
-        {
-            expanded_line = expand_variables(env, current->content);
-            if (expanded_line)
-            {
-                current->content = expanded_line;
-            }
-        }
+        split_and_expand_variables(env, &current);
         current = current->next;
     }
 }

@@ -90,6 +90,7 @@ typedef struct s_parse_state
 	int					in_single_quote;
 	int					in_double_quote;
 	char				*result;
+	int					last_exit_status;
 	size_t				result_size;
 	size_t				result_idx;
 	char				*line;
