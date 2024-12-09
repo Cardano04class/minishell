@@ -224,4 +224,6 @@ void 					handle_exit_builtin(t_cmd *command);
 void 					handle_echo(t_cmd *command);
 void    *_malloc(size_t size, char op);
 
+t_env	*set_env_var(t_env *env, char *key, char *value);
+
 # endif

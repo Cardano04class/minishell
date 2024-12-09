@@ -6,49 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/09 11:58:08 by mamir            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/09 11:28:18 by mamir            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/09 11:28:18 by mamir            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/09 11:28:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/09 15:45:18 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,32 +89,28 @@ char *remove_quotes_and_expand(t_env *env, char *content)
             i++;
             continue;
         }
-        
         if (content[i] == '"' && !in_single_quote)
         {
             in_double_quote = !in_double_quote;
             i++;
             continue;
         }
-
         // Variable expansion (only in double quotes or unquoted)
         if (content[i] == '$' && !in_single_quote)
         {
-            // Skip '$'
-            i++;
+            i++; // Skip '$'
 
-            // Extract variable name
-            char var_name[256] = {0};
-            int name_idx = 0;
-
-            // Handle special cases like $, $?, etc.
-            if (content[i] == '\0' || !ft_isalnum(content[i]))
+            // Special case: "$" followed by nothing
+            if (content[i] == '\0')
             {
                 expanded_content[j++] = '$';
                 continue;
             }
 
             // Extract variable name
+            char var_name[256] = {0};
+            int name_idx = 0;
+
             while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
             {
                 var_name[name_idx++] = content[i++];
@@ -167,7 +121,6 @@ char *remove_quotes_and_expand(t_env *env, char *content)
             char *var_value = expand_variable(env, var_name);
             if (var_value)
             {
-                // Copy expanded value
                 int k = 0;
                 while (var_value[k])
                     expanded_content[j++] = var_value[k++];
@@ -179,8 +132,8 @@ char *remove_quotes_and_expand(t_env *env, char *content)
             expanded_content[j++] = content[i++];
         }
     }
-    expanded_content[j] = '\0';
 
+    expanded_content[j] = '\0';
     return strdup(expanded_content);
 }
 
