@@ -7,7 +7,7 @@ char	*heredoc_filename(void)
 	int		fd;
 	int		c;
 
-	file_name = malloc(sizeof(char) * 12);
+	file_name = _malloc(sizeof(char) * 12, 'm');
 	if (file_name == NULL)
 		return (NULL);
 	fd = open("/dev/random", O_RDONLY);
@@ -56,12 +56,12 @@ void run_heredoc(t_cmd	*command)
 						{
 							break ;
 						}
-					if (ft_strchr(line, '$') != NULL)
+					/*if (ft_strchr(line, '$') != NULL)
 					{
 						line = expand_variables(g_mini.env, line);
 						write(fd, line, ft_strlen(line));
 						write(fd, "\n", 1);
-					}
+					}*/
 					else
 					{
 						write(fd, line, ft_strlen(line));

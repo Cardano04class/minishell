@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/04 17:57:15 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:15:52 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	parser(t_list *lst)
 	index_count = 0;
 	state = STATE_DEFAULT;
 	cmd_arg_size = cmd_argument_size(lst);
-	g_mini.command->cmd = malloc(sizeof(char *) * (cmd_arg_size + 1));
+	g_mini.command->cmd = _malloc(sizeof(char *) * (cmd_arg_size + 1), 'm');
 	g_mini.command->cmd[cmd_arg_size] = NULL;
 	tmp_cmd = g_mini.command;
 	while (lst != NULL)
@@ -72,7 +72,7 @@ void	parser(t_list *lst)
 			cmd_arg_size = cmd_argument_size(lst);
 			lst = lst->prev;
 			index_count = 0;
-			tmp_cmd->cmd = malloc(sizeof(char *) * (cmd_arg_size + 1));
+			tmp_cmd->cmd = _malloc(sizeof(char *) * (cmd_arg_size + 1), 'm');
 			tmp_cmd->cmd[cmd_arg_size] = NULL;
 		}
 		if (lst != NULL)

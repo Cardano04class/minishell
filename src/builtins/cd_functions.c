@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:49:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/13 15:05:25 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 16:00:56 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_env	*find_env_var(t_env *env, const char *name)
 {
 	while (env)
 	{
-		if (strcmp(env->key, name) == 0)
+		if (ft_strcmp(env->key, name) == 0)
 			return (env);
 		env = env->next;
 	}

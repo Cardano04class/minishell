@@ -90,6 +90,7 @@ typedef struct s_parse_state
 	int					in_single_quote;
 	int					in_double_quote;
 	char				*result;
+	int					last_exit_status;
 	size_t				result_size;
 	size_t				result_idx;
 	char				*line;
@@ -130,12 +131,18 @@ typedef struct s_global
 	t_env				*env;
 }						t_global;
 
+typedef	struct  s_garbage
+{
+	void	*ptr;
+	struct	s_garbage *next;
+}			t_garbage;
+
+
 extern t_global			g_mini;
 
 /*--------shell---------*/
 void 					debug_list(t_list *list);
 void					lexer(char *str, t_list **lst);
-void 					free_array(char **array);
 int						syntax_error(t_list *list);
 t_error					create_error(t_error_type type, char *token);
 void					print_error(t_error error);
@@ -212,7 +219,12 @@ void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);
 
+void					clear_garbage(t_garbage **lst);
 int						capture_exit_status(int status);
 void 					handle_exit_builtin(t_cmd *command);
 void 					handle_echo(t_cmd *command);
+void    *_malloc(size_t size, char op);
+
+t_env	*set_env_var(t_env *env, char *key, char *value);
+
 # endif

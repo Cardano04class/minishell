@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:58:34 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/04 17:06:14 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/09 09:45:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <string.h>
 # include <unistd.h>
 
-/* Part 1 functions */
 int		ft_isspace(int c);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -45,7 +44,6 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *s1);
-/* part 2 function */
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
@@ -57,6 +55,11 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
-/*---------------addons-----------*/
+
+char    *ft_strcat(char *dst, const char *src);
+int	    ft_strcmp(const char *s1, const char *s2);
 char	**ft_ssplit(char const *s);
+char	*ft_strcpy(char *dst, const char *src);
+void    *_malloc(size_t size, char op);
+char    *ft_strndup(const char *src, size_t n);
 #endif

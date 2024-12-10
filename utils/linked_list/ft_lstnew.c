@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:50:10 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/17 15:34:00 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:18:52 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_list	*ft_lstnew(char *content, t_token type)
 {
 	t_list	*new;
 
-	new = malloc(sizeof(t_list));
+	new = _malloc(sizeof(t_list), 'm');
 	new->content = content;
 	new->type = type;
 	new->next = NULL;

@@ -35,10 +35,14 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_cmd_new.c \
 		./utils/linked_list/ft_file_new.c \
 		./utils/libft/ft_strdup.c \
+		./utils/libft/ft_strndup.c \
 		./utils/libft/ft_strlcat.c \
 		./utils/libft/ft_strlcpy.c \
 		./utils/libft/ft_split.c \
 		./utils/libft/ft_strncmp.c \
+		./utils/libft/ft_strcmp.c \
+		./utils/libft/ft_strcat.c \
+		./utils/libft/ft_strcpy.c \
 		./utils/libft/ft_strnstr.c \
 		./utils/libft/ft_strtrim.c \
 		./utils/libft/ft_substr.c \
@@ -57,7 +61,9 @@ SRC = ./src/main.c \
 		./utils/libft/ft_memmove.c \
 		./utils/libft/ft_memset.c \
 		./utils/libft/ft_atoi.c \
+		./utils/libft/ft_itoa.c \
 		./utils/libft/ft_isdigit.c \
+		./utils/linked_list/garbage.c\
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/25 14:58:00 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:30:31 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,12 @@ int	remove_variable(char *var_name, t_env **list)
 	current = *list;
 	while (current)
 	{
-		if (strcmp(var_name, current->key) == 0)
+		if (ft_strcmp(var_name, current->key) == 0)
 		{
 			if (previous == NULL)
 				*list = current->next;
 			else
 				previous->next = current->next;
-			free(current->key);
-			free(current->value);
-			free(current);
 			return (1);
 		}
 		previous = current;
@@ -45,7 +42,7 @@ int	valid_name(char *name, t_env **list)
 	current = *list;
 	while (current)
 	{
-		if (strcmp(name, current->key) == 0)
+		if (ft_strcmp(name, current->key) == 0)
 			return (1);
 		current = current->next;
 	}

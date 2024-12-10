@@ -3,21 +3,6 @@
 t_global	g_mini;
 
 
-void free_array(char **array)
-{
-    int i;
-
-    if (!array)
-        return;
-
-    i = 0;
-    while (array[i])
-    {
-        free(array[i]);
-        i++;
-    }
-    free(array);
-}
 
 int	empty_prompt(char *rl)
 {
@@ -34,7 +19,7 @@ void debug_list(t_list *list)
 {
     while (list)
     {
-       // printf("Node content: %s\n", list->content);
+       printf("Node content: %s\n", list->content);
         list = list->next;
     }
 }
@@ -53,7 +38,7 @@ void	prompt(char **env)
 	while (1)
 	{
 		g_mini.sig_flag = 0;
-		g_mini.command = malloc(sizeof(t_cmd));
+		g_mini.command = _malloc(sizeof(t_cmd), 'm');
 		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
 		g_mini.command->next = NULL;
@@ -66,13 +51,16 @@ void	prompt(char **env)
 		}
 		if (empty_prompt(rl) == 0)
 		{
-			free(rl);
 			continue ;
 		}
 		lexer(rl, &list);
 		if(!syntax_error(list))
 		{
+			printf("Before:\n****\n");
+			debug_list(list);
 			expand(env_list, &list);
+			printf("After:\n****\n");
+			debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)
@@ -80,8 +68,8 @@ void	prompt(char **env)
 		}
 		ft_lstclear(&list);
 		add_history(rl);
-		free(rl);
 	}
+	_malloc(0, 'f');
 	rl_clear_history();
 }
 
