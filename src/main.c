@@ -75,7 +75,6 @@ void	prompt(char **env)
 			expand(env_list, &list);
 			parser(list);
 			run_heredoc(g_mini.command);
-			// run_cmd(g_mini.command, env_list, env_list);
 			if (g_mini.command->cmd[0] != NULL)
 				execution(g_mini.command);
 		}

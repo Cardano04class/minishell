@@ -14,7 +14,7 @@ SRC = ./src/main.c \
 		./src/builtins/export/export.c \
 		./src/builtins/unset.c \
 		./src/expand/expand.c \
-		./src/run_cmd.c \
+		./src/executer.c \
 		./src/run_heredoc.c \
 		./src/signal_handler.c \
 		./src/exit_handler.c \
@@ -60,7 +60,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

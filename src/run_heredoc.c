@@ -39,7 +39,6 @@ void run_heredoc(t_cmd	*command)
 			if (command->files->type == HEREDOC)
 			{
 				fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
-				//printf("fd = %i | filename = %s\n", fd, command->files->filename);
 				if (fd == -1)
 					exit(1);
 				while (1)
@@ -57,6 +56,12 @@ void run_heredoc(t_cmd	*command)
 						{
 							break ;
 						}
+					if (ft_strchr(line, '$') != NULL)
+					{
+						line = expand_variables(g_mini.env, line);
+						write(fd, line, ft_strlen(line));
+						write(fd, "\n", 1);
+					}
 					else
 					{
 						write(fd, line, ft_strlen(line));
