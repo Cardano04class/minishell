@@ -55,10 +55,10 @@ void	prompt(char **env)
 		lexer(rl, &list);
 		if(!syntax_error(list))
 		{
-			printf("Before:\n****\n");
-			debug_list(list);
+			// printf("Before:\n****\n");
+			// debug_list(list);
 			expand(env_list, &list);
-			printf("After:\n****\n");
+			// printf("After:\n****\n");
 			debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);

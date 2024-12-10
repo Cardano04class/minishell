@@ -60,6 +60,7 @@ typedef struct s_list
 	t_token				type;
 	struct s_list		*next;
 	struct s_list		*prev;
+	int					separated_by_space;
 }						t_list;
 
 typedef struct s_env
@@ -183,11 +184,12 @@ int						handle_existing_node(t_env **lst, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
 void					expand(t_env *env, t_list **list);
-char					*expand_variables(t_env *env, char *line);
-char					*remove_quotes(char *str);
-char					*merge_args(char *arg1, char *arg2);
+// char					*expand_variables(t_env *env, char *line);
+// char					*remove_quotes(char *str);
+// char					*merge_args(char *arg1, char *arg2);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
+t_list					*ft_lstnew_2(char *content, t_token type, int seperated_by_space);
 t_env					*ft_env_new(char *key, char *value);
 t_cmd					*ft_cmd_new(char **content);
 t_file					*ft_file_new(char *filename, t_token type, char *delimiter);
@@ -206,7 +208,7 @@ int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
-int					print_env(t_env *env_lst);
+int						print_env(t_env *env_lst);
 t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
@@ -222,8 +224,8 @@ void					clear_garbage(t_garbage **lst);
 int						capture_exit_status(int status);
 void 					handle_exit_builtin(t_cmd *command);
 void 					handle_echo(t_cmd *command);
-void    *_malloc(size_t size, char op);
+void    				*_malloc(size_t size, char op);
 
-t_env	*set_env_var(t_env *env, char *key, char *value);
+t_env					*set_env_var(t_env *env, char *key, char *value);
 
 # endif

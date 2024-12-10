@@ -1,7 +1,7 @@
 NAME = minishell
 
 SRC = ./src/main.c \
-		./src/lexer.c \
+		./src/lexer_2.c \
 		./src/parser.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
@@ -13,7 +13,7 @@ SRC = ./src/main.c \
 		./src/builtins/exit.c \
 		./src/builtins/export/export.c \
 		./src/builtins/unset.c \
-		./src/expand/expand.c \
+		./src/expand/expand_norm.c \
 		./src/run_cmd.c \
 		./src/run_heredoc.c \
 		./src/signal_handler.c \

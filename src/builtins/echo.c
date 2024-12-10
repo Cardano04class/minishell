@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/06 12:13:40 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/10 23:05:15 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ int echo(char **args)
         write(1, "\n", 1);
         return (0);
     }
-
     while (args[last_arg])
-        last_arg++;  // Find the last argument
-
+        last_arg++;
     while (args[i])
     {
         if (is_n_option(args[i]))
@@ -78,13 +76,9 @@ int echo(char **args)
             i++;
             continue;
         }
-
         print_argument(args[i]);
-        
-        // Don't print newline unless it's the last argument or -n is not set
         if (i < last_arg - 1 && !n_option)
-            write(1, " ", 1);  // Print space between arguments
-
+            write(1, " ", 1);
         i++;
     }
 
@@ -93,4 +87,3 @@ int echo(char **args)
 
     return (0);
 }
-
