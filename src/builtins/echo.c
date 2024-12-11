@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/10 23:05:15 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/11 09:20:30 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int echo(char **args)
 
     i = 1;
     n_option = false;
+    dprintf(2, "ana echo\n");
     last_arg = 0;
     
     if (!args[1])

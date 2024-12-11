@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 15:57:56 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/10 15:06:39 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 int run_builtins(t_env **env, t_cmd *command)
 {
-    if (ft_strcmp("echo", command->cmd[0]) == 0)
+    pid_t original_stdin;
+    pid_t original_stdout;
+    
+    original_stdin = dup(STDIN_FILENO);
+    original_stdout = dup(STDOUT_FILENO);
+    set_redirections(command->files);
+    if (strcmp("echo", command->cmd[0]) == 0)
         echo(command->cmd);
     else if (ft_strcmp("export", command->cmd[0]) == 0)
         export(env, command->cmd);
@@ -28,5 +34,10 @@ int run_builtins(t_env **env, t_cmd *command)
         print_env(*env);
     else if (ft_strcmp("unset",command->cmd[0]) == 0)
         unset(command->cmd, env);
+    dup2(original_stdin, STDIN_FILENO);
+    dup2(original_stdout, STDOUT_FILENO);
+    close(original_stdin);
+    close(original_stdout);
+    
     return 1;
 }

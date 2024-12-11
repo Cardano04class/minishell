@@ -129,6 +129,7 @@ typedef struct s_global
 	t_cmd				*command;
 	int					sig_flag;
 	int					exit_status;
+	t_env				*env;
 }						t_global;
 
 typedef	struct  s_garbage
@@ -213,9 +214,9 @@ t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
-void    				run_cmd(t_cmd *command, t_env *env, t_env *env_list);
+bool					set_redirections(t_file *file);
 void 					run_heredoc(t_cmd	*command);
-void					execute(t_cmd *command, t_env *list_env, t_env *env_list);
+int						execution(t_cmd *cmd);
 void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);

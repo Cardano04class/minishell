@@ -13,8 +13,8 @@ SRC = ./src/main.c \
 		./src/builtins/exit.c \
 		./src/builtins/export/export.c \
 		./src/builtins/unset.c \
-		./src/expand/expand_norm.c \
-		./src/run_cmd.c \
+		./src/expand/expand.c \
+		./src/executer.c \
 		./src/run_heredoc.c \
 		./src/signal_handler.c \
 		./src/exit_handler.c \
