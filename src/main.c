@@ -19,8 +19,9 @@ void debug_list(t_list *list)
 {
     while (list)
     {
-       printf("Node content: %s\n", list->content);
-        list = list->next;
+        printf("Node content: %s\n", list->content);
+	    printf("*********\n");
+    	list = list->next;
     }
 }
 
@@ -43,7 +44,7 @@ void	prompt(char **env)
 		g_mini.command->files = NULL;
 		g_mini.command->next = NULL;
 		signal(SIGINT, handle_sigint);
-		rl = readline("minishell$ ");
+		rl = readline("minishell=> ");
 		if (rl == NULL)
 		{
 			printf("exit\n");
@@ -60,7 +61,7 @@ void	prompt(char **env)
 			// debug_list(list);
 			expand(env_list, &list);
 			// printf("After:\n****\n");
-			debug_list(list);
+			// debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)

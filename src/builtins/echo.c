@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/11 09:20:30 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/12 18:32:30 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@ int print_argument(char *arg)
 {
     int j = 0;
 
-    if (arg[0] == '\0')  // Skip empty arguments
+    if (arg[0] == '\0')
         return (0);
-
     while (arg[j])
     {
-        write(1, &arg[j], 1);  // Print each character of the current argument
+        write(1, &arg[j], 1);
         j++;
     }
     return (1);
@@ -43,11 +42,9 @@ int print_argument(char *arg)
 
 void print_arguments_one_at_a_time(char **args, int i)
 {
-    // Print only the current argument reached in the loop
     if (args[i])
     {
         print_argument(args[i]);
-        // Move to the next argument without printing the rest
     }
 }
 
@@ -59,9 +56,7 @@ int echo(char **args)
 
     i = 1;
     n_option = false;
-    dprintf(2, "ana echo\n");
-    last_arg = 0;
-    
+    last_arg = 0;    
     if (!args[1])
     {
         write(1, "\n", 1);
@@ -82,9 +77,7 @@ int echo(char **args)
             write(1, " ", 1);
         i++;
     }
-
     if (!n_option)
-        write(1, "\n", 1);  // Print newline at the end, unless -n was used
-
+        write(1, "\n", 1);
     return (0);
 }

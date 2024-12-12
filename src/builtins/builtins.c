@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:31:32 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/10 15:06:39 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:32:57 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ int run_builtins(t_env **env, t_cmd *command)
     dup2(original_stdout, STDOUT_FILENO);
     close(original_stdin);
     close(original_stdout);
-    
     return 1;
 }
