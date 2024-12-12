@@ -17,10 +17,11 @@ int	empty_prompt(char *rl)
 }
 void debug_list(t_list *list)
 {
+	int i = 0;
     while (list)
     {
-        printf("Node content: %s\n", list->content);
-	    printf("*********\n");
+        printf("content[%d]: %s\n", i, list->content);
+		i++;
     	list = list->next;
     }
 }
@@ -44,24 +45,18 @@ void	prompt(char **env)
 		g_mini.command->files = NULL;
 		g_mini.command->next = NULL;
 		signal(SIGINT, handle_sigint);
-		rl = readline("minishell=> ");
+		rl = readline("minishell$ ");
 		if (rl == NULL)
 		{
 			printf("exit\n");
 			exit(0);
 		}
 		if (empty_prompt(rl) == 0)
-		{
 			continue ;
-		}
 		lexer(rl, &list);
 		if(!syntax_error(list))
 		{
-			// printf("Before:\n****\n");
-			// debug_list(list);
 			expand(env_list, &list);
-			// printf("After:\n****\n");
-			// debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)

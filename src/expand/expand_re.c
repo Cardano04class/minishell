@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/12 15:43:33 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/12 21:44:41 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*expand_variable(t_env *env, const char *var_name)
 			return (current->value);
 		current = current->next;
 	}
-	return ("");
+	return (ft_strdup(""));
 }
 
 static int	is_valid_var_char(char c)
@@ -68,8 +68,6 @@ static char	*extract_var_name(const char *content, int *i)
 	while (content[*i + name_len] && is_valid_var_char(content[*i + name_len]))
 		name_len++;
 	var_name = _malloc(name_len + 1, 'm');
-	if (!var_name)
-		return (NULL);
 	ft_strncpy(var_name, &content[*i], name_len);
 	var_name[name_len] = '\0';
 	*i += name_len;
@@ -112,13 +110,11 @@ char	*remove_quotes_and_expand(t_env *env, char *content)
 
 	while (content[i])
 	{
-		// Quote tracking
 		if (is_quote(content[i]))
 		{
 			if (current_quote == '\0')
 			{
 				current_quote = content[i];
-				// Only remove if in quote removal mode
 				if (quote_removal_mode && current_quote == content[0])
 				{
 					i++;
@@ -128,7 +124,6 @@ char	*remove_quotes_and_expand(t_env *env, char *content)
 			else if (current_quote == content[i])
 			{
 				current_quote = '\0';
-				// Only remove if in quote removal mode
 				if (quote_removal_mode)
 				{
 					i++;
@@ -139,15 +134,11 @@ char	*remove_quotes_and_expand(t_env *env, char *content)
 		if (content[i] == '$' && current_quote != '\'')
 		{
 			i++;
-			
-			// Standalone $: keep it as is when not in single quotes
 			if (content[i] == '\0')
 			{
 				expanded[j++] = '$';
 				break;
 			}
-
-			// $? handling
 			if (content[i] == '?')
 			{
 				var_value = ft_itoa(g_mini.exit_status);
@@ -160,16 +151,11 @@ char	*remove_quotes_and_expand(t_env *env, char *content)
 				i++;
 				continue;
 			}
-
-			// Variable name extraction
 			var_name = extract_var_name(content, &i);
 			if (!var_name)
 				return (NULL);
-
 			var_value = handle_special_vars(env, var_name);
 			free(var_name);
-
-			// Add variable value
 			if (var_value && *var_value)
 			{
 				ft_strcpy(&expanded[j], var_value);
@@ -177,8 +163,6 @@ char	*remove_quotes_and_expand(t_env *env, char *content)
 			}
 			continue;
 		}
-
-		// Regular character handling
 		expanded[j++] = content[i++];
 	}
 

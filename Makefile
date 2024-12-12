@@ -9,7 +9,7 @@ SRC = ./src/main.c \
 		./src/run_heredoc.c \
 		./src/signal_handler.c \
 		./src/exit_handler.c \
-		./src/expand/expand_final.c \
+		./src/expand/expand.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env.c \
 		./src/builtins/echo.c \

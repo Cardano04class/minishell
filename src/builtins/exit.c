@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:07:23 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/12 19:14:01 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/12 23:29:47 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	exit_shell(t_cmd *arg)
 
 	i = 1;
 	is_numeric = 1;
-	
-	if (arg->next->files->type != PIPE)
 		
 	printf("exit\n");
 	if (!arg->cmd[i])
