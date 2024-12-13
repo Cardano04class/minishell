@@ -12,10 +12,12 @@ void	handle_sigint(int signum)
     }
     else
         write(1, "\n", 1);
+    g_mini.exit_status = 130;
 }
 
 void signal_handler(int sig)
 {
+
     if (sig == IN_CHILD)
     {    
         signal(SIGINT, SIG_DFL);

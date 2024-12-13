@@ -13,6 +13,25 @@ char	*ft_getenv(char *name, t_env *env)
 	}
 	return (NULL);
 }
+t_env	*ft_dashcase(char *name, t_env *env)
+{
+	char **cmd_argv = g_mini.command->cmd;
+	// printf("cmd : %s\n", g_mini.command->cmd[0]);
+	int i = 0;
+
+	while (cmd_argv[i + 1] != NULL)
+		i++;
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->key, name, ft_strlen(env->key + 1)) == 0)
+		{
+			env->value = ft_strdup(cmd_argv[i]);
+			// printf("str : %s\n", env->value);
+		}
+		env = env->next;
+	}
+	return (NULL);
+}
 
 char	*find_path(char *cmd, t_env *env)
 {
@@ -112,6 +131,7 @@ int is_builtins(t_cmd *command)
 
 int	execute_without_path(t_cmd *command)
 {
+	ft_dashcase("_", g_mini.env);
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
 	perror("minishell$");
 	exit(1);
@@ -129,17 +149,22 @@ int	execute_with_path(t_cmd *command)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
 		write(2, ": command not found\n", 20);
-		exit (127);
+		g_mini.exit_status = 127;
+		exit (g_mini.exit_status);
 	}
 	env = convert_env(g_mini.env);
+	ft_dashcase("_", g_mini.env);
+
 	execve(fullcmd, command->cmd, env);
 	perror("minishell$");
-	exit(1);
+	g_mini.exit_status = 2;
+	exit(g_mini.exit_status);
 }
 
 int	run_command(t_cmd *command)
 {
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
@@ -152,7 +177,8 @@ int	run_command(t_cmd *command)
 		else
 			execute_with_path(command);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	g_mini.exit_status = capture_exit_status(status);
 	return (0);
 }
 
@@ -200,6 +226,7 @@ int	execute_pipe(t_cmd *command)
 {
 	int		fd[2];
 	pid_t	pids[2];
+	int		status;
 
 
 	pipe(fd);
@@ -208,13 +235,15 @@ int	execute_pipe(t_cmd *command)
 	close(fd[0]);
 	close(fd[1]);
 	signal(SIGINT, SIG_IGN);
-	waitpid(pids[0], NULL, 0);
-	waitpid(pids[1], NULL, 0);
+	waitpid(pids[0], &status, 0);
+	waitpid(pids[1], &status, 0);
+	g_mini.exit_status = capture_exit_status(status);
 	return (0);
 }
 
 int	execution(t_cmd *command)
 {
+	ft_dashcase("_", g_mini.env);
 	if (command->next)
 		execute_pipe(command);
 	else

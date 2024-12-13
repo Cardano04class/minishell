@@ -129,6 +129,7 @@ typedef struct s_global
 	int					sig_flag;
 	int					exit_status;
 	t_env				*env;
+	char				*last_cmd;
 }						t_global;
 
 typedef	struct  s_garbage
@@ -212,6 +213,9 @@ t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
+char 					*heredoc_expand(t_env *env, char *content);
+char 					*remove_quotes_and_expand(t_env *env, char *content);
+char 					*expand_variable(t_env *env, const char *var_name);
 bool					set_redirections(t_file *file);
 void 					run_heredoc(t_cmd	*command);
 int						execution(t_cmd *cmd);
@@ -227,4 +231,12 @@ void    *_malloc(size_t size, char op);
 
 t_env	*set_env_var(t_env *env, char *key, char *value);
 
+
 # endif
+
+/*
+for amir :
+
+rah zedt, char *heredoc_expand(t_env *env, char *content), fost mn expand.c;
+ou f lheader file.
+*/

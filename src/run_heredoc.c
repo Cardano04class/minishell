@@ -24,6 +24,64 @@ char	*heredoc_filename(void)
 	close(fd);
 	return (file_name);
 }
+char *expand_heredoc_variable(t_env *env, const char *var_name)
+{
+    t_env *current = env;
+
+    while (current)
+    {
+        if (strcmp(current->key, var_name) == 0)
+        {
+            printf("test %s\n", current->value);
+            return current->value;  // Return the value of the variable if found
+        }
+        current = current->next;
+    }
+
+    return NULL;  // Return NULL if the variable is not found
+}
+
+char *heredoc_expand(t_env *env, char *content)
+{
+    char expanded_content[1024] = {0};
+    int i = 0; 
+	int	j = 0;
+
+    while (content[i] != '\0')
+    {
+        if (content[i] == '$')
+        {
+            i++; 
+            if (content[i] == '\0')
+            {
+                expanded_content[j++] = '$';
+                continue;
+            }
+
+            char var_name[256] = {0};
+            int name_idx = 0;
+
+            while (content[i] != '\0' && (ft_isalnum(content[i]) || content[i] == '_'))
+                var_name[name_idx++] = content[i++];
+            var_name[name_idx] = '\0';
+
+            char *var_value = expand_heredoc_variable(env, var_name);
+            if (var_value)
+            {
+                int k = 0;
+                while (var_value[k])
+                    expanded_content[j++] = var_value[k++];
+            }
+        }
+        else
+        {
+            expanded_content[j++] = content[i++];
+        }
+    }
+
+    expanded_content[j] = '\0';
+    return strdup(expanded_content);
+}
 
 void run_heredoc(t_cmd	*command)
 {
@@ -56,12 +114,14 @@ void run_heredoc(t_cmd	*command)
 						{
 							break ;
 						}
-					/*if (ft_strchr(line, '$') != NULL)
+					//int	i = 0;
+					if (ft_strchr(line, '$') != NULL)
 					{
-						line = expand_variables(g_mini.env, line);
+						line = heredoc_expand(g_mini.env, line);
+						printf("|line : %s |\n", line);
 						write(fd, line, ft_strlen(line));
 						write(fd, "\n", 1);
-					}*/
+					}
 					else
 					{
 						write(fd, line, ft_strlen(line));
@@ -75,4 +135,10 @@ void run_heredoc(t_cmd	*command)
 		exit(0);
 	}
 	waitpid(child_pid, &status, 0);
+	g_mini.exit_status = capture_exit_status(status);
 }
+
+/*
+		if varible not found, print new line. Example: ($dd).
+
+ */

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:02:51 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/09 15:45:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 01:48:48 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 void merge_export_assignment(t_list **list)
 {
@@ -66,7 +67,10 @@ char *expand_variable(t_env *env, const char *var_name)
     while (current)
     {
         if (strcmp(current->key, var_name) == 0)
+        {
+            printf("test %s\n", current->value);
             return current->value;  // Return the value of the variable if found
+        }
         current = current->next;
     }
 
@@ -290,6 +294,7 @@ void expand(t_env *env, t_list **list)
     merge_export_assignment(list);
     merge_fragmented_nodes(list);
     t_list *current = *list;
+
     while (current)
     {
         split_and_expand_variables(env, &current);

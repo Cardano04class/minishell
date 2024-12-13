@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:07:23 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/05 18:23:13 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 02:48:08 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int exit_shell(t_cmd *arg)
     if(arg->cmd[i] == NULL)
     {
         printf("exit\n");
-        exit(0);
+       exit(g_mini.exit_status);
     }
     else if(atoi(arg->cmd[i]))
     {
