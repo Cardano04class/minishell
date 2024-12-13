@@ -31,6 +31,8 @@ void run_heredoc(t_cmd	*command)
 	pid_t	child_pid;
 	int		status;
 	int		fd;
+
+	fd = 0;
 	child_pid = fork();
 	if (child_pid == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:31:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 16:02:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,6 @@ int	already_sorted(t_env *lst)
 	return (0);
 }
 
-
 t_env	*ft_export_node(t_env **env_env_list, char *name, char *value)
 {
 	t_env	*new_node;
@@ -288,18 +287,15 @@ int	handle_no_equal_sign(t_env **env_list, char *str)
 	var_name = ft_strdup(str);
 	if (!is_valid_name(var_name))
 	{
-		printf("export: '%s': not a valid identifier\n", var_name);
-		
+		printf("export: not a valid identifier\n");
 		return (1);
 	}
 	existing_node = env_exist(env_list, var_name);
 	if (!existing_node && !ft_export_node(env_list, var_name, NULL))
 	{
 		perror("failed adding variable\n");
-		
 		return (1);
 	}
-	
 	return (0);
 }
 

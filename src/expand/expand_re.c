@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_3.c                                         :+:      :+:    :+:   */
+/*   expand_re.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/12 21:44:41 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 22:42:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,22 +202,22 @@ void merge_fragmented_nodes(t_list **list)
         next_node = current->next;
         if (next_node->separated_by_space == 0)
         {
-            char *merged_content = malloc(strlen(current->content) + strlen(next_node->content) + 1);
+            char *merged_content = _malloc(strlen(current->content) + strlen(next_node->content) + 1, 'm');
             if (!merged_content)
                 return;
 
             strcpy(merged_content, current->content);
             strcat(merged_content, next_node->content);
 
-            free(current->content);
+            // free(current->content);
             current->content = merged_content;
 
             current->next = next_node->next;
             if (next_node->next)
                 next_node->next->prev = current;
 
-            free(next_node->content);
-            free(next_node);
+            // free(next_node->content);
+            // free(next_node);
             continue;
         }
         current = current->next;

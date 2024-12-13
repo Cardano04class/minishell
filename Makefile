@@ -12,7 +12,6 @@ SRC = ./src/main.c \
 		./src/expand/expand.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env.c \
-		./src/builtins/ft_khroj_t9awed.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \
 		./src/builtins/cd_functions.c \
@@ -89,6 +88,5 @@ re : fclean all
 
 sup:
 	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
-
 
 .SECONDARY: $(OBJ)

@@ -49,7 +49,7 @@ void	prompt(char **env)
 		if (rl == NULL)
 		{
 			printf("exit\n");
-			exit(0);
+			break ;
 		}
 		if (empty_prompt(rl) == 0)
 			continue ;
@@ -57,7 +57,15 @@ void	prompt(char **env)
 		if(!syntax_error(list))
 		{
 			expand(env_list, &list);
+			debug_list(list);
 			parser(list);
+			char **test =g_mini.command->cmd;
+			int i = 0;
+			while (test[i])
+			{
+				printf("[%d]:%s\n",i,  test[i]);
+				i++;
+			} 
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)
 				execution(g_mini.command);

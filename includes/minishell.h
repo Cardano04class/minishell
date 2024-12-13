@@ -221,7 +221,6 @@ void 					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);
 
-void					clear_garbage(t_garbage **lst);
 int						capture_exit_status(int status);
 void 					handle_exit_builtin(t_cmd *command);
 void 					handle_echo(t_cmd *command);
