@@ -1,0 +1,3 @@
+check heredoc expand.waiting amirs expand to work on it
+check exit status working but still need some test cases
+and still need to check the case of $ expand of variable that doesnt exits and have nothing it. when writing in the prompt it return a white spaces to the t_lt list, and nedds to be freed instead of returning a white space to parser .

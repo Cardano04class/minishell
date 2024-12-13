@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:30:31 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/12 23:27:26 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,13 @@ int	unset(char **args, t_env **env_list)
 	{
 		var_name = args[i];
 		if (!env_exist(env_list, var_name))
+		{
+			i++;	
+			continue;
+		}
+		else if (!valid_name(var_name, env_list))
 			return 1;
-		if (!valid_name(var_name, env_list))
-			continue ;
-		if (!remove_variable(var_name, env_list))
+		else if (!remove_variable(var_name, env_list))
 			return 1;
 		i++;
 	}

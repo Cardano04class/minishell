@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:30:25 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/12 18:32:41 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 		*env = new_var;
 	}
 }
+
 void	cd_handle_args(t_env **env, char **args)
 {
 	t_env	*home_env;
@@ -48,6 +49,7 @@ void	cd_handle_args(t_env **env, char **args)
 	else
 		cd_path(args[1]);
 }
+
 void	cd(t_env **env,char **args)
 {
 	char	cwd[1024];
@@ -63,6 +65,7 @@ void	cd(t_env **env,char **args)
 	else
 		perror("cd: getcwd()");
 }
+
 void	pwd(t_env **env)
 {
 	char	cwd[1024];

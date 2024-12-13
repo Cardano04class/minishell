@@ -5,6 +5,11 @@ SRC = ./src/main.c \
 		./src/parser.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
+		./src/executer.c \
+		./src/run_heredoc.c \
+		./src/signal_handler.c \
+		./src/exit_handler.c \
+		./src/expand/expand.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env.c \
 		./src/builtins/echo.c \
@@ -13,11 +18,7 @@ SRC = ./src/main.c \
 		./src/builtins/exit.c \
 		./src/builtins/export/export.c \
 		./src/builtins/unset.c \
-		./src/expand/expand.c \
-		./src/executer.c \
-		./src/run_heredoc.c \
-		./src/signal_handler.c \
-		./src/exit_handler.c \
+		./utils/linked_list/garbage.c\
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
@@ -63,7 +64,6 @@ SRC = ./src/main.c \
 		./utils/libft/ft_atoi.c \
 		./utils/libft/ft_itoa.c \
 		./utils/libft/ft_isdigit.c \
-		./utils/linked_list/garbage.c\
 
 CC = cc $(INC)
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address

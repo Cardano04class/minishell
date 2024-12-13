@@ -17,10 +17,12 @@ int	empty_prompt(char *rl)
 }
 void debug_list(t_list *list)
 {
+	int i = 0;
     while (list)
     {
-       printf("Node content: %s\n", list->content);
-        list = list->next;
+        printf("content[%d]: %s\n", i, list->content);
+		i++;
+    	list = list->next;
     }
 }
 
@@ -35,6 +37,7 @@ void	prompt(char **env)
 	ft_env(env, &env_list);
 	g_mini.env = env_list;
 	signal(SIGQUIT, SIG_IGN);
+	g_mini.exit_status = 0;
 	while (1)
 	{
 		g_mini.sig_flag = 0;
@@ -42,8 +45,7 @@ void	prompt(char **env)
 		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
 		g_mini.command->next = NULL;
-		g_mini.exit_status = 0;
-		//printf("status %d\n", g_mini.exit_status);
+		printf("| exit_status in main: {%d} |\n", g_mini.exit_status);
 		signal(SIGINT, handle_sigint);
 		rl = readline("minishell$ ");
 		if (rl == NULL)
@@ -52,17 +54,11 @@ void	prompt(char **env)
 			exit(g_mini.exit_status);
 		}
 		if (empty_prompt(rl) == 0)
-		{
 			continue ;
-		}
 		lexer(rl, &list);
 		if(!syntax_error(list))
 		{
-			//printf("Before:\n****\n");
-			//debug_list(list);
-			expand(g_mini.env, &list);
-			//printf("After:\n****\n");
-			//debug_list(list);
+			expand(env_list, &list);
 			parser(list);
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)

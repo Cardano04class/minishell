@@ -3,22 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:36:27 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 16:05:20 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 17:45:13 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_exit_builtin(t_cmd *commmand) 
-{
-    if (commmand->cmd[1])
-        exit(ft_atoi(commmand->cmd[1]));
-    else
-        exit(g_mini.exit_status);
-}
+// void handle_exit_builtin(t_cmd *commmand) 
+// {
+//     ft_exit(commmand);
+// }
 
 void handle_echo(t_cmd *commmand) 
 {
@@ -30,11 +27,14 @@ int capture_exit_status(int status)
 {
     if (WIFEXITED(status)) 
     {
+        puts(":1");
         return (WEXITSTATUS(status));
     } 
     else if (WIFSIGNALED(status)) 
     {
+        puts("2");
         return (128 + WTERMSIG(status));
     }
+        puts("3");
     return (1);
 }
