@@ -12,6 +12,7 @@ SRC = ./src/main.c \
 		./src/expand/expand.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env.c \
+		./src/builtins/ft_khroj_t9awed.c \
 		./src/builtins/echo.c \
 		./src/builtins/cd.c \
 		./src/builtins/cd_functions.c \
@@ -66,7 +67,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

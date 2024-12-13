@@ -156,7 +156,7 @@ void					pwd(t_env **env);
 int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
 void					ft_env(char **env, t_env **env_lst);
-int 					exit_shell(t_cmd *arg);
+void    				ft_exit(t_cmd *data);
 /*-------------CD_functions----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
@@ -228,5 +228,6 @@ void 					handle_echo(t_cmd *command);
 void    				*_malloc(size_t size, char op);
 
 t_env					*set_env_var(t_env *env, char *key, char *value);
+void 					exiter(int number);
 
 # endif

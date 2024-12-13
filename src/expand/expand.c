@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/12 23:31:38 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 01:37:52 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*expand_variable(t_env *env, const char *var_name)
 	return ("");
 }
 
-char	*remove_quotes_and_expand(t_env *env, char *content)
+/*char	*remove_quotes_and_expand(t_env *env, char *content)
 {
 	int		i;
 	int		j;
@@ -114,171 +114,155 @@ char	*remove_quotes_and_expand(t_env *env, char *content)
 	expanded[j] = '\0';
 	return (expanded);
 }
+*/
+char *remove_quotes_and_expand(t_env *env, char *content)
+{
+    int i = 0, expanded_len = 0;
+    int in_single_quote = 0, in_double_quote = 0;
 
-// char *remove_quotes_and_expand(t_env *env, char *content)
-// {
-    
-//     int i = 0, expanded_len = 0;
-//     int in_single_quote = 0, in_double_quote = 0;
+    while (content[i])
+    {
+        if (content[i] == '\'' && !in_double_quote)
+        {
+            in_single_quote = !in_single_quote;
+            if (in_single_quote)
+                i++;
+            continue;
+        }
+        if (content[i] == '"' && !in_single_quote)
+        {
+            in_double_quote = !in_double_quote;
+            if (in_double_quote)
+                i++;
+            continue;
+        }
+        if (content[i] == '$' && !in_single_quote)
+        {
+            i++;
+            if (content[i] == '\0')
+            {
+                expanded_len++;
+                continue;
+            }
+            if (content[i] == '?')
+            {
+                char *exit_status = ft_itoa(g_mini.exit_status);
+                if (exit_status)
+                {
+                    expanded_len += strlen(exit_status);
+                    free(exit_status);
+                }
+                i++;
+                continue;
+            }
+            int name_len = 0;
+            while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
+            {
+                name_len++;
+                i++;
+            }
+            if (name_len > 0)
+            {
+                char *var_name = _malloc(name_len + 1, 'm');
+                if (!var_name)
+                    return NULL;
+                ft_strncpy(var_name, &content[i - name_len], name_len);
+                var_name[name_len] = '\0';
 
-//     while (content[i])
-//     {
-//         if (content[i] == '\'' && !in_double_quote)
-//         {
-//             in_single_quote = !in_single_quote;
-//             if (in_single_quote) 
-//                 i++;
-//             continue;
-//         }
+                char *var_value = expand_variable(env, var_name);
+                if (var_value)
+                {
+                    expanded_len += strlen(var_value);
+                }
 
-//         if (content[i] == '"' && !in_single_quote)
-//         {
-//             in_double_quote = !in_double_quote;
-//             if (in_double_quote) 
-//                 i++;
-//             continue;
-//         }
+                free(var_name);
+            }
+        }
+        else
+        {
+            expanded_len++;
+            i++;
+        }
+    }
+    char *expanded_content = _malloc(expanded_len + 1, 'm');
+    if (!expanded_content)
+        return NULL;
+    i = 0;
+    int j = 0;
+    in_single_quote = 0;
+    in_double_quote = 0;
 
-//         if (content[i] == '$' && !in_single_quote)
-//         {
-//             i++;
-//             if (content[i] == '\0')
-//             {
-//                 expanded_len++;
-//                 continue;
-//             }
-
-//             // $? special case
-//             if (content[i] == '?')
-//             {
-//                 char *exit_status = ft_itoa(g_mini.exit_status);
-//                 if (exit_status)
-//                 {
-//                     expanded_len += strlen(exit_status);
-//                     free(exit_status);
-//                 }
-//                 i++;
-//                 continue;
-//             }
-
-//             // Calculate var name length
-//             int name_len = 0;
-//             while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
-//             {
-//                 name_len++;
-//                 i++;
-//             }
-
-//             // Lookup variable value
-//             if (name_len > 0)
-//             {
-//                 char *var_name = _malloc(name_len + 1, 'm');
-//                 if (!var_name)
-//                     return NULL;
-
-//                 // Copy var name
-//                 ft_strncpy(var_name, &content[i - name_len], name_len);
-//                 var_name[name_len] = '\0';
-
-//                 char *var_value = expand_variable(env, var_name);
-//                 if (var_value)
-//                 {
-//                     expanded_len += strlen(var_value);
-//                 }
-                
-//                 free(var_name);
-//             }
-//         }
-//         else
-//         {
-//             expanded_len++;
-//             i++;
-//         }
-//     }
-//     char *expanded_content = _malloc(expanded_len + 1, 'm');
-//     i = 0;
-//     int j = 0;
-//     in_single_quote = 0;
-//     in_double_quote = 0;
-
-//     while (content[i])
-//     {
-//         if (content[i] == '\'' && !in_double_quote)
-//         {
-//             in_single_quote = !in_single_quote;
-//             if (in_single_quote) 
-//                 i++;
-//             continue;
-//         }
-//         if (content[i] == '"' && !in_single_quote)
-//         {
-//             in_double_quote = !in_double_quote;
-//             if (in_double_quote) 
-//                 i++;
-//             continue;
-//         }
-
-//         if (content[i] == '$' && !in_single_quote)
-//         {
-//             i++;
-//             if (content[i] == '\0')
-//             {
-//                 expanded_len++;
-//                 continue;
-//             }
-
-//             // $? special case
-//             if (content[i] == '?')
-//             {
-//                 char *exit_status = ft_itoa(g_mini.exit_status);
-//                 if (exit_status)
-//                 {
-//                     expanded_len += strlen(exit_status);
-//                     free(exit_status);
-//                 }
-//                 i++;
-//                 continue;
-//             }
-
-//             // Calculate var name length
-//             int name_len = 0;
-//             while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
-//             {
-//                 name_len++;
-//                 i++;
-//             }
-
-//             // Lookup variable value
-//             if (name_len > 0)
-//             {
-//                 char *var_name = _malloc(name_len + 1, 'm');
-//                 if (!var_name)
-//                     return NULL;
-
-//                 // Copy var name
-//                 ft_strncpy(var_name, &content[i - name_len], name_len);
-//                 var_name[name_len] = '\0';
-
-//                 char *var_value = expand_variable(env, var_name);
-//                 if (var_value)
-//                 {
-//                     expanded_len += strlen(var_value);
-//                 }
-                
-//                 free(var_name);
-//             }
-//         }
-//         else
-//         {
-//             expanded_len++;
-//             i++;
-//         }
-//     }
-//     // printf("content: %s\n", expanded_content);
-
-//     expanded_content[j] = '\0';
-//     return expanded_content;
-// }
+    while (content[i])
+    {
+        if (content[i] == '\'' && !in_double_quote)
+        {
+            in_single_quote = !in_single_quote;
+            if (in_single_quote)
+                i++;
+            continue;
+        }
+        if (content[i] == '"' && !in_single_quote)
+        {
+            in_double_quote = !in_double_quote;
+            if (in_double_quote)
+                i++;
+            continue;
+        }
+        if (content[i] == '$' && !in_single_quote)
+        {
+            i++;
+            if (content[i] == '\0' || content[i] == '"' || content[i] == '\'') 
+            {
+                expanded_content[j++] = '$';
+                continue;
+            }
+            if (content[i] == '?')
+            {
+                char *exit_status = ft_itoa(g_mini.exit_status);
+                if (exit_status)
+                {
+                    int status_len = strlen(exit_status);
+                    ft_strcpy(&expanded_content[j], exit_status);
+                    j += status_len;
+                    free(exit_status);
+                }
+                i++;
+                continue;
+            }
+            int name_len = 0;
+            while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
+            {
+                name_len++;
+                i++;
+            }
+            if (name_len > 0)
+            {
+                char *var_name = _malloc(name_len + 1, 'm');
+                if (!var_name)
+                {
+                    free(expanded_content);
+                    return NULL;
+                }
+                ft_strncpy(var_name, &content[i - name_len], name_len);
+                var_name[name_len] = '\0';
+                char *var_value = expand_variable(env, var_name);
+                if (var_value)
+                {
+                    int value_len = strlen(var_value);
+                    ft_strcpy(&expanded_content[j], var_value);
+                    j += value_len;
+                }
+                free(var_name);
+            }
+        }
+        else
+        {
+            expanded_content[j++] = content[i++];
+        }
+    }
+    expanded_content[j] = '\0';
+    return expanded_content;
+}
 
 void	split_and_expand_variables(t_env *env, t_list **node)
 {

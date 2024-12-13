@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:36:27 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 16:05:20 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 02:17:10 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 void handle_exit_builtin(t_cmd *commmand) 
 {
-    if (commmand->cmd[1])
-        exit(ft_atoi(commmand->cmd[1]));
-    else
-        exit(g_mini.exit_status);
+    ft_exit(commmand);
 }
 
 void handle_echo(t_cmd *commmand) 
