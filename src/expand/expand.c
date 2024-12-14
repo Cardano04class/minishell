@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/13 22:43:06 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 18:33:19 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ char *remove_quotes_and_expand(t_env *env, char *content)
                 if (exit_status)
                 {
                     expanded_len += strlen(exit_status);
-                    free(exit_status);
                 }
                 i++;
                 continue;
@@ -101,7 +100,6 @@ char *remove_quotes_and_expand(t_env *env, char *content)
                 {
                     expanded_len += ft_strlen(var_value);
                 }
-                free(var_name);
             }
         }
         else
@@ -148,7 +146,6 @@ char *remove_quotes_and_expand(t_env *env, char *content)
                     int status_len = ft_strlen(exit_status);
                     ft_strcpy(&expanded_content[j], exit_status);
                     j += status_len;
-                    free(exit_status);
                 }
                 i++;
                 continue;
@@ -171,7 +168,6 @@ char *remove_quotes_and_expand(t_env *env, char *content)
                     ft_strcpy(&expanded_content[j], var_value);
                     j += value_len;
                 }
-                free(var_name);
             }
         }
         else
@@ -205,7 +201,7 @@ void expand_variables_in_list(t_env *env, t_list **list)
         if (current->content)
         {
             expanded_content = remove_quotes_and_expand(env, current->content);
-            current->content = ft_strdup(expanded_content);
+            current->content = expanded_content;
         }
         current = current->next;
     }
@@ -231,8 +227,6 @@ void merge_fragmented_nodes(t_list **list)
             current->next = next_node->next;
             if (next_node->next)
                 next_node->next->prev = current;
-            // free(next_node->content);
-            // free(next_node);
             continue;
         }
         current = current->next;
@@ -288,7 +282,6 @@ void	merge_export_assignment(t_list **list)
 
 void expand(t_env *env, t_list **list)
 {
-    
     merge_export_assignment(list);
     expand_variables_in_list(env, list);
     merge_fragmented_nodes(list);
