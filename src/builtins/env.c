@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/09 15:45:49 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 23:26:37 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	print_env(t_env *env)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
+	g_mini.exit_status = 0;
 	return (0);
 }
 

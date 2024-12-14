@@ -49,6 +49,7 @@ void	prompt(char **env)
 		if (rl == NULL)
 		{
 			printf("exit\n");
+			g_mini.exit_status = 127;
 			break ;
 		}
 		if (empty_prompt(rl) == 0)
@@ -57,7 +58,6 @@ void	prompt(char **env)
 		if(!syntax_error(list))
 		{
 			expand(env_list, &list);
-			// debug_list(list);
 			parser(list);
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)
@@ -74,7 +74,10 @@ int	main(int ac, char **av, char **env)
 {
 	(void)av;
 	if (ac == 1)
+	{
 		prompt(env);
+		return (g_mini.exit_status);
+	}
 	else
 		return (1);
 }

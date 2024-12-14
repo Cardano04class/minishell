@@ -216,8 +216,12 @@ int	execute_pipe(t_cmd *command)
 int	execution(t_cmd *command)
 {
 	if (command->next)
+	{
+		g_mini.exit_pipe = 1;
 		execute_pipe(command);
+	}
 	else
 		execute_command(command);
+	g_mini.exit_pipe = 0;
 	return (0);
 }

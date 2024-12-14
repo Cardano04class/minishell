@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/14 18:33:19 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 21:12:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,9 +218,6 @@ void merge_fragmented_nodes(t_list **list)
         if (next_node->separated_by_space == 0)
         {
             char *merged_content = _malloc(strlen(current->content) + ft_strlen(next_node->content) + 1, 'm');
-            if (!merged_content)
-                return;
-
             ft_strcpy(merged_content, current->content);
             ft_strcat(merged_content, next_node->content);
             current->content = merged_content;

@@ -128,8 +128,9 @@ typedef struct s_global
 {
 	t_cmd				*command;
 	int					sig_flag;
-	int					exit_status;
 	int					exit_flag;
+	int					exit_status;
+	int					exit_pipe;
 	t_env				*env;
 }						t_global;
 
