@@ -16,17 +16,15 @@ char	*ft_getenv(char *name, t_env *env)
 t_env	*ft_dashcase(char *name, t_env *env)
 {
 	char **cmd_argv = g_mini.command->cmd;
-	// printf("cmd : %s\n", g_mini.command->cmd[0]);
 	int i = 0;
 
 	while (cmd_argv[i + 1] != NULL)
 		i++;
 	while (env != NULL)
 	{
-		if (ft_strncmp(env->key, name, ft_strlen(env->key + 1)) == 0)
+		if (ft_strcmp(env->key, name) == 0)
 		{
 			env->value = ft_strdup(cmd_argv[i]);
-			// printf("str : %s\n", env->value);
 		}
 		env = env->next;
 	}
@@ -45,7 +43,6 @@ char	*find_path(char *cmd, t_env *env)
 		return (cmd);
 	if (cmd == NULL)
 		return (NULL);
-	//printf("cmd : %s\n", cmd);
 	cmd = ft_strjoin("/", cmd);
 	paths = ft_split(path, ':');
 	if (paths == NULL)
@@ -231,7 +228,6 @@ int	second_child(pid_t *pid, t_cmd *command, int *fd)
 	*pid = fork();
 	if (*pid == 0)
 	{
-		// sigexit
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
@@ -264,10 +260,10 @@ int	execution(t_cmd *command)
 {
 	struct stat path_stat;
 
-	printf("command->cmd[0] : %s\n", command->cmd[0]);
     if (stat(command->cmd[0], &path_stat) == 0 
 		&& S_ISDIR(path_stat.st_mode)) 
 	{
+        write(2, "minishell: ", 12);
         write(2, command->cmd[0], ft_strlen(command->cmd[0]));
         write(2, ": Is a directory\n", 17);
         g_mini.exit_status = 126;

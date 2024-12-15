@@ -17,6 +17,9 @@ SRC = ./src/main.c \
 		./src/builtins/cd_functions.c \
 		./src/builtins/exit.c \
 		./src/builtins/export/export.c \
+		./src/builtins/export/export_1.c \
+		./src/builtins/export/export_2.c \
+		./src/builtins/export/export_3.c \
 		./src/builtins/unset.c \
 		./utils/linked_list/garbage.c\
 		./utils/linked_list/ft_lstaddback.c \

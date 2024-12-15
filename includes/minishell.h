@@ -1,4 +1,4 @@
-# ifndef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # define BUFFER_SIZE 1024
@@ -15,14 +15,11 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sysexits.h>
 # include <unistd.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
-
 
 typedef enum e_token
 {
@@ -86,7 +83,6 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 }						t_cmd;
 
-
 typedef struct s_parse_state
 {
 	int					in_single_quote;
@@ -136,31 +132,30 @@ typedef struct s_global
 	char				*last_cmd;
 }						t_global;
 
-typedef	struct  s_garbage
+typedef struct s_garbage
 {
-	void	*ptr;
-	struct	s_garbage *next;
-}			t_garbage;
-
+	void				*ptr;
+	struct s_garbage	*next;
+}						t_garbage;
 
 extern t_global			g_mini;
 
 /*--------shell---------*/
-void 					debug_list(t_list *list);
+void					debug_list(t_list *list);
 void					lexer(char *str, t_list **lst);
 int						syntax_error(t_list *list);
 t_error					create_error(t_error_type type, char *token);
 void					print_error(t_error error);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
-int 					run_builtins(t_env **env, t_cmd *command);
+int						run_builtins(t_env **env, t_cmd *command);
 int						echo(char **args);
-void					cd(t_env **env,char **args);
+void					cd(t_env **env, char **args);
 void					pwd(t_env **env);
 int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
 void					ft_env(char **env, t_env **env_lst);
-//void    				ft_exit(t_cmd *data);
+void    				ft_exit(t_cmd *data);
 /*-------------CD_functions----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
@@ -169,36 +164,39 @@ void					cd_home(char *home);
 void					cd_oldpwd(t_env *oldpwd_env);
 void					cd_path(const char *path);
 /*---------------Export_helpers-----------*/
-int						find_equals(char *str);
-int						is_valid_name(char *str);
-int						find_plus(char *str);
-t_env					*sort_env(const t_env *env_list);
 t_env					*create_env_node(const t_env *current);
+t_env					*sort_env(const t_env *env_list);
 t_env					*env_exist(t_env **env_list, const char *name);
-void					update_env(t_env **env_list, char *name, char *value,
-							bool plus_sign);
 t_env					*init_export_node(char *name);
 int						set_node_value(t_env *new_node, char *value);
+int						is_valid_name(char *str);
+int						find_plus(char *str);
+int						find_equals(char *str);
+int						already_sorted(t_env *lst);
 void					insert_sorted_node(t_env **sorted_list,
 							t_env *new_node);
-int						handle_equal_sign(t_env **lst, char *str,
-							int equal_sign, int plus_sign);
 int						validate_and_handle(t_env **lst, char *var_name,
 							char *var_value, int plus_sign);
-int						handle_existing_node(t_env **lst, char *var_name,
+int						handle_equal_sign(t_env **lst, char *str,
+							int equal_sign, int plus_sign);
+void					update_env(t_env **env_list, char *name, char *value,
+							bool plus_sign);
+t_env					*ft_export_node(t_env **env_env_list, char *name,
+							char *value);
+int						handle_existing_node(t_env **env_list, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
 void					expand(t_env *env, t_list **list);
-// char					*expand_variables(t_env *env, char *line);
-// char					*remove_quotes(char *str);
-// char					*merge_args(char *arg1, char *arg2);
+
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
-t_list					*ft_lstnew_2(char *content, t_token type, int seperated_by_space);
+t_list					*ft_lstnew_2(char *content, t_token type,
+							int seperated_by_space);
 t_env					*ft_env_new(char *key, char *value);
 t_cmd					*ft_cmd_new(char **content);
-t_file					*ft_file_new(char *filename, t_token type, char *delimiter);
-//t_heredoc				*ft_heredoc_new(char *delimiter);
+t_file					*ft_file_new(char *filename, t_token type,
+							char *delimiter);
+// t_heredoc				*ft_heredoc_new(char *delimiter);
 void					ft_env_clear(t_env **lst);
 t_list					*ft_lstmax(t_list *stack_a);
 t_list					*ft_lstmin(t_list *stack_a);
@@ -207,7 +205,7 @@ void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
-//void					ft_heredoc_addback(t_heredoc *new);
+// void					ft_heredoc_addback(t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
@@ -218,26 +216,25 @@ t_env					*env_exist(t_env **env_list, const char *name);
 void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
-char 					*heredoc_expand(t_env *env, char *content);
-char 					*remove_quotes_and_expand(t_env *env, char *content);
-char 					*expand_variable(t_env *env, const char *var_name);
+char					*heredoc_expand(t_env *env, char *content);
+char					*remove_quotes_and_expand(t_env *env, char *content);
+char					*expand_variable(t_env *env, const char *var_name);
 bool					set_redirections(t_file *file);
-void 					run_heredoc(t_cmd	*command);
+void					run_heredoc(t_cmd *command);
 int						execution(t_cmd *cmd);
-void 					signal_handler(int sig);
+void					signal_handler(int sig);
 void					handle_sigint(int signum);
 char					*heredoc_filename(void);
 
 int						capture_exit_status(int status);
-void 					handle_exit_builtin(t_cmd *command);
-void 					handle_echo(t_cmd *command);
-void    				*_malloc(size_t size, char op);
+void					handle_exit_builtin(t_cmd *command);
+void					handle_echo(t_cmd *command);
+void					*_malloc(size_t size, char op);
 
 t_env					*set_env_var(t_env *env, char *key, char *value);
-void 					exiter(int number);
+void					exiter(int number);
 
-
-# endif
+#endif
 
 /*
 for amir :

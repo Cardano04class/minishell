@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 14:59:18 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/15 18:14:50 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	print_env(t_env *env)
 	g_mini.exit_status = 0;
 	return (0);
 }
-
 
 void	ft_env(char **env, t_env **env_lst)
 {
