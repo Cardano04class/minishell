@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:31:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 22:57:09 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,18 @@ int syntax_error(t_list *list)
     if (error.type != NO_ERROR)
     {
         print_error(error);
+        
+        if (error.type == UNCLOSED_QUOTES || error.type == INVALID_POSITION 
+            || error.type == PIPE_AT_START || error.type == MISSING_CONTEXT 
+            || error.type == CONSECUTIVE_SPECIAL)
+        {
+            g_mini.exit_status = 2;
+        }
+        else
+        {
+            g_mini.exit_status = 1;
+        }
+        
         return 1;
     }
     return 0;

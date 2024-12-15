@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/08 22:31:07 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 23:09:10 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ int	validate_and_handle(t_env **lst, char *var_name, char *var_value,
 	if (!is_valid_name(var_name))
 	{
 		perror("Invalid Name");
+		g_mini.exit_status = 1;
 		return (1);
 	}
 	result = handle_existing_node(lst, var_name, var_value, plus_sign);
 	return (result);
 }
+
 
 int	handle_equal_sign(t_env **lst, char *str, int equal_sign, int plus_sign)
 {
@@ -236,7 +238,6 @@ int	already_sorted(t_env *lst)
 	return (0);
 }
 
-
 t_env	*ft_export_node(t_env **env_env_list, char *name, char *value)
 {
 	t_env	*new_node;
@@ -288,18 +289,17 @@ int	handle_no_equal_sign(t_env **env_list, char *str)
 	var_name = ft_strdup(str);
 	if (!is_valid_name(var_name))
 	{
-		printf("export: '%s': not a valid identifier\n", var_name);
-		
+		printf("export: not a valid identifier\n");
+		g_mini.exit_status = 1;
 		return (1);
 	}
 	existing_node = env_exist(env_list, var_name);
 	if (!existing_node && !ft_export_node(env_list, var_name, NULL))
 	{
 		perror("failed adding variable\n");
-		
+		g_mini.exit_status = 1;
 		return (1);
 	}
-	
 	return (0);
 }
 
@@ -319,19 +319,23 @@ int	export(t_env **env_list, char **args)
 {
 	int		i;
 	t_env	*sorted;
+	int		status = 0;
 
 	sorted = NULL;
 	if (args[1] == NULL)
 	{
 		sorted = sort_env(*env_list);
 		print_export(sorted);
+		g_mini.exit_status = 0;
 		return (0);
 	}
 	i = 1;
 	while (args[i])
 	{
-		set_env(env_list, args[i]);
+		if (set_env(env_list, args[i]) != 0)
+			status = 1;
 		i++;
 	}
+	g_mini.exit_status = status;
 	return (0);
 }

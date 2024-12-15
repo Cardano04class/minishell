@@ -98,7 +98,10 @@ void	execute(t_cmd *command, t_env *list_env, t_env *env_list)
 
 
 	if (command->cmd[0] == NULL)
-	 return ;
+	{
+		printf("herere\n");
+		return ;
+	}
 	if (is_builtins(command) == 1)
 	{
 		run_builtins(&env_list, command);

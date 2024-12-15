@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:09:54 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:18:22 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/13 15:21:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (start >= ft_strlen(s))
 		return (ft_strdup(""));
 	str = _malloc(len + 1, 'm');
-	if (!str)
-		return (NULL);
 	while (s[start] != '\0' && l < len)
 	{
 		str[l] = s[start];

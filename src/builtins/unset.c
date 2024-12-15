@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/12 23:27:26 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 23:13:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	remove_variable(char *var_name, t_env **list)
 				*list = current->next;
 			else
 				previous->next = current->next;
+			g_mini.exit_status = 0;
 			return (1);
 		}
 		previous = current;
@@ -43,7 +44,10 @@ int	valid_name(char *name, t_env **list)
 	while (current)
 	{
 		if (ft_strcmp(name, current->key) == 0)
+		{
+			g_mini.exit_status = 0;
 			return (1);
+		}
 		current = current->next;
 	}
 	return (0);
@@ -71,5 +75,6 @@ int	unset(char **args, t_env **env_list)
 			return 1;
 		i++;
 	}
+	g_mini.exit_status = 0;
 	return (0);
 }

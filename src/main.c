@@ -51,7 +51,8 @@ void	prompt(char **env)
 		if (rl == NULL)
 		{
 			printf("exit\n");
-			exit(g_mini.exit_status);
+			g_mini.exit_status = 127;
+			break ;
 		}
 		if (empty_prompt(rl) == 0)
 			continue ;
@@ -75,7 +76,10 @@ int	main(int ac, char **av, char **env)
 {
 	(void)av;
 	if (ac == 1)
+	{
 		prompt(env);
+		return (g_mini.exit_status);
+	}
 	else
 		return (1);
 }

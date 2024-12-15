@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/12 18:32:41 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 23:15:19 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	cd(t_env **env,char **args)
 void	pwd(t_env **env)
 {
 	char	cwd[1024];
+
+	g_mini.exit_status = 0;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		printf("%s\n", cwd);
