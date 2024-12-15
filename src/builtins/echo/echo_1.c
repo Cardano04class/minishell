@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   echo_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/14 22:58:42 by mamir            ###   ########.fr       */
+/*   Created: 2024/12/15 22:54:54 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/15 22:55:17 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,28 @@ int	print_argument(char *arg)
 	return (1);
 }
 
-void	print_arguments_one_at_a_time(char **args, int i)
+void	print_separator(bool n_option, int i, int last_arg)
 {
-	if (args[i])
-	{
-		print_argument(args[i]);
-	}
+	if (i < last_arg - 1 && !n_option)
+		write(1, " ", 1);
 }
 
-int	echo(char **args)
+int	count_arguments(char **args)
 {
-	int		i;
-	bool	n_option;
-	int		last_arg;
+	int	last_arg;
 
-	i = 1;
-	n_option = false;
 	last_arg = 0;
-	if (!args[1])
-	{
-		write(1, "\n", 1);
-		return (0);
-	}
 	while (args[last_arg])
 		last_arg++;
-	while (args[i])
+	return (last_arg);
+}
+
+int	handle_n_option(char **args, int i, bool *n_option)
+{
+	while (args[i] && is_n_option(args[i]))
 	{
-		if (is_n_option(args[i]))
-		{
-			n_option = true;
-			i++;
-			continue ;
-		}
-		print_argument(args[i]);
-		if (i < last_arg - 1 && !n_option)
-			write(1, " ", 1);
+		*n_option = true;
 		i++;
 	}
-	if (!n_option)
-		write(1, "\n", 1);
-	return (0);
+	return (i);
 }

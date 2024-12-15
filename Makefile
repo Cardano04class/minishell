@@ -12,7 +12,8 @@ SRC = ./src/main.c \
 		./src/expand/expand.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env.c \
-		./src/builtins/echo.c \
+		./src/builtins/echo/echo.c \
+		./src/builtins/echo/echo_1.c \
 		./src/builtins/cd/cd.c \
 		./src/builtins/cd/cd_functions.c \
 		./src/builtins/exit/exit.c \

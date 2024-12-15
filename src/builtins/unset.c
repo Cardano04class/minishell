@@ -66,13 +66,13 @@ int	unset(char **args, t_env **env_list)
 		var_name = args[i];
 		if (!env_exist(env_list, var_name))
 		{
-			i++;	
-			continue;
+			i++;
+			continue ;
 		}
 		else if (!valid_name(var_name, env_list))
-			return 1;
+			return (1);
 		else if (!remove_variable(var_name, env_list))
-			return 1;
+			return (1);
 		i++;
 	}
 	g_mini.exit_status = 0;

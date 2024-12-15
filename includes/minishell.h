@@ -141,7 +141,6 @@ typedef struct s_garbage
 extern t_global			g_mini;
 
 /*--------shell---------*/
-void					debug_list(t_list *list);
 void					lexer(char *str, t_list **lst);
 int						syntax_error(t_list *list);
 t_error					create_error(t_error_type type, char *token);
@@ -162,18 +161,26 @@ int						is_last_command(t_cmd *current);
 void					handle_exit_error(char *arg);
 void					handle_too_many_arguments(void);
 void					exit_with_status(int status);
-/*-------------CD_functions----------------*/
+/*-------------CD----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
 							const char *value);
 void					cd_home(char *home);
 void					cd_oldpwd(t_env *oldpwd_env);
 void					cd_path(const char *path);
+/*------------------------------Echo----------------------------*/
+bool					is_n_option(char *str);
+int						print_argument(char *arg);
+void					print_separator(bool n_option, int i, int last_arg);
+int						count_arguments(char **args);
+int						handle_n_option(char **args, int i, bool *n_option);
 /*---------------Export_helpers-----------*/
+void					print_export(t_env *env);
 t_env					*create_env_node(const t_env *current);
 t_env					*sort_env(const t_env *env_list);
 t_env					*env_exist(t_env **env_list, const char *name);
 t_env					*init_export_node(char *name);
+t_env					*env_exist(t_env **env_list, const char *name);
 int						set_node_value(t_env *new_node, char *value);
 int						is_valid_name(char *str);
 int						find_plus(char *str);
@@ -202,7 +209,6 @@ t_env					*ft_env_new(char *key, char *value);
 t_cmd					*ft_cmd_new(char **content);
 t_file					*ft_file_new(char *filename, t_token type,
 							char *delimiter);
-// t_heredoc				*ft_heredoc_new(char *delimiter);
 void					ft_env_clear(t_env **lst);
 t_list					*ft_lstmax(t_list *stack_a);
 t_list					*ft_lstmin(t_list *stack_a);
@@ -211,15 +217,12 @@ void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
 void					ft_file_addback(t_file *new);
-// void					ft_heredoc_addback(t_heredoc *new);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
 void					ft_lstclear(t_list **lst);
 
 int						print_env(t_env *env_lst);
-t_env					*env_exist(t_env **env_list, const char *name);
-void					print_export(t_env *env);
 char					*get_env(t_env *env, const char *name);
 
 char					*heredoc_expand(t_env *env, char *content);
@@ -233,13 +236,8 @@ void					handle_sigint(int signum);
 char					*heredoc_filename(void);
 
 int						capture_exit_status(int status);
-void					handle_exit_builtin(t_cmd *command);
-void					handle_echo(t_cmd *command);
 void					*_malloc(size_t size, char op);
-
 t_env					*set_env_var(t_env *env, char *key, char *value);
-void					exiter(int number);
-
 #endif
 
 /*
