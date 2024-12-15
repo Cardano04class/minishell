@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:36:27 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/13 17:45:13 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/14 09:29:05 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,11 @@ int capture_exit_status(int status)
 {
     if (WIFEXITED(status)) 
     {
-        puts(":1");
         return (WEXITSTATUS(status));
     } 
     else if (WIFSIGNALED(status)) 
     {
-        puts("2");
         return (128 + WTERMSIG(status));
     }
-        puts("3");
     return (1);
 }

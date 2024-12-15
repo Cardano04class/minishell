@@ -45,7 +45,7 @@ void	prompt(char **env)
 		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
 		g_mini.command->next = NULL;
-		printf("| exit_status in main: {%d} |\n", g_mini.exit_status);
+		//printf("| exit_status in main: {%d} |\n", g_mini.exit_status);
 		signal(SIGINT, handle_sigint);
 		rl = readline("minishell$ ");
 		if (rl == NULL)

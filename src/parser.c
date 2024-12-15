@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:15:52 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 16:12:43 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	parser(t_list *lst)
 					ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type, NULL));
 				state = STATE_DEFAULT;
 			}
-			else
+			else if (lst->content != NULL && lst->content[0] != '\0')
 			{
 				tmp_cmd->cmd[index_count] = ft_strdup(lst->content);
 				index_count++;

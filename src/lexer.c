@@ -28,7 +28,7 @@ void	lexer(char *str, t_list **lst)
             if (ft_isspace(str[i]))
             {
                 state = IN_WHITESPACE;
-                separated_by_space = 1;  // Explicitly set when encountering whitespace
+                separated_by_space = 1;
             }
             else if (is_special_char(str[i]))
                 state = IN_SPECIAL;

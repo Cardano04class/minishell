@@ -129,8 +129,27 @@ int is_builtins(t_cmd *command)
     return (0);
 }
 
+void if_executable(char *str)
+{
+    if (access(str, X_OK) != 0) 
+	{
+        write(2, str, ft_strlen(str));
+        write(2, ": Permission denied\n", 20);
+        g_mini.exit_status = 126;
+        exit(g_mini.exit_status);
+    }
+}
+
 int	execute_without_path(t_cmd *command)
 {
+	if (access(command->cmd[0], F_OK) != 0) 
+	{
+        write(2, command->cmd[0], ft_strlen(command->cmd[0]));
+        write(2, ": No such file or directory\n", 28);
+        g_mini.exit_status = 127;
+        exit(g_mini.exit_status);
+    }
+	if_executable(command->cmd[0]);
 	ft_dashcase("_", g_mini.env);
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
 	perror("minishell$");
@@ -152,9 +171,9 @@ int	execute_with_path(t_cmd *command)
 		g_mini.exit_status = 127;
 		exit (g_mini.exit_status);
 	}
+	if_executable(fullcmd);
 	env = convert_env(g_mini.env);
 	ft_dashcase("_", g_mini.env);
-
 	execve(fullcmd, command->cmd, env);
 	perror("minishell$");
 	g_mini.exit_status = 2;
@@ -179,7 +198,7 @@ int	run_command(t_cmd *command)
 	}
 	waitpid(pid, &status, 0);
 	g_mini.exit_status = capture_exit_status(status);
-	return (0);
+	return (g_mini.exit_status);
 }
 
 int	execute_command(t_cmd *command)
@@ -202,7 +221,7 @@ int	first_child(pid_t *pid, t_cmd *command, int *fd)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		execute_command(command);
-		exit(1);
+		exit(g_mini.exit_status);
 	}
 	return (0);
 }
@@ -217,7 +236,7 @@ int	second_child(pid_t *pid, t_cmd *command, int *fd)
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		execution(command);
-		exit(1);
+		exit(g_mini.exit_status);
 	}
 	return (0);
 }
@@ -243,6 +262,17 @@ int	execute_pipe(t_cmd *command)
 
 int	execution(t_cmd *command)
 {
+	struct stat path_stat;
+
+	printf("command->cmd[0] : %s\n", command->cmd[0]);
+    if (stat(command->cmd[0], &path_stat) == 0 
+		&& S_ISDIR(path_stat.st_mode)) 
+	{
+        write(2, command->cmd[0], ft_strlen(command->cmd[0]));
+        write(2, ": Is a directory\n", 17);
+        g_mini.exit_status = 126;
+        return (1);
+    }
 	ft_dashcase("_", g_mini.env);
 	if (command->next)
 		execute_pipe(command);
