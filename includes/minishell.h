@@ -143,8 +143,6 @@ extern t_global			g_mini;
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 int						syntax_error(t_list *list);
-t_error					create_error(t_error_type type, char *token);
-void					print_error(t_error error);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
 int						run_builtins(t_env **env, t_cmd *command);
@@ -200,7 +198,10 @@ int						handle_existing_node(t_env **env_list, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
 void					expand(t_env *env, t_list **list);
-
+/*--------------Syntax_error-----------------*/
+int						is_special(t_list *token);
+t_error					create_error(t_error_type type, char *token);
+t_error					check_quotes(char *str);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
 t_list					*ft_lstnew_2(char *content, t_token type,
