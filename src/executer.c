@@ -269,7 +269,7 @@ int	execution(t_cmd *command)
         g_mini.exit_status = 126;
         return (1);
     }
-	ft_dashcase("_", g_mini.env);
+		ft_dashcase("_", g_mini.env);
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;

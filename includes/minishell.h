@@ -156,6 +156,12 @@ int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
 void					ft_env(char **env, t_env **env_lst);
 void    				ft_exit(t_cmd *data);
+/*-------------Exit-----------*/
+int						is_valid_numeric_arg(const char *arg);
+int						is_last_command(t_cmd *current);
+void					handle_exit_error(char *arg);
+void					handle_too_many_arguments(void);
+void					exit_with_status(int status);
 /*-------------CD_functions----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
