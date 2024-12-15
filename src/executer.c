@@ -264,7 +264,7 @@ int	execution(t_cmd *command)
 {
 	struct stat path_stat;
 
-	printf("command->cmd[0] : %s\n", command->cmd[0]);
+	//printf("command->cmd[0] : %s\n", command->cmd[0]);
     if (stat(command->cmd[0], &path_stat) == 0 
 		&& S_ISDIR(path_stat.st_mode)) 
 	{

@@ -24,53 +24,114 @@ char	*heredoc_filename(void)
 	close(fd);
 	return (file_name);
 }
-char *expand_heredoc_variable(t_env *env, const char *var_name)
+char	*find_var_value(t_env *env, const char *var_name)
 {
-    t_env *current = env;
+	t_env	*current;
+	current = env;
 
-    while (current)
-    {
-        if (strcmp(current->key, var_name) == 0)
-        {
-            printf("test %s\n", current->value);
-            return current->value;  // Return the value of the variable if found
-        }
-        current = current->next;
-    }
-
-    return NULL;  // Return NULL if the variable is not found
+	while (current)
+	{
+		if (ft_strcmp(current->key, var_name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return ("");
 }
 
-char *heredoc_expand(t_env *env, char *content)
+char *expand_in_heredoc(t_env *env, char *content)
 {
-    char expanded_content[1024] = {0};
-    int i = 0; 
-	int	j = 0;
+    int i = 0, 
+	expanded_len = 0;
 
-    while (content[i] != '\0')
+    while (content[i])
     {
         if (content[i] == '$')
         {
-            i++; 
+            i++;
             if (content[i] == '\0')
+            {
+                expanded_len++;
+                continue;
+            }
+            if (content[i] == '?')
+            {
+                char *exit_status = ft_itoa(g_mini.exit_status);
+                if (exit_status)
+                {
+                    expanded_len += strlen(exit_status);
+                }
+                i++;
+                continue;
+            }
+            int name_len = 0;
+            while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
+            {
+                name_len++;
+                i++;
+            }
+            if (name_len > 0)
+            {
+                char *var_name = _malloc(name_len + 1, 'm');
+                ft_strncpy(var_name, &content[i - name_len], name_len);
+                var_name[name_len] = '\0';
+
+                char *var_value = find_var_value(env, var_name);
+                if (var_value)
+                {
+                    expanded_len += ft_strlen(var_value);
+                }
+            }
+        }
+        else
+        {
+            expanded_len++;
+            i++;
+        }
+    }
+    char *expanded_content = _malloc(expanded_len + 1, 'm');
+    i = 0;
+    int j = 0;
+
+    while (content[i])
+    {
+        if (content[i] == '$')
+        {
+            i++;
+            if (content[i] == '\0' || content[i] == '"' || content[i] == '\'') 
             {
                 expanded_content[j++] = '$';
                 continue;
             }
-
-            char var_name[256] = {0};
-            int name_idx = 0;
-
-            while (content[i] != '\0' && (ft_isalnum(content[i]) || content[i] == '_'))
-                var_name[name_idx++] = content[i++];
-            var_name[name_idx] = '\0';
-
-            char *var_value = expand_heredoc_variable(env, var_name);
-            if (var_value)
+            if (content[i] == '?')
             {
-                int k = 0;
-                while (var_value[k])
-                    expanded_content[j++] = var_value[k++];
+                char *exit_status = ft_itoa(g_mini.exit_status);
+                if (exit_status)
+                {
+                    int status_len = ft_strlen(exit_status);
+                    ft_strcpy(&expanded_content[j], exit_status);
+                    j += status_len;
+                }
+                i++;
+                continue;
+            }
+            int name_len = 0;
+            while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
+            {
+                name_len++;
+                i++;
+            }
+            if (name_len > 0)
+            {
+                char *var_name = _malloc(name_len + 1, 'm');
+                ft_strncpy(var_name, &content[i - name_len], name_len);
+                var_name[name_len] = '\0';
+                char *var_value = expand_variable(env, var_name);
+                if (var_value)
+                {
+                    int value_len = ft_strlen(var_value);
+                    ft_strcpy(&expanded_content[j], var_value);
+                    j += value_len;
+                }
             }
         }
         else
@@ -78,9 +139,8 @@ char *heredoc_expand(t_env *env, char *content)
             expanded_content[j++] = content[i++];
         }
     }
-
     expanded_content[j] = '\0';
-    return strdup(expanded_content);
+    return expanded_content;
 }
 
 void run_heredoc(t_cmd	*command)
@@ -116,11 +176,9 @@ void run_heredoc(t_cmd	*command)
 						{
 							break ;
 						}
-					//int	i = 0;
 					if (ft_strchr(line, '$') != NULL)
 					{
-						line = heredoc_expand(g_mini.env, line);
-						printf("|line : %s |\n", line);
+						line = expand_in_heredoc(g_mini.env, line);
 						write(fd, line, ft_strlen(line));
 						write(fd, "\n", 1);
 					}
@@ -139,8 +197,3 @@ void run_heredoc(t_cmd	*command)
 	waitpid(child_pid, &status, 0);
 	g_mini.exit_status = capture_exit_status(status);
 }
-
-/*
-		if varible not found, print new line. Example: ($dd).
-
- */
