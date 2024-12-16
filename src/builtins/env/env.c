@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 23:21:16 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 23:23:29 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ t_env	*create_env(t_env **env_list)
 	ft_env_addback(env_list,ft_env_new("OLDPWD", ft_strdup("")));
 	ft_env_addback(env_list,ft_env_new("PATH", ft_strdup(path)));
 	ft_env_addback(env_list,ft_env_new("SHLVL", ft_strdup("1")));
-	ft_env_addback(env_list,ft_env_new("_", underscore));
 	ft_env_addback(env_list,ft_env_new("_", underscore));
 	
 	return (*env_list);
