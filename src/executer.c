@@ -20,7 +20,7 @@ t_env	*ft_dashcase(char *name, t_env *env)
 
 	while (cmd_argv[i + 1] != NULL)
 		i++;
-	while (env != NULL)
+	while (env)
 	{
 		if (ft_strcmp(env->key, name) == 0)
 		{

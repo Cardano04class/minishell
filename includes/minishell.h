@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/16 10:31:30 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -152,7 +164,7 @@ void					pwd(t_env **env);
 int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
 void					ft_env(char **env, t_env **env_lst);
-void    				ft_exit(t_cmd *data);
+void					ft_exit(t_cmd *data);
 /*-------------Exit-----------*/
 int						is_valid_numeric_arg(const char *arg);
 int						is_last_command(t_cmd *current);
@@ -240,10 +252,3 @@ int						capture_exit_status(int status);
 void					*_malloc(size_t size, char op);
 t_env					*set_env_var(t_env *env, char *key, char *value);
 #endif
-
-/*
-for amir :
-
-rah zedt, char *heredoc_expand(t_env *env, char *content), fost mn expand.c;
-ou f lheader file.
-*/

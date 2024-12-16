@@ -56,10 +56,10 @@ char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 
-char    *ft_strcat(char *dst, const char *src);
-int	    ft_strcmp(const char *s1, const char *s2);
+char	*ft_strcat(char *dst, const char *src);
+int		ft_strcmp(const char *s1, const char *s2);
 char	**ft_ssplit(char const *s);
 char	*ft_strcpy(char *dst, const char *src);
-void    *_malloc(size_t size, char op);
-char    *ft_strndup(const char *src, size_t n);
+void	*_malloc(size_t size, char op);
+char	*ft_strndup(const char *src, size_t n);
 #endif

@@ -14,10 +14,10 @@
 
 void	ft_lstdisplay(t_list *stack)
 {
-	printf ("lst size : %d\n\n", ft_lstsize(stack));
+	printf("lst size : %d\n\n", ft_lstsize(stack));
 	while (stack != NULL)
 	{
-		printf ("content : %s\n", stack->content);
+		printf("content : %s\n", stack->content);
 		if (stack->prev != NULL)
 			printf("prev content : %s\n", stack->prev->content);
 		if (stack->type == 0)

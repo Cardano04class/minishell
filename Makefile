@@ -41,7 +41,6 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_cmd_new.c \
 		./utils/linked_list/ft_file_new.c \
 		./utils/libft/ft_strdup.c \
-		./utils/libft/ft_strndup.c \
 		./utils/libft/ft_strlcat.c \
 		./utils/libft/ft_strlcpy.c \
 		./utils/libft/ft_split.c \
@@ -71,7 +70,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
