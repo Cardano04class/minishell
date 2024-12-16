@@ -12,6 +12,7 @@ SRC = ./src/main.c \
 		./src/exit_handler.c \
 		./src/builtins/builtins.c\
 		./src/builtins/env/env.c \
+		./src/builtins/env/env_1.c \
 		./src/builtins/echo/echo.c \
 		./src/builtins/echo/echo_1.c \
 		./src/builtins/cd/cd.c \

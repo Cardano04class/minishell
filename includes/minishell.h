@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 23:26:57 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 23:35:50 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void					pwd(t_env **env);
 int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
 void					ft_env(char **env, t_env **env_lst);
+t_env	*create_env(t_env **env_list);
 void					ft_exit(t_cmd *data);
 /*-------------Exit-----------*/
 int						is_valid_numeric_arg(const char *arg);

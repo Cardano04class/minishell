@@ -33,6 +33,7 @@ t_env	*ft_dashcase(char *name)
 			env = env->next;
 		}
 	}
+	return NULL;
 }
 
 char	*find_path(char *cmd, t_env *env)
