@@ -2,16 +2,16 @@ NAME = minishell
 
 SRC = ./src/main.c \
 		./src/lexer.c \
-		./src/parser.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
-		./src/executer.c \
+		./src/expand/expand.c \
+		./src/parser.c \
 		./src/run_heredoc.c \
+		./src/executer.c \
 		./src/signal_handler.c \
 		./src/exit_handler.c \
-		./src/expand/expand.c \
 		./src/builtins/builtins.c\
-		./src/builtins/env.c \
+		./src/builtins/env/env.c \
 		./src/builtins/echo/echo.c \
 		./src/builtins/echo/echo_1.c \
 		./src/builtins/cd/cd.c \
@@ -23,7 +23,7 @@ SRC = ./src/main.c \
 		./src/builtins/export/export_2.c \
 		./src/builtins/export/export_3.c \
 		./src/builtins/unset.c \
-		./utils/linked_list/garbage.c\
+		./utils/garbage.c\
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
@@ -43,6 +43,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_strdup.c \
 		./utils/libft/ft_strlcat.c \
 		./utils/libft/ft_strlcpy.c \
+		./utils/libft/ft_strncpy.c \
 		./utils/libft/ft_split.c \
 		./utils/libft/ft_strncmp.c \
 		./utils/libft/ft_strcmp.c \

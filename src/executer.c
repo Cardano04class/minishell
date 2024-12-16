@@ -13,22 +13,23 @@ char	*ft_getenv(char *name, t_env *env)
 	}
 	return (NULL);
 }
-t_env	*ft_dashcase(char *name, t_env *env)
+void ft_dashcase(char *name, t_env *env)
 {
 	char **cmd_argv = g_mini.command->cmd;
 	int i = 0;
 
-	while (cmd_argv[i + 1] != NULL)
+	while (cmd_argv[i] && cmd_argv[i + 1] != NULL) 
+	{
 		i++;
+	}
 	while (env)
 	{
 		if (ft_strcmp(env->key, name) == 0)
 		{
-			env->value = ft_strdup(cmd_argv[i]);
+			env->value = ft_strdup(cmd_argv[i]);		
 		}
 		env = env->next;
 	}
-	return (NULL);
 }
 
 char	*find_path(char *cmd, t_env *env)
@@ -109,7 +110,7 @@ bool	set_redirections(t_file *file)
 
 int is_builtins(t_cmd *command)
 {
-    if (strcmp("echo", command->cmd[0]) == 0)
+ 	if (strcmp("echo", command->cmd[0]) == 0)
         return (1);
     else if (strcmp("export", command->cmd[0]) == 0)
         return (1);
@@ -269,7 +270,7 @@ int	execution(t_cmd *command)
         g_mini.exit_status = 126;
         return (1);
     }
-		ft_dashcase("_", g_mini.env);
+	ft_dashcase("_", g_mini.env);
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 10:31:30 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 17:16:58 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_error
 }						t_error;
 typedef struct s_global
 {
+	char				**default_env;
 	t_cmd				*command;
 	int					sig_flag;
 	int					exit_flag;
@@ -151,7 +152,6 @@ typedef struct s_garbage
 }						t_garbage;
 
 extern t_global			g_mini;
-
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 int						syntax_error(t_list *list);

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 10:22:36 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 23:21:16 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,39 @@ t_env	*set_env_var(t_env *env, char *key, char *value)
 
 int	print_env(t_env *env)
 {
-	env = set_env_var(env, "_", "/usr/bin/env");
-	while (env)
+	t_env *current;
+
+	current = env;
+	while (current)
 	{
-		if (env->value && *env->value)
-			printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		if (g_mini.default_env == NULL && (ft_strcmp(current->key, "PATH") == 0))
+		{
+			current = current->next;
+			continue;
+		}
+		if (current->value && *current->value)
+				printf("%s=%s\n", current->key, current->value);
+		current = current->next;
 	}
 	g_mini.exit_status = 0;
 	return (0);
+}
+
+t_env	*create_env(t_env **env_list)
+{
+	char	*path;
+	char	*underscore;
+
+	path = "/home/mamir/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin";
+	underscore = "/usr/bin/env";
+	ft_env_addback(env_list,ft_env_new("PWD", getcwd(NULL, 0)));
+	ft_env_addback(env_list,ft_env_new("OLDPWD", ft_strdup("")));
+	ft_env_addback(env_list,ft_env_new("PATH", ft_strdup(path)));
+	ft_env_addback(env_list,ft_env_new("SHLVL", ft_strdup("1")));
+	ft_env_addback(env_list,ft_env_new("_", underscore));
+	ft_env_addback(env_list,ft_env_new("_", underscore));
+	
+	return (*env_list);
 }
 
 void	ft_env(char **env, t_env **env_lst)
@@ -76,17 +100,22 @@ void	ft_env(char **env, t_env **env_lst)
 	char	*equal_sign;
 
 	i = 0;
-	while (env[i])
+	if (env != NULL && *env != NULL)
 	{
-		equal_sign = ft_strchr(env[i], '=');
-		if (equal_sign)
+		while (env[i])
 		{
-			*equal_sign = '\0';
-			node = ft_env_new(env[i], equal_sign + 1);
-			*equal_sign = '=';
-			if (node)
-				ft_env_addback(env_lst, node);
+			equal_sign = ft_strchr(env[i], '=');
+			if (equal_sign)
+			{
+				*equal_sign = '\0';
+				node = ft_env_new(env[i], equal_sign + 1);
+				*equal_sign = '=';
+				if (node)
+					ft_env_addback(env_lst, node);
+			}
+			i++;
 		}
-		i++;
 	}
+	else
+		create_env(env_lst);
 }
