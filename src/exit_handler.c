@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-int capture_exit_status(int status) 
+int	capture_exit_status(int status)
 {
-    if (WIFEXITED(status)) 
-    {
-        return (WEXITSTATUS(status));
-    } 
-    else if (WIFSIGNALED(status)) 
-    {
-        return (128 + WTERMSIG(status));
-    }
-    return (1);
+	if (WIFEXITED(status))
+	{
+		return (WEXITSTATUS(status));
+	}
+	else if (WIFSIGNALED(status))
+	{
+		return (128 + WTERMSIG(status));
+	}
+	return (1);
 }
