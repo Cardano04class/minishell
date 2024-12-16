@@ -24,6 +24,8 @@ char	*heredoc_filename(void)
 	close(fd);
 	return (file_name);
 }
+//-----------------------------------------------------------------------------------------------//
+
 char	*find_var_value(t_env *env, const char *var_name)
 {
 	t_env	*current;
@@ -37,50 +39,79 @@ char	*find_var_value(t_env *env, const char *var_name)
 	}
 	return ("");
 }
-
-char *expand_in_heredoc(t_env *env, char *content)
+int char_is_null(char i_content, int *expanded_len)
 {
-    int i = 0, 
-	expanded_len = 0;
+    if (i_content == '\0')
+        return (*expanded_len++);
+    return(0);
+}
+int char_is_exit_holder(char i_content, int *expanded_len)
+{
+    char *exit_status;
 
-    while (content[i])
+    if (i_content == '?')
+    {
+        exit_status = ft_itoa(g_mini.exit_status);
+        if (exit_status != NULL)
+            *expanded_len += strlen(exit_status);
+        return (1);
+    }
+    return (0);
+}
+
+int    get_var_name_length(char *content, int *i)
+{
+    int name_len;
+
+    name_len = 0;
+    while (content[*i] && (ft_isalnum(content[*i]) || content[*i] == '_'))
+    {
+        name_len++;
+        *i = *i + 1;
+    }
+    return (name_len);  
+}
+int    get_var_value_length(char *content, int name_len, int i)
+{
+    char *var_name;
+    char *var_value;
+    int  expanded_len;
+
+    expanded_len = 0;
+    var_name = _malloc(name_len + 1, 'm');
+    ft_strncpy(var_name, &content[i - name_len], name_len);
+    var_name[name_len] = '\0';
+    var_value = find_var_value(g_mini.env, var_name);
+    if (var_value != NULL)
+        expanded_len += ft_strlen(var_value);
+    return (expanded_len);
+}
+
+int    calculate_var_expansion_length(char *content)
+{
+    int i; 
+	int expanded_len;
+    //char *var_name;
+   // char *var_value;
+    int name_len;
+
+    i = 0;
+    expanded_len = 0;
+    while (content[i] != '\0')
     {
         if (content[i] == '$')
         {
             i++;
-            if (content[i] == '\0')
-            {
-                expanded_len++;
+            if (char_is_null(content[i], &expanded_len))
                 continue;
-            }
-            if (content[i] == '?')
+            if (char_is_exit_holder(content[i], &expanded_len))
             {
-                char *exit_status = ft_itoa(g_mini.exit_status);
-                if (exit_status)
-                {
-                    expanded_len += strlen(exit_status);
-                }
                 i++;
                 continue;
             }
-            int name_len = 0;
-            while (content[i] && (ft_isalnum(content[i]) || content[i] == '_'))
-            {
-                name_len++;
-                i++;
-            }
+            name_len = get_var_name_length(content, &i);
             if (name_len > 0)
-            {
-                char *var_name = _malloc(name_len + 1, 'm');
-                ft_strncpy(var_name, &content[i - name_len], name_len);
-                var_name[name_len] = '\0';
-
-                char *var_value = find_var_value(env, var_name);
-                if (var_value)
-                {
-                    expanded_len += ft_strlen(var_value);
-                }
-            }
+                expanded_len +=  get_var_value_length(content, name_len, i);
         }
         else
         {
@@ -88,16 +119,23 @@ char *expand_in_heredoc(t_env *env, char *content)
             i++;
         }
     }
-    char *expanded_content = _malloc(expanded_len + 1, 'm');
+    return (expanded_len);
+}
+char    *copy_expanded_content(char *content, int expanded_len)
+{
+    int i;
+    int j;
+    char *expanded_content;
+    
     i = 0;
-    int j = 0;
-
-    while (content[i])
+    j = 0;
+    expanded_content = _malloc(expanded_len + 1, 'm');
+    while (content[i] != '\0')
     {
         if (content[i] == '$')
         {
             i++;
-            if (content[i] == '\0' || content[i] == '"' || content[i] == '\'') 
+            if (content[i] == '\0') 
             {
                 expanded_content[j++] = '$';
                 continue;
@@ -125,7 +163,7 @@ char *expand_in_heredoc(t_env *env, char *content)
                 char *var_name = _malloc(name_len + 1, 'm');
                 ft_strncpy(var_name, &content[i - name_len], name_len);
                 var_name[name_len] = '\0';
-                char *var_value = expand_variable(env, var_name);
+                char *var_value = expand_variable(g_mini.env, var_name);
                 if (var_value)
                 {
                     int value_len = ft_strlen(var_value);
@@ -140,15 +178,58 @@ char *expand_in_heredoc(t_env *env, char *content)
         }
     }
     expanded_content[j] = '\0';
-    return expanded_content;
+    return (expanded_content);
 }
+
+char *expand_in_heredoc(char *content)
+{
+	int expanded_len;
+    char *expanded_content;
+
+    expanded_len = calculate_var_expansion_length(content);
+    expanded_content = copy_expanded_content(content, expanded_len);
+    return (expanded_content);
+}
+
+//-----------------------------------------------------------------------------------------------//
+
+static void write_line_fd(char *line, int fd)
+{
+    write(fd, line, ft_strlen(line));
+    write(fd, "\n", 1);
+}
+static int  heredoc_line_handler(t_cmd *command, int fd)
+{
+    char	*line;
+
+    while (1)
+    {
+        signal_handler(IN_HEREDOC);
+        line = readline(">");
+        if (line == NULL)
+        {
+            printf("warning : delimited by end-of-file (wanted `%s')\n", command->files->delimiter);
+            break ;
+        }
+        if (!ft_strcmp(command->files->delimiter, line))
+            break;
+        if (ft_strchr(line, '$') != NULL)
+        {
+            line = expand_in_heredoc(line);
+            write_line_fd(line, fd);
+        }
+        else
+            write_line_fd(line, fd);
+    }
+    return (fd);
+}
+//-----------------------------------------------------------------------------------------------//
 
 void run_heredoc(t_cmd	*command)
 {
-	char	*line;
-	pid_t	child_pid;
-	int		status;
 	int		fd;
+	int		status;
+	pid_t	child_pid;
 
 	fd = 0;
 	child_pid = fork();
@@ -161,33 +242,7 @@ void run_heredoc(t_cmd	*command)
 				fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
 				if (fd == -1)
 					exit(1);
-				while (1)
-				{
-					signal_handler(IN_HEREDOC);
-					line = readline(">");
-					if (line == NULL)
-					{
-						printf("warning : delimited by end-of-file (wanted `%s')\n", command->files->delimiter);
-						break ;
-					}
-					if (!ft_strncmp(command->files->delimiter, line, 
-						ft_strlen(command->files->delimiter)) &&
-						(ft_strlen(command->files->delimiter) == ft_strlen(line)))
-						{
-							break ;
-						}
-					if (ft_strchr(line, '$') != NULL)
-					{
-						line = expand_in_heredoc(g_mini.env, line);
-						write(fd, line, ft_strlen(line));
-						write(fd, "\n", 1);
-					}
-					else
-					{
-						write(fd, line, ft_strlen(line));
-						write(fd, "\n", 1);
-					}
-				}
+                heredoc_line_handler(command, fd);
 			}
 			command->files = command->files->next;
 		}
@@ -197,3 +252,7 @@ void run_heredoc(t_cmd	*command)
 	waitpid(child_pid, &status, 0);
 	g_mini.exit_status = capture_exit_status(status);
 }
+
+
+
+

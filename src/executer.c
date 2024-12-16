@@ -13,22 +13,25 @@ char	*ft_getenv(char *name, t_env *env)
 	}
 	return (NULL);
 }
-t_env	*ft_dashcase(char *name, t_env *env)
+t_env	*ft_dashcase(char *name)
 {
-	char **cmd_argv = g_mini.command->cmd;
-	// printf("cmd : %s\n", g_mini.command->cmd[0]);
-	int i = 0;
+	int		i;
+	t_env	*env;
+	char	**cmd_argv;
 
+	i = 0;
+	env = g_mini.env;
+	cmd_argv = g_mini.command->cmd;
 	while (cmd_argv[i + 1] != NULL)
 		i++;
-	while (env != NULL)
+	if (i > 0)
 	{
-		if (ft_strncmp(env->key, name, ft_strlen(env->key + 1)) == 0)
+		while (env != NULL)
 		{
-			env->value = ft_strdup(cmd_argv[i]);
-			// printf("str : %s\n", env->value);
+			if (ft_strcmp(env->key, name) == 0)
+				env->value = ft_strdup(cmd_argv[i]);
+			env = env->next;
 		}
-		env = env->next;
 	}
 	return (NULL);
 }
@@ -150,7 +153,7 @@ int	execute_without_path(t_cmd *command)
         exit(g_mini.exit_status);
     }
 	if_executable(command->cmd[0]);
-	ft_dashcase("_", g_mini.env);
+	ft_dashcase("_");
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
 	perror("minishell$");
 	exit(1);
@@ -173,7 +176,7 @@ int	execute_with_path(t_cmd *command)
 	}
 	if_executable(fullcmd);
 	env = convert_env(g_mini.env);
-	ft_dashcase("_", g_mini.env);
+	ft_dashcase("_");
 	execve(fullcmd, command->cmd, env);
 	perror("minishell$");
 	g_mini.exit_status = 2;
@@ -273,7 +276,7 @@ int	execution(t_cmd *command)
         g_mini.exit_status = 126;
         return (1);
     }
-	ft_dashcase("_", g_mini.env);
+	ft_dashcase("_");
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;

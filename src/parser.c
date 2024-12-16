@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/14 16:12:43 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:20:10 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ int	cmd_argument_size(t_list *lst)
 	}
 	return (count);
 }
+// void	handle_pipe_token(t_list **lst, t_cmd	**tmp_cmd, int	*cmd_arg_size, int *index_count)
+// {
+// 	ft_cmd_addback(tmp_cmd, ft_cmd_new(NULL));
+// 	*tmp_cmd = (*tmp_cmd)->next;
+// 	*lst = (*lst)->next;
+// 	cmd_arg_size = cmd_argument_size(*lst);
+// 	*lst = (*lst)->prev;
+// 	index_count = 0;
+// 	(*tmp_cmd)->cmd = _malloc(sizeof(char *) * (*cmd_arg_size + 1), 'm');
+// 	(*tmp_cmd)->cmd[*cmd_arg_size] = NULL;
+// }
 
 void	parser(t_list *lst)
 {
@@ -37,6 +48,7 @@ void	parser(t_list *lst)
 	index_count = 0;
 	state = STATE_DEFAULT;
 	cmd_arg_size = cmd_argument_size(lst);
+	
 	g_mini.command->cmd = _malloc(sizeof(char *) * (cmd_arg_size + 1), 'm');
 	g_mini.command->cmd[cmd_arg_size] = NULL;
 	tmp_cmd = g_mini.command;
@@ -66,6 +78,7 @@ void	parser(t_list *lst)
 			state = STATE_REDIRECTION;
 		else if (lst->type == PIPE)
 		{
+			//handle_pipe_token(&lst, &tmp_cmd, &cmd_arg_size, &index_count);
 			ft_cmd_addback(&tmp_cmd, ft_cmd_new(NULL));
 			tmp_cmd = tmp_cmd->next;
 			lst = lst->next;
