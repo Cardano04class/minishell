@@ -13,22 +13,25 @@ char	*ft_getenv(char *name, t_env *env)
 	}
 	return (NULL);
 }
-void ft_dashcase(char *name, t_env *env)
+t_env	*ft_dashcase(char *name)
 {
-	char **cmd_argv = g_mini.command->cmd;
-	int i = 0;
+	int		i;
+	t_env	*env;
+	char	**cmd_argv;
 
-	while (cmd_argv[i] && cmd_argv[i + 1] != NULL) 
-	{
+	i = 0;
+	env = g_mini.env;
+	cmd_argv = g_mini.command->cmd;
+	while (cmd_argv[i + 1] != NULL)
 		i++;
-	}
-	while (env)
+	if (i > 0)
 	{
-		if (ft_strcmp(env->key, name) == 0)
+		while (env != NULL)
 		{
-			env->value = ft_strdup(cmd_argv[i]);		
+			if (ft_strcmp(env->key, name) == 0)
+				env->value = ft_strdup(cmd_argv[i]);
+			env = env->next;
 		}
-		env = env->next;
 	}
 }
 
@@ -148,7 +151,7 @@ int	execute_without_path(t_cmd *command)
         exit(g_mini.exit_status);
     }
 	if_executable(command->cmd[0]);
-	ft_dashcase("_", g_mini.env);
+	ft_dashcase("_");
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
 	perror("minishell$");
 	exit(1);
@@ -171,7 +174,7 @@ int	execute_with_path(t_cmd *command)
 	}
 	if_executable(fullcmd);
 	env = convert_env(g_mini.env);
-	ft_dashcase("_", g_mini.env);
+	ft_dashcase("_");
 	execve(fullcmd, command->cmd, env);
 	perror("minishell$");
 	g_mini.exit_status = 2;
@@ -261,6 +264,7 @@ int	execution(t_cmd *command)
 {
 	struct stat path_stat;
 
+	//printf("command->cmd[0] : %s\n", command->cmd[0]);
     if (stat(command->cmd[0], &path_stat) == 0 
 		&& S_ISDIR(path_stat.st_mode)) 
 	{
@@ -270,7 +274,7 @@ int	execution(t_cmd *command)
         g_mini.exit_status = 126;
         return (1);
     }
-	ft_dashcase("_", g_mini.env);
+	ft_dashcase("_");
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;

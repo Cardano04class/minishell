@@ -118,3 +118,5 @@ void	lexer(char *str, t_list **lst)
         i++;
     }
 }
+
+
