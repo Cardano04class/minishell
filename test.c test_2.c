@@ -2,31 +2,23 @@ NAME = minishell
 
 SRC = ./src/main.c \
 		./src/lexer.c \
+		./src/parser.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
-		./src/expand/expand.c \
-		./src/expand/merge_export.c \
-		./src/expand/remove_quotes.c \
-		./src/parser.c \
-		./src/run_heredoc.c \
 		./src/executer.c \
+		./src/run_heredoc.c \
 		./src/signal_handler.c \
 		./src/exit_handler.c \
+		./src/expand/expand.c \
 		./src/builtins/builtins.c\
-		./src/builtins/env/env.c \
-		./src/builtins/env/env_1.c \
-		./src/builtins/echo/echo.c \
-		./src/builtins/echo/echo_1.c \
-		./src/builtins/cd/cd.c \
-		./src/builtins/cd/cd_functions.c \
-		./src/builtins/exit/exit.c \
-		./src/builtins/exit/exit_1.c \
+		./src/builtins/env.c \
+		./src/builtins/echo.c \
+		./src/builtins/cd.c \
+		./src/builtins/cd_functions.c \
+		./src/builtins/exit.c \
 		./src/builtins/export/export.c \
-		./src/builtins/export/export_1.c \
-		./src/builtins/export/export_2.c \
-		./src/builtins/export/export_3.c \
 		./src/builtins/unset.c \
-		./utils/garbage.c\
+		./utils/linked_list/garbage.c\
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \
 		./utils/linked_list/ft_cmd_addback.c \
@@ -44,9 +36,9 @@ SRC = ./src/main.c \
 		./utils/linked_list/ft_cmd_new.c \
 		./utils/linked_list/ft_file_new.c \
 		./utils/libft/ft_strdup.c \
+		./utils/libft/ft_strndup.c \
 		./utils/libft/ft_strlcat.c \
 		./utils/libft/ft_strlcpy.c \
-		./utils/libft/ft_strncpy.c \
 		./utils/libft/ft_split.c \
 		./utils/libft/ft_strncmp.c \
 		./utils/libft/ft_strcmp.c \
@@ -74,7 +66,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
@@ -95,6 +87,6 @@ fclean : clean
 re : fclean all
 
 sup:
-	valgrind --suppressions=readline.supp --show-leak-kinds=reachable --track-fds=yes ./minishell
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
 
 .SECONDARY: $(OBJ)
