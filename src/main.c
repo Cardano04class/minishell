@@ -61,8 +61,6 @@ void	prompt(char **env)
 			expand(env_list, &list);
 			parser(list);
 			run_heredoc(g_mini.command);
-			// debug_list(list);
-			// printf("test4  %s\n", g_mini.command->cmd[0]);
 			if (g_mini.command->cmd[0] != NULL)
 				execution(g_mini.command);
 		}

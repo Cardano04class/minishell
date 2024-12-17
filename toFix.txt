@@ -10,10 +10,22 @@
 
 -Norminette.
 
-- I need to fix this case :
-             |   minishell$ "ls"|wc -l									|
-             |   ls|wc: command not found								|
-             |   minishell$ bash										|
-             |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ "ls"|wc -l		|	
-             |   12														|
-             |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ 					|
+- I need to fix these cases :
+             |   minishell$ "ls"|wc -l									
+             |   ls|wc: command not found								
+             |   minishell$ bash										
+             |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ "ls"|wc -l	
+             |   12														
+             |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ 
+
+             |   minishell$ expr 8 + 8
+             |   16
+             |   minishell$ expr $? + $?
+             |   0
+             |   minishell$ expr $? + $?
+             |   2
+             |   minishell$ expr $? + $?
+             |   0
+             |   minishell$ echo $?
+             |   1
+					

@@ -48,7 +48,6 @@ char	*find_path(char *cmd, t_env *env)
 		return (cmd);
 	if (cmd == NULL)
 		return (NULL);
-	// printf("cmd : %s\n", cmd);
 	cmd = ft_strjoin("/", cmd);
 	paths = ft_split(path, ':');
 	if (paths == NULL)
