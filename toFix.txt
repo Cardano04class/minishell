@@ -9,3 +9,11 @@
         when writing in the prompt it return a white spaces to the t_lt list, and nedds to be freed instead of returning a white space to parser .
 
 -Norminette.
+
+- I need to fix this case :
+             |   minishell$ "ls"|wc -l									|
+             |   ls|wc: command not found								|
+             |   minishell$ bash										|
+             |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ "ls"|wc -l		|	
+             |   12														|
+             |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ 					|

@@ -48,7 +48,7 @@ char	*find_path(char *cmd, t_env *env)
 		return (cmd);
 	if (cmd == NULL)
 		return (NULL);
-	//printf("cmd : %s\n", cmd);
+	// printf("cmd : %s\n", cmd);
 	cmd = ft_strjoin("/", cmd);
 	paths = ft_split(path, ':');
 	if (paths == NULL)
@@ -61,7 +61,7 @@ char	*find_path(char *cmd, t_env *env)
 			return (fullcmd);
 		j++;
 	}
-	free (cmd);
+	free(cmd);
 	return (NULL);
 }
 
@@ -113,45 +113,48 @@ bool	set_redirections(t_file *file)
 	return (true);
 }
 
-int is_builtins(t_cmd *command)
+int	is_builtins(t_cmd *command)
 {
-    if (strcmp("echo", command->cmd[0]) == 0)
-        return (1);
-    else if (strcmp("export", command->cmd[0]) == 0)
-        return (1);
-    else if (strcmp("exit", command->cmd[0]) == 0)
-        return (1);
-    else if (strcmp("cd", command->cmd[0]) == 0)
-        return (1);
-    else if (strcmp("pwd", command->cmd[0]) == 0)
-       return (1);
-    else if (strcmp("env", command->cmd[0]) == 0)
-        return (1);
-    else if (strcmp("unset",command->cmd[0]) == 0)
-        return (1);
-    return (0);
+	if (command->cmd[0] != NULL)
+	{
+		if (ft_strcmp("echo", command->cmd[0]) == 0)
+			return (1);
+		else if (ft_strcmp("export", command->cmd[0]) == 0)
+			return (1);
+		else if (ft_strcmp("exit", command->cmd[0]) == 0)
+			return (1);
+		else if (ft_strcmp("cd", command->cmd[0]) == 0)
+			return (1);
+		else if (ft_strcmp("pwd", command->cmd[0]) == 0)
+			return (1);
+		else if (ft_strcmp("env", command->cmd[0]) == 0)
+			return (1);
+		else if (ft_strcmp("unset", command->cmd[0]) == 0)
+			return (1);
+	}
+	return (0);
 }
 
-void if_executable(char *str)
+void	if_executable(char *str)
 {
-    if (access(str, X_OK) != 0) 
+	if (access(str, X_OK) != 0)
 	{
-        write(2, str, ft_strlen(str));
-        write(2, ": Permission denied\n", 20);
-        g_mini.exit_status = 126;
-        exit(g_mini.exit_status);
-    }
+		write(2, str, ft_strlen(str));
+		write(2, ": Permission denied\n", 20);
+		g_mini.exit_status = 126;
+		exit(g_mini.exit_status);
+	}
 }
 
 int	execute_without_path(t_cmd *command)
 {
-	if (access(command->cmd[0], F_OK) != 0) 
+	if (access(command->cmd[0], F_OK) != 0)
 	{
-        write(2, command->cmd[0], ft_strlen(command->cmd[0]));
-        write(2, ": No such file or directory\n", 28);
-        g_mini.exit_status = 127;
-        exit(g_mini.exit_status);
-    }
+		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
+		write(2, ": No such file or directory\n", 28);
+		g_mini.exit_status = 127;
+		exit(g_mini.exit_status);
+	}
 	if_executable(command->cmd[0]);
 	ft_dashcase("_");
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
@@ -163,7 +166,7 @@ int	execute_with_path(t_cmd *command)
 {
 	char	**env;
 	char	*fullcmd;
-	
+
 	env = NULL;
 	fullcmd = NULL;
 	fullcmd = find_path(command->cmd[0], g_mini.env);
@@ -172,7 +175,7 @@ int	execute_with_path(t_cmd *command)
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
 		write(2, ": command not found\n", 20);
 		g_mini.exit_status = 127;
-		exit (g_mini.exit_status);
+		exit(g_mini.exit_status);
 	}
 	if_executable(fullcmd);
 	env = convert_env(g_mini.env);
@@ -250,7 +253,6 @@ int	execute_pipe(t_cmd *command)
 	pid_t	pids[2];
 	int		status;
 
-
 	pipe(fd);
 	first_child(&pids[0], command, fd);
 	second_child(&pids[1], command->next, fd);
@@ -265,17 +267,16 @@ int	execute_pipe(t_cmd *command)
 
 int	execution(t_cmd *command)
 {
-	struct stat path_stat;
+	struct stat	path_stat;
 
-	//printf("command->cmd[0] : %s\n", command->cmd[0]);
-    if (stat(command->cmd[0], &path_stat) == 0 
-		&& S_ISDIR(path_stat.st_mode)) 
+	// printf("command->cmd[0] : %s\n", command->cmd[0]);
+	if (stat(command->cmd[0], &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 	{
-        write(2, command->cmd[0], ft_strlen(command->cmd[0]));
-        write(2, ": Is a directory\n", 17);
-        g_mini.exit_status = 126;
-        return (1);
-    }
+		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
+		write(2, ": Is a directory\n", 17);
+		g_mini.exit_status = 126;
+		return (1);
+	}
 	ft_dashcase("_");
 	if (command->next)
 	{

@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/16 16:20:10 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/16 21:22:19 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	parser(t_list *lst)
 	index_count = 0;
 	state = STATE_DEFAULT;
 	cmd_arg_size = cmd_argument_size(lst);
-	
 	g_mini.command->cmd = _malloc(sizeof(char *) * (cmd_arg_size + 1), 'm');
 	g_mini.command->cmd[cmd_arg_size] = NULL;
 	tmp_cmd = g_mini.command;
@@ -70,7 +69,13 @@ void	parser(t_list *lst)
 			}
 			else if (lst->content != NULL && lst->content[0] != '\0')
 			{
+				// printf("test 5 %s", lst->content);
 				tmp_cmd->cmd[index_count] = ft_strdup(lst->content);
+				index_count++;
+			}
+			else
+			{
+				tmp_cmd->cmd[index_count] = NULL;
 				index_count++;
 			}
 		}
