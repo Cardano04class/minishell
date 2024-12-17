@@ -152,7 +152,7 @@ int	execute_without_path(t_cmd *command)
         exit(g_mini.exit_status);
     }
 	if_executable(command->cmd[0]);
-	ft_dashcase("_");
+	// ft_dashcase("_");
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
 	perror("minishell$");
 	exit(1);
@@ -175,7 +175,7 @@ int	execute_with_path(t_cmd *command)
 	}
 	if_executable(fullcmd);
 	env = convert_env(g_mini.env);
-	ft_dashcase("_");
+	// ft_dashcase("_");
 	execve(fullcmd, command->cmd, env);
 	perror("minishell$");
 	g_mini.exit_status = 2;
@@ -275,7 +275,7 @@ int	execution(t_cmd *command)
         g_mini.exit_status = 126;
         return (1);
     }
-	ft_dashcase("_");
+	// ft_dashcase("_");
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 17:20:38 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/17 17:32:04 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,7 @@ void	prompt(char **env)
 		if (!syntax_error(list))
 		{
 			expand(g_mini.env, &list);
-			// t_list *current = list;
 			parser(list);
-			// while (current)
-			// {
-			// 	printf("data: %s\n", current->content);
-			// 	current = current->next;
-			// }
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)
 				execution(g_mini.command);

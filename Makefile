@@ -5,6 +5,8 @@ SRC = ./src/main.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
 		./src/expand/expand.c \
+		./src/expand/merge_export.c \
+		./src/expand/remove_quotes.c \
 		./src/parser.c \
 		./src/run_heredoc.c \
 		./src/executer.c \
@@ -72,7 +74,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
@@ -93,6 +95,6 @@ fclean : clean
 re : fclean all
 
 sup:
-	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
+	valgrind --suppressions=readline.supp --show-leak-kinds=reachable --track-fds=yes ./minishell
 
 .SECONDARY: $(OBJ)

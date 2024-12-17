@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 23:35:50 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/17 18:20:02 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ typedef enum e_state
 	STATE_HEREDOC,
 	STATE_PIPE
 }						t_state;
+
+typedef struct s_var
+{
+	int		in_single_quote;
+    int		in_double_quote;
+    int		name_len;
+	int		expanded_len;
+	char	*exit_status;
+}	t_var;
 
 typedef struct s_list
 {
@@ -164,7 +173,7 @@ void					pwd(t_env **env);
 int						export(t_env **env_list, char **args);
 int						unset(char **args, t_env **env_list);
 void					ft_env(char **env, t_env **env_lst);
-t_env	*create_env(t_env **env_list);
+t_env					*create_env(t_env **env_list);
 void					ft_exit(t_cmd *data);
 /*-------------Exit-----------*/
 int						is_valid_numeric_arg(const char *arg);
@@ -211,6 +220,8 @@ int						handle_existing_node(t_env **env_list, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
 void					expand(t_env *env, t_list **list);
+void					merge_export_assignment(t_list **list);
+// char					*remove_quotes_and_expand(t_env *env, char *content);
 /*--------------Syntax_error-----------------*/
 int						is_special(t_list *token);
 t_error					create_error(t_error_type type, char *token);
