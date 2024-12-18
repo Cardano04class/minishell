@@ -1,18 +1,21 @@
 NAME = minishell
 
 SRC = ./src/main.c \
-		./src/lexer.c \
+		./src/lexer/lexer.c \
+		./src/lexer/lexer_machine_states.c \
+		./src/lexer/lexer_utils.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
 		./src/expand/expand.c \
 		./src/expand/merge_export.c \
 		./src/expand/remove_quotes.c \
-		./src/parser.c \
-		./src/run_heredoc.c \
-		./src/executer.c \
-		./src/signal_handler.c \
-		./src/exit_handler.c \
-		./src/builtins/builtins.c\
+		./src/parsing/parser.c \
+		./src/parsing/word_and_red_token_parsing.c \
+		./src/parsing/pipe_token_parsing.c \
+		./src/execution/pipeline_execution.c \
+		./src/execution/command_execution.c \
+		./src/execution/cmd_path_utils.c \
+		./src/execution/execution_utils.c \
 		./src/builtins/env/env.c \
 		./src/builtins/env/env_1.c \
 		./src/builtins/echo/echo.c \
@@ -26,6 +29,13 @@ SRC = ./src/main.c \
 		./src/builtins/export/export_2.c \
 		./src/builtins/export/export_3.c \
 		./src/builtins/unset.c \
+		./src/heredoc/run_heredoc.c \
+		./src/heredoc/heredoc_expand.c \
+		./src/heredoc/heredoc_expand_content_fill.c \
+		./src/heredoc/heredoc_expand_content_copy.c \
+		./src/heredoc/heredoc_expand_var_utils.c \
+		./utils/signal_handler.c \
+		./utils/exit_handler.c \
 		./utils/garbage.c\
 		./utils/linked_list/ft_lstaddback.c \
 		./utils/linked_list/ft_env_addback.c \

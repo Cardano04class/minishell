@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   merge_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 14:37:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/17 15:06:16 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/18 18:05:06 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ void	merge_export_assignment(t_list **list)
 	{
 		if (ft_strcmp(current->content, "export") == 0 && current->next)
 		{
-			if (current->next->next
-				&& ft_strchr(current->next->content, '=')
+			if (current->next->next && ft_strchr(current->next->content, '=')
 				&& is_quoted_value(current->next->next->content))
 			{
 				merge_and_update_nodes(current->next, current->next->next);

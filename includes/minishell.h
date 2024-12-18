@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/18 17:19:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 00:22:39 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ typedef enum e_state
 	STATE_PIPE
 }						t_state;
 
+typedef struct s_lexer
+{
+	int					start;
+	t_state				state;
+	char				quote_char;
+	int					separated_by_space;
+}						t_lexer;
+
 typedef struct s_var
 {
 	int		i;
@@ -104,6 +112,14 @@ typedef struct s_cmd
 	t_file				*files;
 	struct s_cmd		*next;
 }						t_cmd;
+
+typedef struct s_parser
+{
+	int					cmd_arg_size;
+	int					counter;
+	t_state				state;
+	t_cmd				*tmp_cmd;
+}						t_parser;
 
 typedef struct s_parse_state
 {
@@ -264,4 +280,79 @@ char					*heredoc_filename(void);
 int						capture_exit_status(int status);
 void					*_malloc(size_t size, char op);
 t_env					*set_env_var(t_env *env, char *key, char *value);
+
+/*-------------------Lexer--------------------*/
+void					in_initial_state(char *str, int i, t_lexer *vars);
+void					in_whitespace_state(char *str, int *i, t_lexer *vars);
+void					in_special_state(char *str, t_list **lst, t_lexer *vars,
+							int *i);
+void					in_word_state(char *str, t_list **lst, t_lexer *vars,
+							int *i);
+void					in_quote_state(char *str, t_list **lst, t_lexer *vars,
+							int *i);
+char					*create_token(char *str, int start, int end);
+int						is_special_char(char c);
+int						quote_found(char *str, t_lexer *vars, int *i);
+int						special_char_found(char c, t_lexer *vars);
+void					state_checks(char *str, t_list **lst, t_lexer *vars,
+							int *i);
+void					state_machine_lex(char *str, t_list **lst,
+							t_lexer *vars, int *i);
+void					initialise_lexer_vars(t_lexer *vars);
+void					lexer(char *str, t_list **lst);
+
+/*-----------------Execution------------------*/
+char					*ft_getenv(char *name, t_env *env);
+t_env					*ft_dashcase(char *name);
+char					*find_path(char *cmd, t_env *env);
+char					**convert_env(t_env *list_env);
+bool					set_redirections(t_file *file);
+void					if_executable(char *str);
+int						execute_without_path(t_cmd *command);
+int						execute_with_path(t_cmd *command);
+int						run_command(t_cmd *command);
+int						run_builtins(t_env **env, t_cmd *command);
+int						execute_command(t_cmd *command);
+int						first_child(pid_t *pid, t_cmd *command, int *fd);
+int						second_child(pid_t *pid, t_cmd *command, int *fd);
+int						execute_pipe(t_cmd *command);
+void					check_if_cmd_valid(t_cmd *command);
+int						execution(t_cmd *command);
+int						is_builtins(t_cmd *command);
+
+/*------------run_heredoc---------------*/
+
+char					*heredoc_filename(void);
+char					*find_var_value(t_env *env, const char *var_name);
+int						char_is_null(char i_content, int *expanded_len);
+int						char_is_exit_holder(char i_content, int *expanded_len,
+							int *i);
+int						get_var_name_length(char *content, int *i);
+int						get_var_value_length(char *content, int name_len,
+							int i);
+int						calculate_var_expansion_length(char *content);
+int						char_is_null_fill(char i_content,
+							char **expanded_content, int *j);
+int						char_is_exit_holder_fill(char i_content,
+							char **expanded_content, int *i, int *j);
+char					*get_var_value(char *content, int name_len, int i);
+void					fill_expanded_content(char *var_value,
+							char **expanded_content, int *j);
+char					*copy_expanded_content(char *content, int expanded_len);
+char					*expand_in_heredoc(char *content);
+void					write_line_fd(char *line, int fd);
+int						heredoc_prompt(t_cmd *command, int fd);
+void					run_heredoc(t_cmd *command);
+
+/*--------------------parsing----------------*/
+
+char					*heredoc_filename(void);
+int						cmd_argument_size(t_list *lst);
+void					create_heredoc_file(t_list *lst);
+void					create_in_out_file(t_list *lst);
+void					process_command_arguments(t_list *lst, t_parser *vars);
+void					handle_word_token(t_parser *vars, t_list *lst);
+void					create_next_command_tokens(t_parser *vars, t_list *lst);
+void					intialise_vars(t_parser *vars, t_list *lst);
+void					parser(t_list *lst);
 #endif
