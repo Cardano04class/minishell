@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 01:50:31 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/04 17:05:23 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:48:01 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	minmaxcheck(long v)
 {
 	if (v > INT_MAX || v < INT_MIN)
+	{
+		_malloc(0, 'f');
 		exit(1);
+	}
 }
 
 void	digitcheck(char *str, int i)
@@ -23,7 +26,10 @@ void	digitcheck(char *str, int i)
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i++]))
+		{
+			_malloc(0, 'f');
 			exit(1);
+		}
 	}
 }
 

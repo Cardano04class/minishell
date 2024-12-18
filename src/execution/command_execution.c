@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:12 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 18:00:50 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:55:58 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int	execute_without_path(t_cmd *command)
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
 		write(2, ": No such file or directory\n", 28);
 		g_mini.exit_status = 127;
+		_malloc(0, 'f');
 		exit(g_mini.exit_status);
 	}
 	if_executable(command->cmd[0]);
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
 	perror("minishell$");
+	_malloc(0, 'f');
 	exit(1);
 }
 
@@ -39,6 +41,7 @@ int	execute_with_path(t_cmd *command)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
 		write(2, ": command not found\n", 20);
+		_malloc(0, 'f');
 		g_mini.exit_status = 127;
 		exit(g_mini.exit_status);
 	}
@@ -46,6 +49,7 @@ int	execute_with_path(t_cmd *command)
 	env = convert_env(g_mini.env);
 	execve(fullcmd, command->cmd, env);
 	perror("minishell$");
+	_malloc(0, 'f');
 	g_mini.exit_status = 2;
 	exit(g_mini.exit_status);
 }

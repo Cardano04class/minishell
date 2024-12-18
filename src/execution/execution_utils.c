@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 16:40:15 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:39:38 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	if_executable(char *str)
 	{
 		write(2, str, ft_strlen(str));
 		write(2, ": Permission denied\n", 20);
+		_malloc(0, 'f');
 		g_mini.exit_status = 126;
 		exit(g_mini.exit_status);
 	}
@@ -100,6 +101,7 @@ void	check_if_cmd_valid(t_cmd *command)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
 		write(2, ": Is a directory\n", 17);
+		_malloc(0, 'f');
 		g_mini.exit_status = 126;
 		exit(g_mini.exit_status);
 	}

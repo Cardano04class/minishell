@@ -41,3 +41,7 @@
              |   minishell$ echo $_
              |   -a
              |   minishell$ 
+
+
+             |   minishell$ ls > $adas
+

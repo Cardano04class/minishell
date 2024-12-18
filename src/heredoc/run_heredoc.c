@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:51:02 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 17:35:16 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:46:29 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ void	run_heredoc(t_cmd *command)
 			{
 				fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
 				if (fd == -1)
-					exit(1);
+					(_malloc(0, 'f'), exit(1));
 				heredoc_prompt(command, fd);
 			}
 			command->files = command->files->next;
 		}
 		close(fd);
+		_malloc(0, 'f');
 		exit(0);
 	}
 	waitpid(child_pid, &status, 0);

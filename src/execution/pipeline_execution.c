@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:32 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 18:02:57 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:43:12 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	first_child(pid_t *pid, t_cmd *command, int *fd)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		execute_command(command);
+		_malloc(0, 'f');
 		exit(g_mini.exit_status);
 	}
 	return (0);
@@ -38,6 +39,7 @@ int	second_child(pid_t *pid, t_cmd *command, int *fd)
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		execution(command);
+		_malloc(0, 'f');
 		exit(g_mini.exit_status);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:02 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 17:59:45 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:59:04 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,5 @@ char	*find_path(char *cmd, t_env *env)
 			return (fullcmd);
 		j++;
 	}
-	free(cmd);
 	return (NULL);
 }
