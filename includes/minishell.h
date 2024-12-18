@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/17 18:20:02 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/18 17:19:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef enum e_state
 
 typedef struct s_var
 {
+	int		i;
 	int		in_single_quote;
     int		in_double_quote;
     int		name_len;
