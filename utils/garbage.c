@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:02:24 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/13 22:51:14 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 10:42:07 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_garbage	*new_garbage(void *content)
 	t_garbage	*new;
 
 	new = malloc(sizeof(t_garbage));
-    new->ptr = content;
+	new->ptr = content;
 	new->next = NULL;
 	return (new);
 }
@@ -54,30 +54,23 @@ void	clear_garbage(t_garbage *lst)
 	}
 }
 
-void    *_malloc(size_t size, char op)
+void	*_malloc(size_t size, char op)
 {
-    void    *ptr;
-    static  t_garbage *trash;
+	void				*ptr;
+	static t_garbage	*trash;
 
-    if (op == 'f')
-    {
-		// int i = 0;
-		// while(trash->next)
-		// {
-		// 	// i++;
-		// 	trash = trash->next;	
-		// }
-		// printf("***************size: %d\n", i);
-        clear_garbage(trash);
-        trash = NULL;
-        return (NULL); 
-    }
-    ptr = malloc(size);
-    if (!ptr)
-    {
-        clear_garbage(trash);
-        exit (1);
-    }
-    addback_garbage(&trash, new_garbage(ptr));
-    return (ptr);
+	if (op == 'f')
+	{
+		clear_garbage(trash);
+		trash = NULL;
+		return (NULL);
+	}
+	ptr = malloc(size);
+	if (!ptr)
+	{
+		clear_garbage(trash);
+		exit(1);
+	}
+	addback_garbage(&trash, new_garbage(ptr));
+	return (ptr);
 }

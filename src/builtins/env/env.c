@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:50 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 14:59:18 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/16 23:31:07 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_export(t_env *env)
 {
 	while (env)
 	{
-		if(ft_strcmp(env->key, "_") != 0)
+		if (ft_strcmp(env->key, "_") != 0)
 		{
 			if (env->value == NULL)
 				printf("declare -x %s\n", env->key);
@@ -58,17 +58,24 @@ t_env	*set_env_var(t_env *env, char *key, char *value)
 
 int	print_env(t_env *env)
 {
-	env = set_env_var(env, "_", "/usr/bin/env");
-	while (env)
+	t_env	*current;
+
+	current = env;
+	while (current)
 	{
-		if (env->value && *env->value)
-			printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		if (g_mini.default_env == NULL && (ft_strcmp(current->key,
+					"PATH") == 0))
+		{
+			current = current->next;
+			continue ;
+		}
+		if (current->value && *current->value)
+			printf("%s=%s\n", current->key, current->value);
+		current = current->next;
 	}
 	g_mini.exit_status = 0;
 	return (0);
 }
-
 
 void	ft_env(char **env, t_env **env_lst)
 {
@@ -77,17 +84,22 @@ void	ft_env(char **env, t_env **env_lst)
 	char	*equal_sign;
 
 	i = 0;
-	while (env[i])
+	if (env != NULL && *env != NULL)
 	{
-		equal_sign = ft_strchr(env[i], '=');
-		if (equal_sign)
+		while (env[i])
 		{
-			*equal_sign = '\0';
-			node = ft_env_new(env[i], equal_sign + 1);
-			*equal_sign = '=';
-			if (node)
-				ft_env_addback(env_lst, node);
+			equal_sign = ft_strchr(env[i], '=');
+			if (equal_sign)
+			{
+				*equal_sign = '\0';
+				node = ft_env_new(env[i], equal_sign + 1);
+				*equal_sign = '=';
+				if (node)
+					ft_env_addback(env_lst, node);
+			}
+			i++;
 		}
-		i++;
 	}
+	else
+		create_env(env_lst);
 }

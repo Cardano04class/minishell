@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/17 22:14:51 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_global	g_mini;
-
-
 
 int	empty_prompt(char *rl)
 {
@@ -14,16 +24,6 @@ int	empty_prompt(char *rl)
 		i++;
 	}
 	return (i);
-}
-void debug_list(t_list *list)
-{
-	int i = 0;
-    while (list)
-    {
-        printf("content[%d]: %p\n", i, list->content);
-		i++;
-    	list = list->next;
-    }
 }
 
 void	prompt(char **env)
@@ -56,9 +56,9 @@ void	prompt(char **env)
 		if (empty_prompt(rl) == 0)
 			continue ;
 		lexer(rl, &list);
-		if(!syntax_error(list))
+		if (!syntax_error(list))
 		{
-			expand(env_list, &list);
+			expand(g_mini.env, &list);
 			parser(list);
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)

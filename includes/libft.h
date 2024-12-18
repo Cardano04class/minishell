@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:58:34 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/09 09:45:34 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 12:26:39 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 
-char    *ft_strcat(char *dst, const char *src);
-int	    ft_strcmp(const char *s1, const char *s2);
+char	*ft_strcat(char *dst, const char *src);
+int		ft_strcmp(const char *s1, const char *s2);
 char	**ft_ssplit(char const *s);
 char	*ft_strcpy(char *dst, const char *src);
-void    *_malloc(size_t size, char op);
-char    *ft_strndup(const char *src, size_t n);
+char	*ft_strncpy(char *dest, const char *src, size_t n);
+void	*_malloc(size_t size, char op);
 #endif

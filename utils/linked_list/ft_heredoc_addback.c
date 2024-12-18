@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:33:30 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/02 17:38:34 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 12:07:25 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,3 @@ void	ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new)
 	}
 	tmp->next = new;
 }
-

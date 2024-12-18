@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/14 23:15:19 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 23:19:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 {
 	t_env	*var;
 	t_env	*new_var;
+
 	var = find_env_var(*env, name);
 	if (var)
 	{
@@ -36,6 +37,7 @@ void	cd_handle_args(t_env **env, char **args)
 	t_env	*home_env;
 	t_env	*oldpwd_env;
 	char	*home;
+
 	home_env = find_env_var(*env, "HOME");
 	oldpwd_env = find_env_var(*env, "OLDPWD");
 	if (home_env != NULL)
@@ -50,10 +52,11 @@ void	cd_handle_args(t_env **env, char **args)
 		cd_path(args[1]);
 }
 
-void	cd(t_env **env,char **args)
+void	cd(t_env **env, char **args)
 {
 	char	cwd[1024];
 	t_env	*pwd_env;
+
 	pwd_env = find_env_var(*env, "PWD");
 	cd_handle_args(env, args);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)

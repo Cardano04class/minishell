@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env_new.c                                       :+:      :+:    :+:   */
+/*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/16 12:07:40 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 12:07:41 by mamir            ###   ########.fr       */
+/*   Created: 2024/12/03 12:36:27 by mobouifr          #+#    #+#             */
+/*   Updated: 2024/12/15 14:56:52 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*ft_env_new(char *key, char *value)
+int	capture_exit_status(int status)
 {
-	t_env	*new;
-
-	new = _malloc(sizeof(t_env), 'm');
-	new->key = ft_strdup(key);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	return (new);
+	if (WIFEXITED(status))
+	{
+		return (WEXITSTATUS(status));
+	}
+	else if (WIFSIGNALED(status))
+	{
+		return (128 + WTERMSIG(status));
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:46:08 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:18:27 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 12:07:32 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@ t_cmd	*ft_cmd_new(char **content)
 	new->cmd = content;
 	new->files = NULL;
 	new->next = NULL;
-	//new->heredoc = NULL;
 	return (new);
 }

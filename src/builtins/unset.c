@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/14 23:13:16 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 13:30:22 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	remove_variable(char *var_name, t_env **list)
 
 	previous = NULL;
 	current = *list;
+	if (ft_strcmp(var_name, "_") == 0)
+		return (0);
 	while (current)
 	{
 		if (ft_strcmp(var_name, current->key) == 0)
@@ -66,13 +68,13 @@ int	unset(char **args, t_env **env_list)
 		var_name = args[i];
 		if (!env_exist(env_list, var_name))
 		{
-			i++;	
-			continue;
+			i++;
+			continue ;
 		}
 		else if (!valid_name(var_name, env_list))
-			return 1;
+			return (1);
 		else if (!remove_variable(var_name, env_list))
-			return 1;
+			return (1);
 		i++;
 	}
 	g_mini.exit_status = 0;

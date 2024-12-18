@@ -10,6 +10,14 @@
 
 -Norminette.
 
+- Checking allocations like this to see if there rightly allocated : "g_mini.command = _malloc(sizeof(t_cmd), 'm');".
+
+-***for amir*** : 
+        + check ft_strdup.c, why commenting NULL protection ?
+        + reahab.c ? ach had l9lawi.
+        + expand nominette!
+        + main Norminette, chderna fiha ?
+
 - I need to fix these cases :
              |   minishell$ "ls"|wc -l									
              |   ls|wc: command not found								
@@ -18,14 +26,18 @@
              |   12														
              |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ 
 
-             |   minishell$ expr 8 + 8
-             |   16
-             |   minishell$ expr $? + $?
-             |   0
-             |   minishell$ expr $? + $?
-             |   2
-             |   minishell$ expr $? + $?
-             |   0
-             |   minishell$ echo $?
-             |   1
-					
+
+             |  minishell$ ls >out
+             |  includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
+             |  minishell$ ^C
+				
+             |   minishell$ ls
+             |   includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
+             |   minishell$ echo $_
+             |   /home/mobouifr/Desktop/MINISHELL/./minishell
+             |   minishell$ ls -a
+             |   .   .DS_Store  .gitignore  Makefile   readline.supp  src	utils
+             |   ..  .git       includes    minishell  README.md      toFix.txt	.vscode
+             |   minishell$ echo $_
+             |   -a
+             |   minishell$ 

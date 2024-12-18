@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env_new.c                                       :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/16 12:07:40 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/16 12:07:41 by mamir            ###   ########.fr       */
+/*   Created: 2024/12/16 12:23:08 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/16 12:23:30 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_env	*ft_env_new(char *key, char *value)
+char	*ft_strncpy(char *dest, const char *src, size_t n)
 {
-	t_env	*new;
+	size_t	i;
 
-	new = _malloc(sizeof(t_env), 'm');
-	new->key = ft_strdup(key);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	return (new);
+	i = 0;
+	while (i < n && src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
 }
