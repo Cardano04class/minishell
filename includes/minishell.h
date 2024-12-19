@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/18 18:20:29 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/19 01:16:03 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,4 +354,5 @@ void					handle_word_token(t_parser *vars, t_list *lst);
 void					create_next_command_tokens(t_parser *vars, t_list *lst);
 void					intialise_vars(t_parser *vars, t_list *lst);
 void					parser(t_list *lst);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:40 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 18:10:28 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/19 02:11:47 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	parser(t_list *lst)
 	intialise_vars(&vars, lst);
 	while (lst != NULL)
 	{
-		if (lst->type == WORD && vars.counter <= vars.cmd_arg_size)
+		if (lst->type == WORD)
 			handle_word_token(&vars, lst);
-		if (lst->type == INRED || lst->type == OUTRED || lst->type == APPEND
-			|| lst->type == HEREDOC)
+		else if (lst->type == INRED || lst->type == OUTRED
+			|| lst->type == APPEND || lst->type == HEREDOC)
 			vars.state = STATE_REDIRECTION;
 		else if (lst->type == PIPE)
 			create_next_command_tokens(&vars, lst);

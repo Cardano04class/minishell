@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/17 22:14:51 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 02:10:53 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ int	empty_prompt(char *rl)
 		i++;
 	}
 	return (i);
+}
+
+void	debug_cmd_after_parser(void)
+{
+	t_cmd *tmp = g_mini.command;
+	while (tmp)
+	{
+		int i = 0;
+		while (tmp->cmd[i])
+		{
+			printf("tmp = %s\n", tmp->cmd[i]);
+			i++;
+		}
+		puts("pipe");
+		tmp = tmp->next;
+	}
 }
 
 void	prompt(char **env)
