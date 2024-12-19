@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 02:10:53 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/19 03:31:07 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ void	prompt(char **env)
 			expand(g_mini.env, &list);
 			parser(list);
 			run_heredoc(g_mini.command);
-			if (g_mini.command->cmd[0] != NULL)
-				execution(g_mini.command);
+			execution(g_mini.command);
 		}
 		ft_lstclear(&list);
 		add_history(rl);

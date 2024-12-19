@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:54:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 22:55:17 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/17 22:42:18 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int	count_arguments(char **args)
 
 	last_arg = 0;
 	while (args[last_arg])
+	{
 		last_arg++;
+	}
 	return (last_arg);
 }
 
@@ -66,3 +68,4 @@ int	handle_n_option(char **args, int i, bool *n_option)
 	}
 	return (i);
 }
+

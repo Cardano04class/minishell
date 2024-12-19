@@ -21,14 +21,14 @@
 - I need to fix these cases :
              |   minishell$ "ls"|wc -l									
              |   ls|wc: command not found								
-             |   minishell$ bash										
+  [ DONE ]   |   minishell$ bash										
              |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ "ls"|wc -l	
              |   12														
              |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ 
 
 
              |  minishell$ ls >out
-             |  includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
+  [ DONE ]   |  includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
              |  minishell$ ^C
 				
              |   minishell$ ls

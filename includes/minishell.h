@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 01:16:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/19 03:52:03 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_lexer
 
 typedef struct s_var
 {
+	int					i;
 	int					in_single_quote;
 	int					in_double_quote;
 	int					name_len;
@@ -158,6 +159,12 @@ typedef struct s_error
 	t_error_type		type;
 	char				*token;
 }						t_error;
+typedef struct s_garbage
+{
+	void				*ptr;
+	struct s_garbage	*next;
+}						t_garbage;
+
 typedef struct s_global
 {
 	char				**default_env;
@@ -170,13 +177,8 @@ typedef struct s_global
 	char				*last_cmd;
 }						t_global;
 
-typedef struct s_garbage
-{
-	void				*ptr;
-	struct s_garbage	*next;
-}						t_garbage;
-
 extern t_global			g_mini;
+
 /*--------shell---------*/
 void					lexer(char *str, t_list **lst);
 int						syntax_error(t_list *list);
@@ -318,6 +320,7 @@ int						execute_pipe(t_cmd *command);
 void					check_if_cmd_valid(t_cmd *command);
 int						execution(t_cmd *command);
 int						is_builtins(t_cmd *command);
+void					check_if_redirection_file_valid(t_file *file);
 
 /*------------run_heredoc---------------*/
 
