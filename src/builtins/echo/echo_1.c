@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:54:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/17 22:42:18 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 13:12:27 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,34 +38,14 @@ int	print_argument(char *arg)
 		write(1, &arg[j], 1);
 		j++;
 	}
+	g_mini.exit_status = 0;
 	return (1);
 }
 
-void	print_separator(bool n_option, int i, int last_arg)
+void	print_arguments_one_at_a_time(char **args, int i)
 {
-	if (i < last_arg - 1 && !n_option)
-		write(1, " ", 1);
-}
-
-int	count_arguments(char **args)
-{
-	int	last_arg;
-
-	last_arg = 0;
-	while (args[last_arg])
+	if (args[i])
 	{
-		last_arg++;
+		print_argument(args[i]);
 	}
-	return (last_arg);
 }
-
-int	handle_n_option(char **args, int i, bool *n_option)
-{
-	while (args[i] && is_n_option(args[i]))
-	{
-		*n_option = true;
-		i++;
-	}
-	return (i);
-}
-

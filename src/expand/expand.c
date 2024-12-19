@@ -41,8 +41,7 @@ void	expand_variables_in_list(t_env *env, t_list **list)
 	t_list	*current;
 	char	*expanded_content;
 
-	current = *list;	
-	
+	current = *list;
 	while (current)
 	{
 		if (current->content)
@@ -64,7 +63,8 @@ void	merge_fragmented_nodes(t_list **list)
 	while (current && current->next)
 	{
 		next_node = current->next;
-		if (next_node->separated_by_space == 0 && next_node->type == WORD && current->type == WORD)
+		if (next_node->separated_by_space == 0 && next_node->type == WORD
+			&& current->type == WORD)
 		{
 			merged_content = _malloc(strlen(current->content)
 					+ ft_strlen(next_node->content) + 1, 'm');

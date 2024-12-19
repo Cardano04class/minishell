@@ -7,6 +7,8 @@ SRC = ./src/main.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
 		./src/expand/expand.c \
+		./src/expand/calculation_1.c \
+		./src/expand/calculation_2.c \
 		./src/expand/merge_export.c \
 		./src/expand/remove_quotes.c \
 		./src/parsing/parser.c \
