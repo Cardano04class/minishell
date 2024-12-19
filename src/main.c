@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 00:55:35 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 13:30:24 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	prompt(char **env)
 {
 	char	*rl;
 	t_list	*list;
-	t_env	*env_list;
+	// t_env	*env_list;
 
-	env_list = NULL;
+	// env_list = NULL;
 	list = NULL;
-	ft_env(env, &env_list);
-	g_mini.env = env_list;
+	ft_env(env, &g_mini.env);
+	// g_mini.env = env_list;
 	signal(SIGQUIT, SIG_IGN);
 	g_mini.exit_status = 0;
 	while (1)
@@ -60,12 +60,6 @@ void	prompt(char **env)
 		{
 			expand(g_mini.env, &list);
 			parser(list);
-			// t_list *c = list;
-			// while(c)
-			// {
-			// 	printf("cc: %s\n", c->content);
-			// 	c = c->next;
-			// }
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)
 				execution(g_mini.command);
@@ -74,7 +68,6 @@ void	prompt(char **env)
 		add_history(rl);
 	}
 	_malloc(0, 'f');
-	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)
