@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 13:03:25 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 14:34:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_var
 typedef struct s_list
 {
 	char				*content;
+	char				*non_var;
 	t_token				type;
 	struct s_list		*next;
 	struct s_list		*prev;
@@ -366,4 +367,5 @@ void					handle_word_token(t_parser *vars, t_list *lst);
 void					create_next_command_tokens(t_parser *vars, t_list *lst);
 void					intialise_vars(t_parser *vars, t_list *lst);
 void					parser(t_list *lst);
+long	ft_atol(char *str);
 #endif

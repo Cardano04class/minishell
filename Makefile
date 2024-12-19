@@ -82,6 +82,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_memmove.c \
 		./utils/libft/ft_memset.c \
 		./utils/libft/ft_atoi.c \
+		./utils/libft/ft_atol.c \
 		./utils/libft/ft_itoa.c \
 		./utils/libft/ft_isdigit.c \
 

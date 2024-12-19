@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:06:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 22:40:05 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 14:12:48 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	validate_and_process_arg(t_cmd *current, char *arg)
 			handle_exit_error(arg);
 		return (0);
 	}
-	g_mini.exit_status = (unsigned char)ft_atoi(arg);
+	g_mini.exit_status = (unsigned char)ft_atol(arg);
 	return (1);
 }
 

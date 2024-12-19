@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 01:04:21 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 14:35:30 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	expand_variables_in_list(t_env *env, t_list **list)
 		if (current->content)
 		{
 			expanded_content = remove_quotes_and_expand(env, current->content);
+			if (expanded_content[0] == '\0')
+				(*list)->non_var = current->content;
 			current->content = expanded_content;
 		}
 		current = current->next;
