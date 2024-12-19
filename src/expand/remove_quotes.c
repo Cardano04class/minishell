@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 14:43:28 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/18 17:20:53 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 00:50:46 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,19 @@ int lone_dollar_case(char *content, t_var *var, int *i)
     }
     return 0;
 }
+
+void handle_dollar_case(t_var *var, char *content, t_env *env)
+{
+    var->i++;
+    if (lone_dollar_case(content, var, &var->i))
+        return ;
+    if (var->in_double_quote)
+        var->expanded_len++;
+    if (exit_status_len(content, var, &var->i))
+        return ;
+    name_length(content, &var->i, env, var);
+}
+
 int	single_quotes_skip(char *content, int *i, t_var *var)
 {
 	if (content[*i] == '\'' && !var->in_double_quote)
@@ -91,6 +104,16 @@ int double_quotes_skip(char *content, int *i, t_var *var)
     }
     return 0;
 }
+
+int handle_quotes(t_var *var, char *content)
+{
+    if(single_quotes_skip(content, &var->i, var))
+            return 1;
+    if (double_quotes_skip(content, &var->i, var))
+            return 1;
+    return 0;    
+}
+
 int calculate_expand_length(char *content, t_env *env)
 {
     t_var *var;
@@ -99,21 +122,10 @@ int calculate_expand_length(char *content, t_env *env)
     init_var(var);
     while (content[var->i])
     { 
-		if(single_quotes_skip(content, &var->i, var))
-            continue ;
-        if (double_quotes_skip(content, &var->i, var))
+		if (handle_quotes(var, content))
             continue ;
         if (content[var->i] == '$' && !var->in_single_quote)
-        {
-            var->i++;
-            if (lone_dollar_case(content, var, &var->i))
-                continue;
-            if (var->in_double_quote)
-                var->expanded_len++;
-            if (exit_status_len(content, var, &var->i))
-                continue;
-            name_length(content, &var->i, env, var);
-        }
+            handle_dollar_case(var, content, env);
         else
         {
             var->expanded_len++;
@@ -199,4 +211,3 @@ char *remove_quotes_and_expand(t_env *env, char *content)
     expanded_content[j] = '\0';
     return (expanded_content);
 }
-

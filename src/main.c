@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/18 15:45:28 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 00:55:35 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ void	prompt(char **env)
 		{
 			expand(g_mini.env, &list);
 			parser(list);
+			// t_list *c = list;
+			// while(c)
+			// {
+			// 	printf("cc: %s\n", c->content);
+			// 	c = c->next;
+			// }
 			run_heredoc(g_mini.command);
 			if (g_mini.command->cmd[0] != NULL)
 				execution(g_mini.command);
