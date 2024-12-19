@@ -203,7 +203,7 @@ void					handle_exit_error(char *arg);
 void					handle_too_many_arguments(void);
 void					exit_with_status(int status);
 int						is_overflow(const char *num_start, const char *limit);
-const char					*skip_leading(const char *arg, int *sign);
+const char				*skip_leading(const char *arg, int *sign);
 int						check_overflow(const char *arg, int sign);
 int						validate_chars(const char *arg, size_t *num_count);
 /*-------------CD----------------*/
@@ -371,5 +371,5 @@ void					handle_word_token(t_parser *vars, t_list *lst);
 void					create_next_command_tokens(t_parser *vars, t_list *lst);
 void					intialise_vars(t_parser *vars, t_list *lst);
 void					parser(t_list *lst);
-long	ft_atol(char *str);
+long					ft_atol(char *str);
 #endif
