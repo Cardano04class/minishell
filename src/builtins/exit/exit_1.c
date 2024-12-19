@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:38:01 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 22:39:28 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 15:37:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,15 @@
 
 int	is_valid_numeric_arg(const char *arg)
 {
-	size_t	i;
+	size_t	num_count;
+	int		sign;
 
-	i = 0;
-	while (ft_isspace(arg[i]))
-		i++;
-	if (arg[i] == '-' || arg[i] == '+')
-		i++;
-	if (!ft_isdigit(arg[i]))
+	sign = 1;
+	if (!validate_chars(arg, &num_count) || num_count == 0 || num_count > 19)
 		return (0);
-	while (ft_isdigit(arg[i]))
-		i++;
-	while (ft_isspace(arg[i]))
-		i++;
-	return (arg[i] == '\0');
+	if (num_count == 19 && check_overflow(arg, sign))
+		return (0);
+	return (1);
 }
 
 int	is_last_command(t_cmd *current)

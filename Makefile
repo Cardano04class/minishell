@@ -26,6 +26,7 @@ SRC = ./src/main.c \
 		./src/builtins/cd/cd_functions.c \
 		./src/builtins/exit/exit.c \
 		./src/builtins/exit/exit_1.c \
+		./src/builtins/exit/exit_2.c \
 		./src/builtins/export/export.c \
 		./src/builtins/export/export_1.c \
 		./src/builtins/export/export_2.c \

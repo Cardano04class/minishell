@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 14:34:34 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 15:37:20 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,10 @@ int						is_last_command(t_cmd *current);
 void					handle_exit_error(char *arg);
 void					handle_too_many_arguments(void);
 void					exit_with_status(int status);
+int						is_overflow(const char *num_start, const char *limit);
+const char					*skip_leading(const char *arg, int *sign);
+int						check_overflow(const char *arg, int sign);
+int						validate_chars(const char *arg, size_t *num_count);
 /*-------------CD----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
