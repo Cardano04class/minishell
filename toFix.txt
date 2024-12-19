@@ -35,7 +35,7 @@
              |   includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
              |   minishell$ echo $_
              |   /home/mobouifr/Desktop/MINISHELL/./minishell
-             |   minishell$ ls -a
+  [ DONE ]   |   minishell$ ls -a
              |   .   .DS_Store  .gitignore  Makefile   readline.supp  src	utils
              |   ..  .git       includes    minishell  README.md      toFix.txt	.vscode
              |   minishell$ echo $_
