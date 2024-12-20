@@ -43,15 +43,14 @@ void	create_heredoc_file(t_list *lst, t_cmd *command)
 
 	name = heredoc_filename();
 	name = ft_strjoin("/tmp/", name);
-	ft_file_addback(ft_file_new(name, lst->prev->type,
-			ft_strdup(lst->content)), command);
+	ft_file_addback(ft_file_new(name, lst->prev->type, ft_strdup(lst->content)),
+		command);
 }
 
 void	create_in_out_file(t_list *lst, t_cmd *command)
 {
-	ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type,
-			NULL), command);
-			
+	ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type, NULL),
+		command);
 }
 
 void	process_command_arguments(t_list *lst, t_parser *vars)
