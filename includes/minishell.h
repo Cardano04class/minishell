@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/20 17:29:29 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 21:15:01 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ typedef struct s_var
 typedef struct s_list
 {
 	char				*content;
-	char				*non_var;
 	t_token				type;
 	struct s_list		*next;
 	struct s_list		*prev;
@@ -374,4 +373,13 @@ void					create_next_command_tokens(t_parser *vars, t_list *lst);
 void					intialise_vars(t_parser *vars, t_list *lst);
 void					parser(t_list *lst);
 long					ft_atol(char *str);
+
+/*----------------------main-----------------*/
+
+void					prompt(char **env);
+int						empty_prompt(char *rl);
+void					intialise_prompt_variables(void);
+void					parse_and_execute(t_list *list);
+int						rl_is_null(char *rl);
+
 #endif

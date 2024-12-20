@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:12 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/19 23:36:35 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:24:11 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	execute_without_path(t_cmd *command)
 	}
 	if_executable(command->cmd[0]);
 	execve(command->cmd[0], command->cmd, convert_env(g_mini.env));
-	perror("");
+	perror("without path");
 	_malloc(0, 'f');
 	exit(1);
 }
@@ -48,7 +48,7 @@ int	execute_with_path(t_cmd *command)
 	if_executable(fullcmd);
 	env = convert_env(g_mini.env);
 	execve(fullcmd, command->cmd, env);
-	perror("");
+	perror("with path:");
 	_malloc(0, 'f');
 	g_mini.exit_status = 2;
 	exit(g_mini.exit_status);
@@ -62,6 +62,7 @@ int	run_command(t_cmd *command)
 	pid = fork();
 	if (pid == 0)
 	{
+		check_if_cmd_valid(command);
 		signal(SIGQUIT, SIG_DFL);
 		set_redirections(command->files);
 		if (ft_strchr(command->cmd[0], '/') || !get_env(g_mini.env, "PATH")

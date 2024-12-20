@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:50:10 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/19 14:36:27 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 18:34:59 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_list	*ft_lstnew_2(char *content, t_token token_type, int separated_by_space)
 	new->content = content;
 	new->type = token_type;
 	new->separated_by_space = separated_by_space;
-	new->non_var = NULL;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);

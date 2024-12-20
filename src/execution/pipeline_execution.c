@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:32 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 00:03:21 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:26:25 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	execute_pipe(t_cmd *command)
 int	execution(t_cmd *command)
 {
 	ft_dashcase("_");
-	check_if_cmd_valid(command);
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;

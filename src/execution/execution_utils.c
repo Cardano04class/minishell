@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 00:03:29 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:42:05 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	if_executable(char *str)
 {
 	if (access(str, X_OK) != 0)
 	{
+		puts("case 1");
 		write(2, str, ft_strlen(str));
 		write(2, ": Permission denied\n", 20);
 		_malloc(0, 'f');
@@ -120,6 +121,14 @@ void	check_if_cmd_valid(t_cmd *command)
 {
 	struct stat	path_stat;
 
+	if (command->cmd[0][0] == '.' && command->cmd[0][1] == '\0')
+	{
+		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
+		write(2, ": filename argument required\n", 29);
+		_malloc(0, 'f');
+		g_mini.exit_status = 2;
+		exit(g_mini.exit_status);
+	}
 	if (stat(command->cmd[0], &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
