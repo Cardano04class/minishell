@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:49:46 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/16 14:37:43 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 23:19:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,13 @@ void	update_env_var(t_env **env, const char *name, const char *value)
 	var = find_env_var(*env, name);
 	if (var)
 	{
-		free(var->value);
-		var->value = strdup(value);
+		var->value = ft_strdup(value);
 	}
 	else
 	{
-		new_var = malloc(sizeof(t_env));
-		if (!new_var)
-		{
-			perror("malloc");
-			return ;
-		}
-		new_var->key = strdup(name);
-		new_var->value = strdup(value);
+		new_var = _malloc(sizeof(t_env), 'm');
+		new_var->key = ft_strdup(name);
+		new_var->value = ft_strdup(value);
 		new_var->next = *env;
 		*env = new_var;
 	}
@@ -52,7 +46,7 @@ void	cd_handle_args(t_env **env, char **args)
 		home = NULL;
 	if (args[1] == NULL)
 		cd_home(home);
-	else if (strcmp(args[1], "-") == 0)
+	else if (ft_strcmp(args[1], "-") == 0)
 		cd_oldpwd(oldpwd_env);
 	else
 		cd_path(args[1]);
@@ -79,6 +73,7 @@ void	pwd(t_env **env)
 {
 	char	cwd[1024];
 
+	g_mini.exit_status = 0;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		printf("%s\n", cwd);

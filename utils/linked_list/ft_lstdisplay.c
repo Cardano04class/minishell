@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdisplay.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:18:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/17 15:34:43 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/19 00:04:22 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	ft_lstdisplay(t_list *stack)
 {
-	printf ("lst size : %d\n\n", ft_lstsize(stack));
+	printf("lst size : %d\n\n", ft_lstsize(stack));
 	while (stack != NULL)
 	{
-		printf ("content : %s\n", stack->content);
-		if (stack->prev != NULL)
+		printf("content : [%s]\n", stack->content);
+		/*if (stack->prev != NULL)
 			printf("prev content : %s\n", stack->prev->content);
 		if (stack->type == 0)
 			printf("type : WORD\n");
@@ -31,7 +31,7 @@ void	ft_lstdisplay(t_list *stack)
 		if (stack->type == 4)
 			printf("type : HERDOC\n");
 		if (stack->type == 5)
-			printf("type : PIPE\n");
+			printf("type : PIPE\n");*/
 		stack = stack->next;
 		puts("");
 	}

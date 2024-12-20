@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 14:35:28 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/17 15:37:41 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:18:11 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		return (NULL);
 	}
 	len = ft_strlen(s);
-	result = (char *)malloc(len + 1);
+	result = (char *)(len + 1);
 	if (!result)
 	{
 		return (NULL);

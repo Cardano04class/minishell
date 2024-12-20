@@ -5,149 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/17 10:24:12 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/25 12:20:53 by mamir            ###   ########.fr       */
+/*   Created: 2024/12/11 09:29:48 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/19 01:04:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int should_merge_with_next(char *current, char *next)
+char	*expand_variable(t_env *env, const char *var_name)
 {
-    if (!next)
-        return (0);
-    
-    size_t cur_len = ft_strlen(current);
-    
-    // Never merge if current is a command (i.e., if it's the first word)
-    if (g_mini.command->cmd[0] == current)
-        return (0);
-        
-    return ((!ft_strchr("'\"", current[0]) && cur_len > 0 && 
-            (current[cur_len - 1] == '\'' || current[cur_len - 1] == '\"')) ||
-            (current[0] != '\'' && current[0] != '\"' && 
-            (next[0] == '\'' || next[0] == '\"')));
-}
+	t_env	*current;
 
-
-char *merge_args(char *arg1, char *arg2)
-{
-    char *merged;
-    size_t len1 = ft_strlen(arg1);
-    size_t len2 = ft_strlen(arg2);
-    
-    merged = malloc(len1 + len2 + 1);
-    if (!merged)
-        return (NULL);
-    
-    ft_strlcpy(merged, arg1, len1 + 1);
-    ft_strlcat(merged, arg2, len1 + len2 + 1);
-    
-    return (merged);
-}
-
-void	remove_empty_arg(int i)
-{
-	free(g_mini.command->cmd[i]);
-	shift_left(i);
-}
-
-void	process_expanded(int i, char *expanded_line)
-{
-	char	*final_line;
-
-	if (!expanded_line)
-		return ;
-	final_line = remove_quotes(expanded_line);
-	free(expanded_line);
-	if (!final_line)
+	current = env;
+	while (current)
 	{
-		free(g_mini.command->cmd[i]);
-		shift_left(i);
-		return ;
+		if (ft_strcmp(current->key, var_name) == 0)
+			return (current->value);
+		current = current->next;
 	}
-	free(g_mini.command->cmd[i]);
-	g_mini.command->cmd[i] = final_line;
+	return ("");
 }
 
-char	*expand_variables(t_env *env, char *line)
+void	split_and_expand_variables(t_env *env, t_list **node)
 {
-	t_parse_state	state;
+	t_list	*current_node;
+	char	*expanded_content;
 
-	init_parse_state(&state, line, env);
-	if (!state.result)
-		return (NULL);
-	while (line[state.i])
+	current_node = *node;
+	expanded_content = remove_quotes_and_expand(env, current_node->content);
+	current_node->content = expanded_content;
+}
+
+void	expand_variables_in_list(t_env *env, t_list **list)
+{
+	t_list	*current;
+	char	*expanded_content;
+
+	current = *list;	
+	
+	while (current)
 	{
-		if (!ensure_buffer_space(&state, 1))
+		if (current->content)
 		{
-			free(state.result);
-			return (NULL);
+			expanded_content = remove_quotes_and_expand(env, current->content);
+			current->content = expanded_content;
 		}
-		process_char(&state);
+		current = current->next;
 	}
-	state.result[state.result_idx] = '\0';
-	return (state.result);
 }
 
-void handle_merged_arg(int *i)
+void	merge_fragmented_nodes(t_list **list)
 {
-    char    *next_arg;
-    char    *merged_arg;
+	t_list	*current;
+	t_list	*next_node;
+	char	*merged_content;
 
-    next_arg = g_mini.command->cmd[*i + 1];
-    // Skip merging if next argument is empty quotes
-    if (next_arg[0] == '\"' && next_arg[1] == '\"')
-        return;
-        
-    if (next_arg[0] == '\"' || next_arg[0] == '\'')
-    {
-        merged_arg = malloc(ft_strlen(next_arg) + 2);
-        if (!merged_arg)
-            return;
-        strcpy(merged_arg, "$");
-        strcat(merged_arg, next_arg);
-        free(g_mini.command->cmd[*i]);
-        g_mini.command->cmd[*i] = merged_arg;
-        shift_left(*i + 1);
-    }
+	current = *list;
+	while (current && current->next)
+	{
+		next_node = current->next;
+		if (next_node->separated_by_space == 0 && next_node->type == WORD && current->type == WORD)
+		{
+			merged_content = _malloc(strlen(current->content)
+					+ ft_strlen(next_node->content) + 1, 'm');
+			ft_strcpy(merged_content, current->content);
+			ft_strcat(merged_content, next_node->content);
+			current->content = merged_content;
+			current->next = next_node->next;
+			if (next_node->next)
+				next_node->next->prev = current;
+			continue ;
+		}
+		current = current->next;
+	}
 }
 
-void expand(t_env *env)
+void	expand(t_env *env, t_list **list)
 {
-    int     i;
-    char    *line;
-    char    *expanded_line;
-    char    *merged_arg;
+	t_list	*current;
 
-    i = 0;
-    while (g_mini.command->cmd[i])
-    {
-        line = g_mini.command->cmd[i];
-        
-        // For the command (i == 0), only do quote removal, no merging
-        if (i == 0)
-        {
-            expanded_line = expand_variables(env, line);
-            process_expanded(i, expanded_line);
-            i++;
-            continue;
-        }
-
-        // For arguments, process normally
-        if (line[0] == '$' && line[1] == '\0' && g_mini.command->cmd[i + 1])
-        {
-            // Handle $ differently - directly join with next argument
-            merged_arg = merge_args("$", g_mini.command->cmd[i + 1]);
-            if (!merged_arg)
-                return;
-            free(g_mini.command->cmd[i]);
-            g_mini.command->cmd[i] = merged_arg;
-            shift_left(i + 1);
-        }
-        
-        expanded_line = expand_variables(env, g_mini.command->cmd[i]);
-        process_expanded(i, expanded_line);
-        i++;
-    }
+	current = *list;
+	merge_export_assignment(list);
+	expand_variables_in_list(env, list);
+	merge_fragmented_nodes(list);
+	while (current->next)
+	{
+		split_and_expand_variables(env, &current);
+		current = current->next;
+	}
 }

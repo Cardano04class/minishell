@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
+/*   Updated: 2024/12/20 09:09:59 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_global	g_mini;
@@ -14,6 +26,22 @@ int	empty_prompt(char *rl)
 	return (i);
 }
 
+void	debug_cmd_after_parser(void)
+{
+	t_cmd *tmp = g_mini.command;
+	while (tmp)
+	{
+		int i = 0;
+		while (tmp->cmd[i])
+		{
+			printf("tmp = %s\n", tmp->cmd[i]);
+			i++;
+		}
+		puts("pipe");
+		tmp = tmp->next;
+	}
+}
+
 void	prompt(char **env)
 {
 	char	*rl;
@@ -23,49 +51,51 @@ void	prompt(char **env)
 	env_list = NULL;
 	list = NULL;
 	ft_env(env, &env_list);
+	g_mini.env = env_list;
+	signal(SIGQUIT, SIG_IGN);
+	g_mini.exit_status = 0;
 	while (1)
 	{
 		g_mini.sig_flag = 0;
-		g_mini.command = malloc(sizeof(t_cmd));
+		g_mini.command = _malloc(sizeof(t_cmd), 'm');
+		g_mini.command->cmd = NULL;
 		g_mini.command->files = NULL;
-		g_mini.command->heredoc = NULL;
 		g_mini.command->next = NULL;
-		
-		signal_handler(IN_PROMPT);
+		signal(SIGINT, handle_sigint);
 		rl = readline("minishell$ ");
-		g_mini.sig_flag = 1;
 		if (rl == NULL)
 		{
 			printf("exit\n");
-			exit(0);
+			g_mini.exit_status = 127;
+			break ;
 		}
 		if (empty_prompt(rl) == 0)
-		{
-			free(rl);
 			continue ;
-		}
 		lexer(rl, &list);
-		syntax_error(list);
-		// ft_lstdisplay(list);
-		parser(list);
-		expand(env_list); // SEGV in the expand(should be fixed piw) :p
-		run_heredoc(g_mini.command);
-		if (!run_builtins(&env_list))
-			run_cmd(g_mini.command, env_list);
+		if (!syntax_error(list))
+		{
+			expand(g_mini.env, &list);
+			parser(list);
+			//printf("filename 1[%s]\n", g_mini.command->files->filename);
+			//printf("filename 2[%s]\n", g_mini.command->files->next->filename);
+			run_heredoc(g_mini.command);
+			execution(g_mini.command);
+		}
 		ft_lstclear(&list);
 		add_history(rl);
-		free(rl);
-		signal_handler(IN_PROMPT);
 	}
-	// rl_clear_history();
+	_malloc(0, 'f');
+	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)
 {
 	(void)av;
 	if (ac == 1)
+	{
 		prompt(env);
+		return (g_mini.exit_status);
+	}
 	else
 		return (1);
-	return (0);
 }

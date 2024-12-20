@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:00:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:40:38 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/08 22:18:10 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	else if (!s2 && s1)
 		return (ft_strdup(s1));
-	s3 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	s3 = _malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 'm');
 	if (!s3)
 		return (NULL);
 	while (s1[i] != '\0')

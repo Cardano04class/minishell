@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 23:46:42 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/25 14:58:00 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/16 13:30:22 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	remove_variable(char *var_name, t_env **list)
 
 	previous = NULL;
 	current = *list;
+	if (ft_strcmp(var_name, "_") == 0)
+		return (0);
 	while (current)
 	{
-		if (strcmp(var_name, current->key) == 0)
+		if (ft_strcmp(var_name, current->key) == 0)
 		{
 			if (previous == NULL)
 				*list = current->next;
 			else
 				previous->next = current->next;
-			free(current->key);
-			free(current->value);
-			free(current);
+			g_mini.exit_status = 0;
 			return (1);
 		}
 		previous = current;
@@ -45,8 +45,11 @@ int	valid_name(char *name, t_env **list)
 	current = *list;
 	while (current)
 	{
-		if (strcmp(name, current->key) == 0)
+		if (ft_strcmp(name, current->key) == 0)
+		{
+			g_mini.exit_status = 0;
 			return (1);
+		}
 		current = current->next;
 	}
 	return (0);
@@ -64,12 +67,16 @@ int	unset(char **args, t_env **env_list)
 	{
 		var_name = args[i];
 		if (!env_exist(env_list, var_name))
-			return 1;
-		if (!valid_name(var_name, env_list))
+		{
+			i++;
 			continue ;
-		if (!remove_variable(var_name, env_list))
-			return 1;
+		}
+		else if (!valid_name(var_name, env_list))
+			return (1);
+		else if (!remove_variable(var_name, env_list))
+			return (1);
 		i++;
 	}
+	g_mini.exit_status = 0;
 	return (0);
 }

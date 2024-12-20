@@ -6,22 +6,24 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:33:30 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/11/26 17:33:56 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 09:10:19 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_heredoc_addback(t_heredoc *new)
+void	ft_heredoc_addback(t_heredoc **heredoc, t_heredoc *new)
 {
 	t_heredoc	*tmp;
 
-	if (g_mini.command->heredoc == NULL)
+	if (!heredoc)
+		return ;
+	if (!*heredoc)
 	{
-		g_mini.command->heredoc = new;
+		(*heredoc) = new;
 		return ;
 	}
-	tmp = g_mini.command->heredoc;
+	tmp = *heredoc;
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;

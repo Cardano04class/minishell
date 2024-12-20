@@ -6,58 +6,13 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:38:20 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/19 09:30:26 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/15 18:00:49 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*ft_export_node(t_env **env_lst, char *name, char *value)
-{
-	t_env	*new_node;
-	t_env	*current;
-
-	new_node = init_export_node(name);
-	if (!new_node)
-		return (NULL);
-	if (set_node_value(new_node, value))
-		return (NULL);
-	if (*env_lst == NULL)
-		*env_lst = new_node;
-	else
-	{
-		current = *env_lst;
-		while (current->next != NULL)
-			current = current->next;
-		current->next = new_node;
-	}
-	return (new_node);
-}
-
-int	handle_existing_node(t_env **lst, char *var_name, char *var_value,
-		int plus_sign)
-{
-	t_env	*existing_node;
-
-	existing_node = env_exist(lst, var_name);
-	if (existing_node)
-	{
-		if (plus_sign != -1)
-			update_env(lst, var_name, var_value, true);
-		else
-			update_env(lst, var_name, var_value, false);
-	}
-	else if (!ft_export_node(lst, var_name, var_value))
-	{
-		perror("Error setting variable:");
-		free(var_name);
-		free(var_value);
-		return (1);
-	}
-	return (0);
-}
-
-int	handle_no_equal_sign(t_env **lst, char *str)
+int	handle_no_equal_sign(t_env **env_list, char *str)
 {
 	char	*var_name;
 	t_env	*existing_node;
@@ -65,18 +20,17 @@ int	handle_no_equal_sign(t_env **lst, char *str)
 	var_name = ft_strdup(str);
 	if (!is_valid_name(var_name))
 	{
-		printf("export: '%s': not a valid identifier\n", var_name);
-		free(var_name);
+		printf("export: not a valid identifier\n");
+		g_mini.exit_status = 1;
 		return (1);
 	}
-	existing_node = env_exist(lst, var_name);
-	if (!existing_node && !ft_export_node(lst, var_name, NULL))
+	existing_node = env_exist(env_list, var_name);
+	if (!existing_node && !ft_export_node(env_list, var_name, NULL))
 	{
 		perror("failed adding variable\n");
-		free(var_name);
+		g_mini.exit_status = 1;
 		return (1);
 	}
-	free(var_name);
 	return (0);
 }
 
@@ -92,23 +46,28 @@ int	set_env(t_env **lst, char *str)
 	return (handle_equal_sign(lst, str, equal_sign, plus_sign));
 }
 
-int	export(char **args, t_env **lst)
+int	export(t_env **env_list, char **args)
 {
 	int		i;
 	t_env	*sorted;
+	int		status;
 
+	status = 0;
 	sorted = NULL;
 	if (args[1] == NULL)
 	{
-		sorted = sort_env(*lst);
+		sorted = sort_env(*env_list);
 		print_export(sorted);
+		g_mini.exit_status = 0;
 		return (0);
 	}
 	i = 1;
 	while (args[i])
 	{
-		set_env(lst, args[i]);
+		if (set_env(env_list, args[i]) != 0)
+			status = 1;
 		i++;
 	}
+	g_mini.exit_status = status;
 	return (0);
 }

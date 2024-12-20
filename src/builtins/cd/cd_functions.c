@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:49:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/11/13 15:05:25 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/14 23:25:12 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ void	cd_home(char *home)
 {
 	if (home == NULL)
 	{
-		fprintf(stderr, "cd: HOME not set\n");
+		ft_putstr_fd("cd: HOME not set\n", 2);
+		g_mini.exit_status = 1;
 		return ;
 	}
 	if (chdir(home) != 0)
 		perror("cd");
+	else
+		g_mini.exit_status = 0;
 }
 
 void	cd_oldpwd(t_env *oldpwd_env)
@@ -33,19 +36,25 @@ void	cd_oldpwd(t_env *oldpwd_env)
 		}
 		else
 		{
+			g_mini.exit_status = 1;
 			perror("cd");
 		}
 	}
 	else
 	{
-		fprintf(stderr, "cd: OLDPWD not set\n");
+		g_mini.exit_status = 1;
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
 	}
 }
 
 void	cd_path(const char *path)
 {
 	if (chdir(path) != 0)
+	{
 		perror("cd");
+	}
+	else
+		g_mini.exit_status = 0;
 }
 
 void	update_pwd_env(t_env **env, t_env *pwd_env, char *cwd)
@@ -64,7 +73,7 @@ t_env	*find_env_var(t_env *env, const char *name)
 {
 	while (env)
 	{
-		if (strcmp(env->key, name) == 0)
+		if (ft_strcmp(env->key, name) == 0)
 			return (env);
 		env = env->next;
 	}

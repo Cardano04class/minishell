@@ -3,41 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 01:50:31 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:38:55 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/18 21:48:01 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	minmaxcheck(long v, char **string, int *all_nums)
+void	minmaxcheck(long v)
 {
 	if (v > INT_MAX || v < INT_MIN)
 	{
-		write(2, "Error\n", 6);
-		ft_free(string);
-		free(all_nums);
+		_malloc(0, 'f');
 		exit(1);
 	}
 }
 
-void	digitcheck(char *str, int i, char **string, int *all_nums)
+void	digitcheck(char *str, int i)
 {
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i++]))
 		{
-			write(2, "Error\n", 6);
-			ft_free(string);
-			free(all_nums);
+			_malloc(0, 'f');
 			exit(1);
 		}
 	}
 }
 
-int	ft_atoi(char *str, char **string, int *all_nums)
+int	ft_atoi(char *str)
 {
 	int		i;
 	long	v;
@@ -57,10 +53,10 @@ int	ft_atoi(char *str, char **string, int *all_nums)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		v = v * 10 + (str[i] - 48);
-		minmaxcheck((v * s), string, all_nums);
+		minmaxcheck((v * s));
 		i++;
 	}
-	digitcheck(str, i, string, all_nums);
+	digitcheck(str, i);
 	v *= s;
 	return (v);
 }
