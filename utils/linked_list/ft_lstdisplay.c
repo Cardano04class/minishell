@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdisplay.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:18:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/19 00:04:22 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 22:47:12 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,6 @@ void	ft_lstdisplay(t_list *stack)
 	while (stack != NULL)
 	{
 		printf("content : [%s]\n", stack->content);
-		/*if (stack->prev != NULL)
-			printf("prev content : %s\n", stack->prev->content);
-		if (stack->type == 0)
-			printf("type : WORD\n");
-		if (stack->type == 1)
-			printf("type : INRED\n");
-		if (stack->type == 2)
-			printf("type : OUTRED\n");
-		if (stack->type == 3)
-			printf("type : APPEND\n");
-		if (stack->type == 4)
-			printf("type : HERDOC\n");
-		if (stack->type == 5)
-			printf("type : PIPE\n");*/
 		stack = stack->next;
 		puts("");
 	}

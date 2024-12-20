@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 17:42:05 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 22:49:40 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	if_executable(char *str)
 void	check_if_redirection_file_valid(t_file *file)
 {
 	struct stat	path_stat;
-	
+
 	if (file->filename[0] == '\0')
 	{
 		write(2, file->filename, ft_strlen(file->filename));

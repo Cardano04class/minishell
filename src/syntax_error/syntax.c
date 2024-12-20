@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 23:03:37 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 18:36:44 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	print_error(t_error error)
 		ft_putstr_fd("'\n", 2);
 	}
 	else if (error.type == CONSECUTIVE_SPECIAL)
-		ft_putstr_fd("syntax error: consecutive special symbols\n", 2);
+		ft_putstr_fd("syntax error near unexpected token \n", 2);
 	else
 		ft_putstr_fd("syntax error: unknown error\n", 2);
 }

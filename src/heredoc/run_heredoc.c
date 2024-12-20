@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_heredoc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:51:02 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 09:51:21 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 22:48:37 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	heredoc_prompt(t_cmd *command, int fd)
 	}
 	return (fd);
 }
+
 void	check_command_files(t_cmd *command, int *fd)
 {
 	while (command->files != NULL)
@@ -58,6 +59,7 @@ void	check_command_files(t_cmd *command, int *fd)
 		command->files = command->files->next;
 	}
 }
+
 void	run_heredoc(t_cmd *command)
 {
 	int		fd;
