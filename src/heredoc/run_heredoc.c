@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:51:02 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 01:40:55 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 09:51:21 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,20 @@ int	heredoc_prompt(t_cmd *command, int fd)
 	}
 	return (fd);
 }
-
+void	check_command_files(t_cmd *command, int *fd)
+{
+	while (command->files != NULL)
+	{
+		if (command->files->type == HEREDOC)
+		{
+			*fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
+			if (*fd == -1)
+				(_malloc(0, 'f'), exit(1));
+			heredoc_prompt(command, *fd);
+		}
+		command->files = command->files->next;
+	}
+}
 void	run_heredoc(t_cmd *command)
 {
 	int		fd;
@@ -57,17 +70,7 @@ void	run_heredoc(t_cmd *command)
 	{
 		while (command != NULL)
 		{
-			while (command->files != NULL)
-			{
-				if (command->files->type == HEREDOC)
-				{
-					fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
-					if (fd == -1)
-						(_malloc(0, 'f'), exit(1));
-					heredoc_prompt(command, fd);
-				}
-				command->files = command->files->next;
-			}
+			check_command_files(command, &fd);
 			command = command->next;
 		}
 		close(fd);
