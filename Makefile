@@ -7,6 +7,8 @@ SRC = ./src/main.c \
 		./src/syntax_error/syntax.c \
 		./src/syntax_error/syntax_1.c \
 		./src/expand/expand.c \
+		./src/expand/calculation_1.c \
+		./src/expand/calculation_2.c \
 		./src/expand/merge_export.c \
 		./src/expand/remove_quotes.c \
 		./src/parsing/parser.c \
@@ -24,6 +26,7 @@ SRC = ./src/main.c \
 		./src/builtins/cd/cd_functions.c \
 		./src/builtins/exit/exit.c \
 		./src/builtins/exit/exit_1.c \
+		./src/builtins/exit/exit_2.c \
 		./src/builtins/export/export.c \
 		./src/builtins/export/export_1.c \
 		./src/builtins/export/export_2.c \
@@ -80,6 +83,7 @@ SRC = ./src/main.c \
 		./utils/libft/ft_memmove.c \
 		./utils/libft/ft_memset.c \
 		./utils/libft/ft_atoi.c \
+		./utils/libft/ft_atol.c \
 		./utils/libft/ft_itoa.c \
 		./utils/libft/ft_isdigit.c \
 

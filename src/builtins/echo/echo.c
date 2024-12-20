@@ -6,38 +6,53 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/17 22:42:31 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 18:21:08 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_arguments(char **args, int i, int last_arg, bool n_option)
+int	n_case(char *args, int *i, bool *n_option, int last)
 {
-	while (args[i])
+	if (is_n_option(args) && *i < last)
 	{
-		print_argument(args[i]);
-		print_separator(n_option, i, last_arg);
-		i++;
+		*n_option = true;
+		(*i)++;
+		return (1);
 	}
+	*n_option = false;
+	return (0);
+}
+
+int	get_last_arg(char **args)
+{
+	int	last_arg;
+
+	last_arg = 0;
+	while (args[last_arg])
+		last_arg++;
+	return (last_arg);
 }
 
 int	echo(char **args)
 {
 	int		i;
 	bool	n_option;
-	int		last_arg;
 
-	if (!args[1])
-	{
-		write(1, "\n", 1);
-		return (0);
-	}
-	n_option = false;
 	i = 1;
-	last_arg = count_arguments(args);
-	i = handle_n_option(args, i, &n_option);
-	print_arguments(args, i, last_arg, n_option);
+	n_option = false;
+	while (args[i] && is_n_option(args[i]))
+	{
+		n_option = true;
+		i++;
+	}
+	while (args[i])
+	{
+		print_argument(args[i]);
+		if (args[i + 1])
+			write(1, " ", 1);
+		i++;
+	}
 	if (!n_option)
 		write(1, "\n", 1);
 	return (0);

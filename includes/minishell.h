@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/20 01:06:20 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:29:29 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_lexer
 typedef struct s_var
 {
 	int					i;
+	int					j;
+	int					status_len;
 	int					in_single_quote;
 	int					in_double_quote;
 	int					name_len;
@@ -85,6 +87,7 @@ typedef struct s_var
 typedef struct s_list
 {
 	char				*content;
+	char				*non_var;
 	t_token				type;
 	struct s_list		*next;
 	struct s_list		*prev;
@@ -180,6 +183,7 @@ typedef struct s_global
 extern t_global			g_mini;
 
 /*--------shell---------*/
+void					init_var(t_var *var);
 void					lexer(char *str, t_list **lst);
 int						syntax_error(t_list *list);
 void					parser(t_list *lst);
@@ -199,6 +203,10 @@ int						is_last_command(t_cmd *current);
 void					handle_exit_error(char *arg);
 void					handle_too_many_arguments(void);
 void					exit_with_status(int status);
+int						is_overflow(const char *num_start, const char *limit);
+const char				*skip_leading(const char *arg, int *sign);
+int						check_overflow(const char *arg, int sign);
+int						validate_chars(const char *arg, size_t *num_count);
 /*-------------CD----------------*/
 t_env					*find_env_var(t_env *env, const char *name);
 void					update_env_var(t_env **env, const char *name,
@@ -209,9 +217,7 @@ void					cd_path(const char *path);
 /*------------------------------Echo----------------------------*/
 bool					is_n_option(char *str);
 int						print_argument(char *arg);
-void					print_separator(bool n_option, int i, int last_arg);
-int						count_arguments(char **args);
-int						handle_n_option(char **args, int i, bool *n_option);
+void					print_arguments_one_at_a_time(char **args, int i);
 /*---------------Export_helpers-----------*/
 void					print_export(t_env *env);
 t_env					*create_env_node(const t_env *current);
@@ -238,8 +244,19 @@ int						handle_existing_node(t_env **env_list, char *var_name,
 							char *var_value, int plus_sign);
 /*------------Expand-----------------*/
 void					expand(t_env *env, t_list **list);
+char					*remove_quotes_and_expand(t_env *env, char *content);
 void					merge_export_assignment(t_list **list);
-// char					*remove_quotes_and_expand(t_env *env, char *content);
+void					handle_dollar_case(t_var *var, char *content,
+							t_env *env);
+int						single_quotes_skip(char *content, int *i, t_var *var);
+int						double_quotes_skip(char *content, int *i, t_var *var);
+int						handle_quotes(t_var *var, char *content);
+int						calculate_expand_length(char *content, t_env *env);
+void					process_char(t_var *var);
+void					name_length(char *content, int *i, t_env *env,
+							t_var *var);
+int						exit_status_len(char *content, t_var *var, int *i);
+int						lone_dollar_case(char *content, t_var *var, int *i);
 /*--------------Syntax_error-----------------*/
 int						is_special(t_list *token);
 t_error					create_error(t_error_type type, char *token);
@@ -269,7 +286,6 @@ int						print_env(t_env *env_lst);
 char					*get_env(t_env *env, const char *name);
 
 char					*heredoc_expand(t_env *env, char *content);
-char					*remove_quotes_and_expand(t_env *env, char *content);
 char					*expand_variable(t_env *env, const char *var_name);
 bool					set_redirections(t_file *file);
 void					run_heredoc(t_cmd *command);
@@ -357,5 +373,5 @@ void					handle_word_token(t_parser *vars, t_list *lst);
 void					create_next_command_tokens(t_parser *vars, t_list *lst);
 void					intialise_vars(t_parser *vars, t_list *lst);
 void					parser(t_list *lst);
-
+long					ft_atol(char *str);
 #endif

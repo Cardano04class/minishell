@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/20 01:05:49 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:00:24 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,10 @@ void	prompt(char **env)
 {
 	char	*rl;
 	t_list	*list;
-	t_env	*env_list;
 
-	env_list = NULL;
+	g_mini.env = NULL;
 	list = NULL;
-	ft_env(env, &env_list);
-	g_mini.env = env_list;
+	ft_env(env, &g_mini.env);
 	signal(SIGQUIT, SIG_IGN);
 	g_mini.exit_status = 0;
 	while (1)
@@ -85,7 +83,6 @@ void	prompt(char **env)
 		add_history(rl);
 	}
 	_malloc(0, 'f');
-	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)
