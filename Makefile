@@ -1,6 +1,7 @@
 NAME = minishell
 
-SRC = ./src/main.c \
+SRC = ./src/main/main.c \
+ 		./src/main/prompt_core.c \
 		./src/lexer/lexer.c \
 		./src/lexer/lexer_machine_states.c \
 		./src/lexer/lexer_utils.c \
