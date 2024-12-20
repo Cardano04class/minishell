@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 15:37:20 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 17:00:03 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,12 @@ typedef struct s_error
 	t_error_type		type;
 	char				*token;
 }						t_error;
+typedef struct s_garbage
+{
+	void				*ptr;
+	struct s_garbage	*next;
+}						t_garbage;
+
 typedef struct s_global
 {
 	char				**default_env;
@@ -174,13 +180,8 @@ typedef struct s_global
 	char				*last_cmd;
 }						t_global;
 
-typedef struct s_garbage
-{
-	void				*ptr;
-	struct s_garbage	*next;
-}						t_garbage;
-
 extern t_global			g_mini;
+
 /*--------shell---------*/
 void					init_var(t_var *var);
 void					lexer(char *str, t_list **lst);
@@ -275,7 +276,7 @@ void					ft_lstaddfront(t_list **lst, t_list *new);
 void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
-void					ft_file_addback(t_file *new);
+void					ft_file_addback(t_file *new, t_cmd *command);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
@@ -335,6 +336,7 @@ int						execute_pipe(t_cmd *command);
 void					check_if_cmd_valid(t_cmd *command);
 int						execution(t_cmd *command);
 int						is_builtins(t_cmd *command);
+void					check_if_redirection_file_valid(t_file *file);
 
 /*------------run_heredoc---------------*/
 
@@ -364,8 +366,8 @@ void					run_heredoc(t_cmd *command);
 
 char					*heredoc_filename(void);
 int						cmd_argument_size(t_list *lst);
-void					create_heredoc_file(t_list *lst);
-void					create_in_out_file(t_list *lst);
+void					create_heredoc_file(t_list *lst, t_cmd *command);
+void					create_in_out_file(t_list *lst, t_cmd *command);
 void					process_command_arguments(t_list *lst, t_parser *vars);
 void					handle_word_token(t_parser *vars, t_list *lst);
 void					create_next_command_tokens(t_parser *vars, t_list *lst);

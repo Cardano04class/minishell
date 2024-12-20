@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:38:01 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 15:37:40 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 17:00:32 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	handle_exit_error(char *arg)
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
+	_malloc(0, 'f');
 	exit(2);
 }
 
@@ -58,5 +59,6 @@ void	handle_too_many_arguments(void)
 void	exit_with_status(int status)
 {
 	ft_putstr_fd("exit\n", 2);
+	_malloc(0, 'f');
 	exit(status);
 }

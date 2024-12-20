@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 17:14:26 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 17:00:24 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ int	empty_prompt(char *rl)
 		i++;
 	}
 	return (i);
+}
+
+void	debug_cmd_after_parser(void)
+{
+	t_cmd *tmp = g_mini.command;
+	while (tmp)
+	{
+		int i = 0;
+		while (tmp->cmd[i])
+		{
+			printf("tmp = %s\n", tmp->cmd[i]);
+			i++;
+		}
+		puts("pipe");
+		tmp = tmp->next;
+	}
 }
 
 void	prompt(char **env)
@@ -58,9 +74,10 @@ void	prompt(char **env)
 		{
 			expand(g_mini.env, &list);
 			parser(list);
+			//printf("filename 1[%s]\n", g_mini.command->files->filename);
+			//printf("filename 2[%s]\n", g_mini.command->files->next->filename);
 			run_heredoc(g_mini.command);
-			if (g_mini.command->cmd[0] != NULL)
-				execution(g_mini.command);
+			execution(g_mini.command);
 		}
 		ft_lstclear(&list);
 		add_history(rl);

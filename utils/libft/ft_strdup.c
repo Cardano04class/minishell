@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 21:28:01 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/19 13:15:50 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 17:00:41 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s1)
 	char	*s2;
 
 	i = 0;
+	if (s1 == NULL)
+		return NULL;
 	s2 = _malloc(ft_strlen(s1) + 1, 'm');
 	if (!s2)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 16:40:15 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:03:29 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_env	*ft_dashcase(char *name)
 	cmd_argv = g_mini.command->cmd;
 	while (cmd_argv[i + 1] != NULL)
 		i++;
-	if (i > 0)
+	if (i >= 0)
 	{
 		while (env != NULL)
 		{
@@ -41,6 +41,7 @@ bool	set_redirections(t_file *file)
 
 	while (file)
 	{
+		check_if_redirection_file_valid(file);
 		if (file->type == INRED || file->type == HEREDOC)
 			fd = open(file->filename, O_RDONLY | O_CREAT, 0644);
 		else if (file->type == OUTRED)
@@ -48,7 +49,7 @@ bool	set_redirections(t_file *file)
 		else if (file->type == APPEND)
 			fd = open(file->filename, O_APPEND | O_WRONLY | O_CREAT, 0644);
 		if (fd == -1)
-			return (perror("minishell$"), false);
+			return (perror(""), false);
 		if (file->type == INRED || file->type == HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		else
@@ -87,7 +88,30 @@ void	if_executable(char *str)
 	{
 		write(2, str, ft_strlen(str));
 		write(2, ": Permission denied\n", 20);
+		_malloc(0, 'f');
 		g_mini.exit_status = 126;
+		exit(g_mini.exit_status);
+	}
+}
+
+void	check_if_redirection_file_valid(t_file *file)
+{
+	struct stat	path_stat;
+	
+	if (file->filename[0] == '\0')
+	{
+		write(2, file->filename, ft_strlen(file->filename));
+		write(2, ": ambiguous redirect\n", 21);
+		_malloc(0, 'f');
+		g_mini.exit_status = 1;
+		exit(g_mini.exit_status);
+	}
+	if (stat(file->filename, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+	{
+		write(2, file->filename, ft_strlen(file->filename));
+		write(2, ": Is a directory\n", 17);
+		_malloc(0, 'f');
+		g_mini.exit_status = 1;
 		exit(g_mini.exit_status);
 	}
 }
@@ -100,6 +124,7 @@ void	check_if_cmd_valid(t_cmd *command)
 	{
 		write(2, command->cmd[0], ft_strlen(command->cmd[0]));
 		write(2, ": Is a directory\n", 17);
+		_malloc(0, 'f');
 		g_mini.exit_status = 126;
 		exit(g_mini.exit_status);
 	}
