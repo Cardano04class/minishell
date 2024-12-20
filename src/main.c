@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:49:16 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 03:31:07 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 01:05:49 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	prompt(char **env)
 		{
 			expand(g_mini.env, &list);
 			parser(list);
+			//printf("filename 1[%s]\n", g_mini.command->files->filename);
+			//printf("filename 2[%s]\n", g_mini.command->files->next->filename);
 			run_heredoc(g_mini.command);
 			execution(g_mini.command);
 		}

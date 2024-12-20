@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:51:02 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 21:46:29 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 01:40:55 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,20 @@ void	run_heredoc(t_cmd *command)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		while (command->files != NULL)
+		while (command != NULL)
 		{
-			if (command->files->type == HEREDOC)
+			while (command->files != NULL)
 			{
-				fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
-				if (fd == -1)
-					(_malloc(0, 'f'), exit(1));
-				heredoc_prompt(command, fd);
+				if (command->files->type == HEREDOC)
+				{
+					fd = open(command->files->filename, O_WRONLY | O_CREAT, 0777);
+					if (fd == -1)
+						(_malloc(0, 'f'), exit(1));
+					heredoc_prompt(command, fd);
+				}
+				command->files = command->files->next;
 			}
-			command->files = command->files->next;
+			command = command->next;
 		}
 		close(fd);
 		_malloc(0, 'f');

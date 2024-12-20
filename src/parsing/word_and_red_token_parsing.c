@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 17:52:01 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/19 02:23:52 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 01:03:36 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,21 @@ char	*heredoc_filename(void)
 	return (file_name);
 }
 
-void	create_heredoc_file(t_list *lst)
+void	create_heredoc_file(t_list *lst, t_cmd *command)
 {
 	char	*name;
 
 	name = heredoc_filename();
 	name = ft_strjoin("/tmp/", name);
 	ft_file_addback(ft_file_new(name, lst->prev->type,
-			ft_strdup(lst->content)));
+			ft_strdup(lst->content)), command);
 }
 
-void	create_in_out_file(t_list *lst)
+void	create_in_out_file(t_list *lst, t_cmd *command)
 {
 	ft_file_addback(ft_file_new(ft_strdup(lst->content), lst->prev->type,
-			NULL));
+			NULL), command);
+			
 }
 
 void	process_command_arguments(t_list *lst, t_parser *vars)
@@ -72,9 +73,9 @@ void	handle_word_token(t_parser *vars, t_list *lst)
 	if (vars->state == STATE_REDIRECTION)
 	{
 		if (lst->prev->type == HEREDOC)
-			create_heredoc_file(lst);
+			create_heredoc_file(lst, vars->tmp_cmd);
 		else
-			create_in_out_file(lst);
+			create_in_out_file(lst, vars->tmp_cmd);
 		vars->state = STATE_DEFAULT;
 	}
 	else

@@ -21,21 +21,21 @@
 - I need to fix these cases :
              |   minishell$ "ls"|wc -l									
              |   ls|wc: command not found								
-  [ DONE ]   |   minishell$ bash										
+[ DONE ]     |   minishell$ bash										
              |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ "ls"|wc -l	
              |   12														
              |   mobouifr@e1r1p7:~/Desktop/MINISHELL$ 
 
 
              |  minishell$ ls >out
-  [ DONE ]   |  includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
+[ DONE ]     |  includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
              |  minishell$ ^C
 				
              |   minishell$ ls
              |   includes  Makefile  minishell  readline.supp  README.md  src  toFix.txt  utils
              |   minishell$ echo $_
              |   /home/mobouifr/Desktop/MINISHELL/./minishell
-  [ DONE ]   |   minishell$ ls -a
+[ DONE ]     |   minishell$ ls -a
              |   .   .DS_Store  .gitignore  Makefile   readline.supp  src	utils
              |   ..  .git       includes    minishell  README.md      toFix.txt	.vscode
              |   minishell$ echo $_
@@ -43,5 +43,20 @@
              |   minishell$ 
 
 
-             |   minishell$ ls > $adas
+             |   minishell$ ls > $adas (ambiguous file test)
+
+             |   minishell$ echo "lssss" > out | ls -a > out1
+             |   .   .DS_Store  .gitignore  Makefile   out   readline.supp  src	      utils
+[ DONE ]     |   ..  .git       includes    minishell  out1  README.md	   toFix.txt  .vscode
+             |   minishell$ cat out
+             |   minishell$ cat out1
+             |   lssss
+
+
+             |   minishell$ cat << p -e | cat << l
+[ DONE ]     |   >ppp
+             |   >p
+             |   minishell$ 
+
+
 

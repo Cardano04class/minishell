@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 03:52:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/20 01:06:20 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ void					ft_lstaddfront(t_list **lst, t_list *new);
 void					ft_lstaddback(t_list **lst, t_list *new);
 void					ft_env_addback(t_env **lst, t_env *new);
 void					ft_cmd_addback(t_cmd **command, t_cmd *new);
-void					ft_file_addback(t_file *new);
+void					ft_file_addback(t_file *new, t_cmd *command);
 int						ft_lstsize(t_list *lst);
 int						ft_envsize(t_env *env);
 void					ft_lstdisplay(t_list *stack);
@@ -350,8 +350,8 @@ void					run_heredoc(t_cmd *command);
 
 char					*heredoc_filename(void);
 int						cmd_argument_size(t_list *lst);
-void					create_heredoc_file(t_list *lst);
-void					create_in_out_file(t_list *lst);
+void					create_heredoc_file(t_list *lst, t_cmd *command);
+void					create_in_out_file(t_list *lst, t_cmd *command);
 void					process_command_arguments(t_list *lst, t_parser *vars);
 void					handle_word_token(t_parser *vars, t_list *lst);
 void					create_next_command_tokens(t_parser *vars, t_list *lst);
