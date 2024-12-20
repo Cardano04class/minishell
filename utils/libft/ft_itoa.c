@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 09:58:36 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:17:41 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 17:01:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ char	*ft_itoa(int n)
 {
 	int		len;
 	char	*p;
-	int		i;
 	int		j;
 	long	nb;
 
-	i = 0;
 	j = 0;
 	nb = (long)n;
 	if (nb < 0)

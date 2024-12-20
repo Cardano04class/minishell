@@ -6,20 +6,21 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 00:12:03 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 13:12:14 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 18:21:08 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	n_case(char *args, int *i, bool *n_option)
+int	n_case(char *args, int *i, bool *n_option, int last)
 {
-	if (is_n_option(args))
+	if (is_n_option(args) && *i < last)
 	{
 		*n_option = true;
 		(*i)++;
 		return (1);
 	}
+	*n_option = false;
 	return (0);
 }
 
@@ -40,17 +41,15 @@ int	echo(char **args)
 
 	i = 1;
 	n_option = false;
-	if (!args[1])
+	while (args[i] && is_n_option(args[i]))
 	{
-		write(1, "\n", 1);
-		return (0);
+		n_option = true;
+		i++;
 	}
 	while (args[i])
 	{
-		if (n_case(args[i], &i, &n_option))
-			continue ;
 		print_argument(args[i]);
-		if (i < get_last_arg(args) - 1 && !n_option)
+		if (args[i + 1])
 			write(1, " ", 1);
 		i++;
 	}

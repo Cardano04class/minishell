@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:54:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/19 13:12:27 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/20 17:47:23 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ bool	is_n_option(char *str)
 	j = 2;
 	while (str[j] == 'n')
 		j++;
-	if (str[j] == '\0')
-		return (true);
-	return (false);
+	return (str[j] == '\0');
 }
 
 int	print_argument(char *arg)
