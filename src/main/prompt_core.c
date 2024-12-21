@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_core.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:10:44 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 22:44:04 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 01:00:08 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	empty_prompt(char *rl)
 	int	i;
 
 	i = 0;
-	while (rl[i] && (rl[i] != ' ' && rl[i] != '\t'))
+	while (rl[i] != '\0' || (rl[i] == ' ' && rl[i] == '\t'))
 	{
 		i++;
 	}

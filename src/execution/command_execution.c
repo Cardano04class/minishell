@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:12 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 17:24:11 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:04:23 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,26 @@ int	run_builtins(t_env **env, t_cmd *command)
 
 int	execute_command(t_cmd *command)
 {
+	pid_t	original_stdin;
+	pid_t	original_stdout;
+
 	g_mini.sig_flag = 1;
-	if (is_builtins(command))
-		run_builtins(&g_mini.env, command);
-	else
-		run_command(command);
+	if (command->cmd[0] != NULL)
+	{
+		if (is_builtins(command))
+			run_builtins(&g_mini.env, command);
+		else
+			run_command(command);
+	}
+	else if (command->cmd[0] == NULL && command->files != NULL)
+	{
+		original_stdin = dup(STDIN_FILENO);
+		original_stdout = dup(STDOUT_FILENO);
+		set_redirections(command->files);
+		dup2(original_stdin, STDIN_FILENO);
+		dup2(original_stdout, STDOUT_FILENO);
+		close(original_stdin);
+		close(original_stdout);
+	}
 	return (0);
 }

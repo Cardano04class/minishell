@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 22:49:40 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 01:04:18 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_env	*ft_dashcase(char *name)
-{
-	int		i;
-	t_env	*env;
-	char	**cmd_argv;
-
-	i = 0;
-	env = g_mini.env;
-	cmd_argv = g_mini.command->cmd;
-	while (cmd_argv[i + 1] != NULL)
-		i++;
-	if (i >= 0)
-	{
-		while (env != NULL)
-		{
-			if (ft_strcmp(env->key, name) == 0)
-				env->value = ft_strdup(cmd_argv[i]);
-			env = env->next;
-		}
-	}
-	return (NULL);
-}
 
 bool	set_redirections(t_file *file)
 {
@@ -86,7 +63,6 @@ void	if_executable(char *str)
 {
 	if (access(str, X_OK) != 0)
 	{
-		puts("case 1");
 		write(2, str, ft_strlen(str));
 		write(2, ": Permission denied\n", 20);
 		_malloc(0, 'f');
@@ -102,7 +78,7 @@ void	check_if_redirection_file_valid(t_file *file)
 	if (file->filename[0] == '\0')
 	{
 		write(2, file->filename, ft_strlen(file->filename));
-		write(2, ": ambiguous redirect\n", 21);
+		write(2, ": No such file or directory\n", 28);
 		_malloc(0, 'f');
 		g_mini.exit_status = 1;
 		exit(g_mini.exit_status);

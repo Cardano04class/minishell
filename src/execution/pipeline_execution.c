@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:32 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 17:26:25 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:04:12 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,29 @@
 
 #define WRITE 1
 #define READ 0
+
+t_env	*ft_dashcase(char *name)
+{
+	int		i;
+	t_env	*env;
+	char	**cmd_argv;
+
+	i = 0;
+	env = g_mini.env;
+	cmd_argv = g_mini.command->cmd;
+	while (cmd_argv[i + 1] != NULL)
+		i++;
+	if (i >= 0)
+	{
+		while (env != NULL)
+		{
+			if (ft_strcmp(env->key, name) == 0)
+				env->value = ft_strdup(cmd_argv[i]);
+			env = env->next;
+		}
+	}
+	return (NULL);
+}
 
 int	first_child(pid_t *pid, t_cmd *command, int *fd)
 {
@@ -65,7 +88,8 @@ int	execute_pipe(t_cmd *command)
 
 int	execution(t_cmd *command)
 {
-	ft_dashcase("_");
+	if (command->cmd[0] != NULL)
+		ft_dashcase("_");
 	if (command->next)
 	{
 		g_mini.exit_pipe = 1;
