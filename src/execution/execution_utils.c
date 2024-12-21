@@ -18,7 +18,7 @@ bool	set_redirections(t_file *file, t_cmd *command)
 
 	while (file)
 	{
-		if(command->cmd[0] != NULL)
+		if (command->cmd[0] != NULL)
 			check_if_redirection_file_valid(file);
 		if (file->type == INRED || file->type == HEREDOC)
 			fd = open(file->filename, O_RDONLY | O_CREAT, 0644);
