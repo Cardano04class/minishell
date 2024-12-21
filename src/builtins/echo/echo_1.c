@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 22:54:54 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/20 17:47:23 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 09:29:35 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,4 @@ int	print_argument(char *arg)
 	}
 	g_mini.exit_status = 0;
 	return (1);
-}
-
-void	print_arguments_one_at_a_time(char **args, int i)
-{
-	if (args[i])
-	{
-		print_argument(args[i]);
-	}
 }
