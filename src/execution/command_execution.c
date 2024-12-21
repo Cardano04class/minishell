@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:12 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/21 01:04:23 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 10:29:05 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	run_builtins(t_env **env, t_cmd *command)
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
 	set_redirections(command->files);
-	if (strcmp("echo", command->cmd[0]) == 0)
+	if (ft_strcmp("echo", command->cmd[0]) == 0)
 		echo(command->cmd);
 	else if (ft_strcmp("export", command->cmd[0]) == 0)
 		export(env, command->cmd);
