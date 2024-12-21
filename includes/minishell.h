@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/20 22:45:04 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 09:18:17 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ int						syntax_error(t_list *list);
 void					parser(t_list *lst);
 /*--------------Builtins----------*/
 int						run_builtins(t_env **env, t_cmd *command);
+char					*remove_leading_spaces(char *str);
 int						echo(char **args);
 void					cd(t_env **env, char **args);
 void					pwd(t_env **env);

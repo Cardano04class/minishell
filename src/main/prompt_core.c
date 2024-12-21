@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:10:44 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 22:44:04 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 09:17:21 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	empty_prompt(char *rl)
 {
-	int	i;
+	char	*str;
+	int		i;
 
 	i = 0;
-	while (rl[i] && (rl[i] != ' ' && rl[i] != '\t'))
-	{
-		i++;
-	}
-	return (i);
+	str = remove_leading_spaces(rl);
+	if (str[i] == '\0')
+		return (1);
+	return (0);
 }
 
 void	intialise_prompt_variables(void)
@@ -69,7 +69,7 @@ void	prompt(char **env)
 		rl = readline("minishell$ ");
 		if (rl_is_null(rl))
 			break ;
-		if (empty_prompt(rl) == 0)
+		if (empty_prompt(rl))
 			continue ;
 		lexer(rl, &list);
 		if (!syntax_error(list))

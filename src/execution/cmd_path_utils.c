@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_path_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:02 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/18 21:59:04 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 09:17:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,13 @@ char	*find_path(char *cmd, t_env *env)
 		j++;
 	}
 	return (NULL);
+}
+
+char	*remove_leading_spaces(char *str)
+{
+	while (*str && isspace((unsigned char)*str))
+	{
+		str++;
+	}
+	return (str);
 }
