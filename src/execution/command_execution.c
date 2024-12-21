@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:12 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/21 10:29:05 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 10:57:36 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	run_command(t_cmd *command)
 	{
 		check_if_cmd_valid(command);
 		signal(SIGQUIT, SIG_DFL);
-		set_redirections(command->files);
+		set_redirections(command->files, command);
 		if (ft_strchr(command->cmd[0], '/') || !get_env(g_mini.env, "PATH")
 			|| !*get_env(g_mini.env, "PATH"))
 			execute_without_path(command);
@@ -83,7 +83,7 @@ int	run_builtins(t_env **env, t_cmd *command)
 
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
-	set_redirections(command->files);
+	set_redirections(command->files, command);
 	if (ft_strcmp("echo", command->cmd[0]) == 0)
 		echo(command->cmd);
 	else if (ft_strcmp("export", command->cmd[0]) == 0)
@@ -122,7 +122,7 @@ int	execute_command(t_cmd *command)
 	{
 		original_stdin = dup(STDIN_FILENO);
 		original_stdout = dup(STDOUT_FILENO);
-		set_redirections(command->files);
+		set_redirections(command->files, command);
 		dup2(original_stdin, STDIN_FILENO);
 		dup2(original_stdout, STDOUT_FILENO);
 		close(original_stdin);
