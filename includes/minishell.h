@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/21 11:11:19 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 12:07:11 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,8 @@ int						lone_dollar_case(char *content, t_var *var, int *i);
 int						is_special(t_list *token);
 t_error					create_error(t_error_type type, char *token);
 t_error					check_quotes(char *str);
+int						is_pipe(t_list *token);
+int						is_redirection(t_list *token);
 ////////////////////..LINKED LIST FUNCTIONS../////////////////////
 t_list					*ft_lstnew(char *content, t_token type);
 t_list					*ft_lstnew_2(char *content, t_token type,

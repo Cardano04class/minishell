@@ -89,7 +89,7 @@ SRC = ./src/main/main.c \
 		./utils/libft/ft_isdigit.c \
 
 CC = cc $(INC)
-CFLAGS = #-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

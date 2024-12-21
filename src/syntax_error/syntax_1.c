@@ -6,18 +6,26 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:19:36 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/15 23:02:59 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 12:08:34 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	is_pipe(t_list *token)
+{
+	return (token && token->type == PIPE);
+}
+
+int	is_redirection(t_list *token)
+{
+	return (token && (token->type == INRED || token->type == OUTRED
+			|| token->type == APPEND || token->type == HEREDOC));
+}
+
 int	is_special(t_list *token)
 {
-	if (!token)
-		return (0);
-	return (token->type == PIPE || token->type == INRED || token->type == OUTRED
-		|| token->type == APPEND || token->type == HEREDOC);
+	return (is_pipe(token) || is_redirection(token));
 }
 
 t_error	create_error(t_error_type type, char *token)

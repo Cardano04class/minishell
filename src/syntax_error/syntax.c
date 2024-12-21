@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:30:33 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/20 18:36:44 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/21 12:05:57 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ t_error	check_special_token_position(t_list *token)
 		return (create_error(NO_ERROR, NULL));
 	if (!token->next && is_special(token))
 		return (create_error(MISSING_CONTEXT, token->content));
-	if (!token->prev && token->type == PIPE)
+	if (!token->prev && is_pipe(token))
 		return (create_error(PIPE_AT_START, token->content));
-	if (token->next && is_special(token) && is_special(token->next))
+	if (is_pipe(token) && token->next && is_pipe(token->next))
 		return (create_error(CONSECUTIVE_SPECIAL, token->content));
+	if (is_redirection(token) && token->next && is_redirection(token->next))
+		return (create_error(CONSECUTIVE_SPECIAL, token->content));
+	if (is_pipe(token) && token->next && is_redirection(token->next))
+		return (create_error(NO_ERROR, NULL));
 	return (create_error(NO_ERROR, NULL));
 }
 
