@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/12/21 12:07:11 by mamir            ###   ########.fr       */
-=======
-/*   Updated: 2024/12/21 09:18:17 by mamir            ###   ########.fr       */
->>>>>>> parent of 3c06c69 (problem fixed : the program was exiting when the file is not valid)
+/*   Updated: 2024/12/21 12:25:39 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

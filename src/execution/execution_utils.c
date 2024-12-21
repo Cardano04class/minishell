@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/21 10:29:12 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 12:25:45 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,7 @@ bool	set_redirections(t_file *file)
 
 	while (file)
 	{
-<<<<<<< HEAD
-		if (command->cmd[0] != NULL)
-			check_if_redirection_file_valid(file);
-=======
 		check_if_redirection_file_valid(file);
->>>>>>> parent of 3c06c69 (problem fixed : the program was exiting when the file is not valid)
 		if (file->type == INRED || file->type == HEREDOC)
 			fd = open(file->filename, O_RDONLY | O_CREAT, 0644);
 		else if (file->type == OUTRED)
