@@ -6,20 +6,24 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:35:21 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/21 11:11:47 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/21 10:29:12 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	set_redirections(t_file *file, t_cmd *command)
+bool	set_redirections(t_file *file)
 {
 	int	fd;
 
 	while (file)
 	{
+<<<<<<< HEAD
 		if (command->cmd[0] != NULL)
 			check_if_redirection_file_valid(file);
+=======
+		check_if_redirection_file_valid(file);
+>>>>>>> parent of 3c06c69 (problem fixed : the program was exiting when the file is not valid)
 		if (file->type == INRED || file->type == HEREDOC)
 			fd = open(file->filename, O_RDONLY | O_CREAT, 0644);
 		else if (file->type == OUTRED)
@@ -80,16 +84,16 @@ void	check_if_redirection_file_valid(t_file *file)
 	{
 		write(2, file->filename, ft_strlen(file->filename));
 		write(2, ": No such file or directory\n", 28);
-		g_mini.exit_status = 1;
 		_malloc(0, 'f');
+		g_mini.exit_status = 1;
 		exit(g_mini.exit_status);
 	}
 	if (stat(file->filename, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 	{
 		write(2, file->filename, ft_strlen(file->filename));
 		write(2, ": Is a directory\n", 17);
-		g_mini.exit_status = 1;
 		_malloc(0, 'f');
+		g_mini.exit_status = 1;
 		exit(g_mini.exit_status);
 	}
 }

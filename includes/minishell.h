@@ -6,7 +6,11 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/12/21 12:07:11 by mamir            ###   ########.fr       */
+=======
+/*   Updated: 2024/12/21 09:18:17 by mamir            ###   ########.fr       */
+>>>>>>> parent of 3c06c69 (problem fixed : the program was exiting when the file is not valid)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +291,9 @@ void					ft_lstclear(t_list **lst);
 int						print_env(t_env *env_lst);
 char					*get_env(t_env *env, const char *name);
 
+char					*heredoc_expand(t_env *env, char *content);
 char					*expand_variable(t_env *env, const char *var_name);
+bool					set_redirections(t_file *file);
 void					run_heredoc(t_cmd *command);
 int						execution(t_cmd *cmd);
 void					signal_handler(int sig);
@@ -323,7 +329,7 @@ char					*ft_getenv(char *name, t_env *env);
 t_env					*ft_dashcase(char *name);
 char					*find_path(char *cmd, t_env *env);
 char					**convert_env(t_env *list_env);
-bool					set_redirections(t_file *file, t_cmd *command);
+bool					set_redirections(t_file *file);
 void					if_executable(char *str);
 int						execute_without_path(t_cmd *command);
 int						execute_with_path(t_cmd *command);
