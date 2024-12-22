@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 10:31:09 by mamir             #+#    #+#             */
-/*   Updated: 2024/12/21 12:07:11 by mamir            ###   ########.fr       */
+/*   Updated: 2024/12/22 21:56:31 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,8 +292,8 @@ void					run_heredoc(t_cmd *command);
 int						execution(t_cmd *cmd);
 void					signal_handler(int sig);
 void					handle_sigint(int signum);
+void					handle_sigquit(int signum);
 char					*heredoc_filename(void);
-
 int						capture_exit_status(int status);
 void					*_malloc(size_t size, char op);
 t_env					*set_env_var(t_env *env, char *key, char *value);
@@ -358,8 +358,8 @@ void					fill_expanded_content(char *var_value,
 							char **expanded_content, int *j);
 char					*copy_expanded_content(char *content, int expanded_len);
 char					*expand_in_heredoc(char *content);
-void					write_line_fd(char *line, int fd);
-int						heredoc_prompt(t_cmd *command, int fd);
+void					write_line_fd(char *line, t_cmd *command);
+int						heredoc_prompt(t_cmd *command);
 void					run_heredoc(t_cmd *command);
 
 /*--------------------parsing----------------*/

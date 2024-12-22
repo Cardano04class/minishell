@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:10:44 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/21 10:28:57 by mobouifr         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:48:48 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	parse_and_execute(t_list *list)
 	expand(g_mini.env, &list);
 	parser(list);
 	run_heredoc(g_mini.command);
-	execution(g_mini.command);
+	if (g_mini.exit_status != 130)
+		execution(g_mini.command);
 }
 
 int	rl_is_null(char *rl)
@@ -65,7 +66,7 @@ void	prompt(char **env)
 	while (1)
 	{
 		intialise_prompt_variables();
-		signal(SIGINT, handle_sigint);
+		signal_handler(IN_PROMPT);
 		rl = readline("minishell$ ");
 		if (rl_is_null(rl))
 			break ;
